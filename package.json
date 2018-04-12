@@ -1,19 +1,42 @@
 {
-  "name": "spotify_queue",
+  "name": "spotify-web-player",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "ww": "webpack -d --watch",
+    "start": "npm run ww"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Chike17/spotify-web-app.git"
+    "url": "git+https://github.com/Chike17/hrsf52-mvp.git"
   },
-  "author": "",
+  "author": "chike onuorah",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Chike17/spotify-web-app/issues"
+    "url": "https://github.com/Chike17/hrsf52-mvp/issues"
   },
-  "homepage": "https://github.com/Chike17/spotify-web-app#readme"
+  "homepage": "https://github.com/Chike17/hrsf52-mvp#readme",
+  "devDependencies": {
+    "babel-core": "^6.22.1",
+    "babel-loader": "^6.2.10",
+    "babel-preset-es2015": "^6.22.0",
+    "css-loader": "^0.28.4",
+    "style-loader": "^0.18.2",
+    "webpack": "^1.14.0"
+  },
+  "dependencies": {
+    "babel-polyfill": "^6.22.0",
+    "babel-preset-react": "^6.22.0",
+    "dev": "^0.1.3",
+    "express": "^4.14.0",
+    "jquery": "^3.1.1",
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2",
+    "react-redux": "^5.0.6",
+    "redux": "^3.7.2",
+    "redux-logger": "^3.0.6",
+    "style-loader": "^0.18.2",
+    "webpack": "^1.14.0"
+  }
 }
