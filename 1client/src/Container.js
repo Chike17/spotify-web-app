@@ -7,7 +7,6 @@ let Container = () => {
    <div >
 
      <div className = {styles.screen}>
-
        <input type = "checkbox" value = "None" className = {styles.magicButton} name="check" />
        <label className= {styles.main} htmlFor = {styles.magicButton} ></label>
        <div className = {styles.coverImage}></div>
