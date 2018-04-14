@@ -1,258 +1,547 @@
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:300,400,700);
 
-
-
-// ----- Personal preference -----
-*, *:before, *:after {
-  box-sizing: border-box;
-  -webkit-font-smoothing: antialiased;
-}
-
-// ----- Variable Declarations -----
-@keyframes spin {
-    from {transform:rotate(0deg);}
-    to {transform:rotate(360deg);}
-}
-$color: #4FB6EC;
-
-// ----- Styles -----
 body {
-  background-color: rgba(#222, 0.1);
-   font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; 
-   font-weight: 300;
-  line-height: 1.5em;
+  background: #42f492;
+  padding: 0;
+  margin: 0;
 }
-.table {
-  display: table;
-  width: 100%;
-  height: 100vh;
-}
-.table-cell {
-  display: table-cell;
-  vertical-align: middle;
-}
-#playbar {
-  visibility: hidden;
-  height: 0;
-  width: 0;
-}
-#player {
-    margin: 0 auto;
-    position: relative;
-    width: 400px;
-    height: 400px;
-  #main {
-    width: 400px;
-    height: 400px;
-    overflow: hidden;
-    border-radius: 5px;
-    user-select: none;
-    box-shadow: 0 10px 60px rgba(black, 0.6);
-    background-image: url('https://d13yacurqjgara.cloudfront.net/users/358029/screenshots/2147223/perigee-album-art-v2-dribbble.gif');
-    background-size: cover;
-    background-position: center center;
-    background-repeat: no-repeat;
-    z-index: 2;
-    position: relative;
-    transition: transform 0.4s ease-in-out;
+
+@keyframes harlem {
+  0% {
+    transform: scale(1);
+    -webkit-transform: scale(1);
+    -moz-transform: scale(1);
+    -o-transform: scale(1);
+    -ms-transform: scale(1);
   }
-  &.show #main {
-    transform: translateX(-200px);
+  20% {
+    transform: scale(1.03, 1);
+    -webkit-transform: scale(1.03, 1);
+    -moz-transform: scale(1.03, 1);
+    -o-transform: scale(1.03, 1);
+    -ms-transform: scale(1.03, 1);
   }
-  &.show ol {
-    transform: translateX(200px);
-    box-shadow: 1px 2px 10px rgba(black, 0.3);
-  transition: transform 0.4s ease-in-out, 0s box-shadow 0.05s;
+  40% {
+    transform: scale(0.97, 1);
+    -webkit-transform: scale(0.97, 1);
+    -moz-transform: scale(0.97, 1);
+    -o-transform: scale(0.97, 1);
+    -ms-transform: scale(0.97, 1);
   }
-  .playback_controls {
-    opacity: 0;
-    color: rgba(black, 0.55);
-    font-size: 22px;
-    transform: translateY(10px);
-    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
-    //height: 100px;
-    padding: 20px;
-    width: 100%;
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    background: rgba(#fff, 0.95);
-    z-index: 1;
-    .buttons {
-      text-align: center;
-      padding-left: 15px;
-      i {
-        display: inline-block;
-        padding: 0 15px;
-        width: 48px;
-        text-align: center;
-        cursor: pointer;
-        &#playpause.loading {
-          opacity: 0.4;
-          position: relative;
-          &:after {
-            position: absolute;
-            content: '';
-            display: block;
-            width: 50px;
-            height: 50px;
-            top: 50%;
-            margin-top: -25px;
-            margin-left: -28px;
-            left: 50%;
-            border: 3px solid #ddd;
-            border-radius: 100%;
-            border-right: 3px solid $color;
-            animation-duration: 0.5s;
-            animation-name: spin;
-            animation-iteration-count:infinite;
-            animation-timing-function: linear;
-          }
-        }
-      }
-    }
-    .menu {
-      float: right;
-      cursor: pointer;
-      opacity: 0.2;
-      transition: opacity 0.2s;
-      &:hover {
-        opacity: 0.6;
-      }
-    }
+  60% {
+    transform: scale(1.01, 1);
+    -webkit-transform: scale(1.01, 1);
+    -moz-transform: scale(1.01, 1);
+    -o-transform: scale(1.01, 1);
+    -ms-transform: scale(1.01, 1);
+  }
+  80% {
+    transform: scale(0.99, 1);
+    -webkit-transform: scale(0.99, 1);
+    -moz-transform: scale(0.99, 1);
+    -o-transform: scale(0.99, 1);
+    -ms-transform: scale(0.99, 1);
+  }
+  100% {
+    transform: scale(1);
+    -webkit-transform: scale(1);
+    -moz-transform: scale(1);
+    -o-transform: scale(1);
+    -ms-transform: scale(1);
   }
 }
-#main:hover .playback_controls, .show #main .playback_controls {
-  opacity: 1;
-  transform: translateY(0px);
-}
+
 h2 {
-  font-weight: 300;
-  font-size: 16px;
-  text-align: center;
-  margin: 0 0 10px 0;
-}
-h3 {
+  margin: 0;
+  padding: 0;
+  font-size: 10px;
+  line-height: 10px;
+  letter-spacing: 2.5px;
+  font-family: 'Open Sans';
   font-weight: 700;
-  font-size: 12px;
-  text-align: center;
+  color: #fff;
+}
+
+h3 {
   margin: 0;
+  padding: 0;
+  font-size: 11px;
+  line-height: 11px;
+  font-family: 'Open Sans';
+  font-weight: 400;
+  color: #777;
 }
-.time-holder {
-  padding: 0 40px;
-  padding-bottom: 10px;
-  .slider {
-    width: 100%;
-    height: 50px;
-    position: relative;
-    &:before {
-      position: absolute;
-      top: 50%;
-      margin-top: -2px;
-      left: 0;
-      content: '';
-      display: block;
-      width: 100%;
-      height: 3px;
-      background-color: rgba(#222, 0.075);
-    }
-    .fill {
-      position: absolute;
-      top: 50%;
-      width: 100%;
-      transform-origin: 0% 0%;
-      transform: scaleX(0);
-      margin-top: -2px;
-      left: 0;
-      content: '';
-      display: block;
-      height: 3px;
-      background-color: $color;
-      transition: transform 1s;
-    }
-  }
+
+h4 {
+  margin: 0 0 5px 29px;
+  padding: 0;
+  font-size: 14px;
+  line-height: 14px;
+  font-family: 'Open Sans';
+  font-weight: 700;
+  color: #fff;
 }
-a {
-  color: rgba(0, 0, 0, 0.55);
-  text-decoration: none;
+
+h5 {
+  margin: 0;
+  padding: 0;
+  font-size: 13px;
+  line-height: 13px;
+  font-family: 'Open Sans';
+  font-weight: 700;
+  color: #6d6d6d;
 }
-.time {
-  font-size: 12px;
-  font-weight: bold;
-  opacity: 0.3;
-  float: right;
+
+h6 {
+  margin: 0;
+  padding: 0;
+  font-size: 13px;
+  line-height: 13px;
+  font-family: 'Open Sans';
+  font-weight: 700;
+  color: #f0f0f0;
 }
-ol#playlist {
-  list-style-type: none;
-  margin-left: 0;
-  width: 400px;
-  padding-left: 0;
+
+
+label.main:before {
   position: absolute;
-  height: 300px;
-  background-color: #fff;
-  margin: 0;
+  top: 23px;
+  left: 23px;
+  font-family: FontAwesome;
+  content: '\f0c9';
+  color: #959595;
   font-size: 16px;
-  top: 50px;
-  overflow-y: auto;
-  transition: transform 0.4s ease-in-out, 0s box-shadow 0.3s;
-  border-radius: 0 5px 5px 0;
-  a {
-    display: inline-block;
-    width: 300px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
+  line-height: 16px;
+  cursor: pointer;
+  z-index: 10;
+  transition: all 0.3s ease-in;
 }
 
-ol#playlist > li {
-  counter-increment: customlistcounter;
-  padding: 12px 15px;
+label.main:hover:before {
+  color: #bbb;
+}
+
+label.zmr:before {
+  font-family: FontAwesome;
+  content: "\f08a";
+  color: #777;
+  font-size: 15px;
+  line-height: 15px;
+  cursor: pointer;
+  z-index: 10;
+  transition: all 0.15s linear;
+}
+
+
+.screen {
+  background-color: #fff;
+  padding: 0;
+  height: 650px;
+  width: 366px;
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translate(-50%, 0);
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.4);
+  overflow: hidden;
+  margin: 30px 0;
+}
+
+.screen > .magicButton:checked ~ .coverImage {
+  transform: scale(0.251, 0.251);
+  left: 23px;
+  top: 60px;
+  transition: all 0.3s ease-in;
+  border-radius: 20px;
+}
+
+
+.screen > .magicButton:checked ~ .bodyPlayer {
+  height: 470px;
+  left: 0;
+  top: 180px;
+  transition: all 0.3s ease-in;
+}
+
+
+
+
+.screen > .magicButton:checked ~ table tr:nth-child(1) {
+  opacity: 1;
+  animation: harlem 0.3s linear forwards;
+  animation-delay: 0.185s;
+}
+
+.screen > .magicButton:checked ~ table tr:nth-child(2) {
+  animation: harlem 0.3s linear forwards;
+  animation-delay: 0.2s;
+}
+
+.screen > .magicButton:checked ~ table tr:nth-child(3) {
+  animation: harlem 0.3s linear forwards;
+  animation-delay: 0.215s;
+}
+
+.screen > .magicButton:checked ~ table tr:nth-child(4) {
+  animation: harlem 0.3s linear forwards;
+  animation-delay: 0.23s;
+}
+
+.screen > .magicButton:checked ~ table tr:nth-child(5) {
+  animation: harlem 0.3s linear forwards;
+  animation-delay: 0.245s;
+}
+
+.screen > .magicButton:checked ~ table tr:nth-child(6) {
+  animation: harlem 0.3s linear forwards;
+  animation-delay: 0.26s;
+}
+
+.screen > .magicButton:checked ~ table tr:nth-child(7) {
+  animation: harlem 0.3s linear forwards;
+  animation-delay: 0.275s;
+}
+
+.screen > .magicButton:checked ~ table tr:nth-child(8) {
+  animation: harlem 0.3s linear forwards;
+  animation-delay: 0.29s;
+}
+
+.screen > .magicButton:checked ~ table tr:nth-child(9) {
+  animation: harlem 0.3s linear forwards;
+  animation-delay: 0.305s;
+}
+
+.screen > .magicButton:checked ~ .bar {
+  top: 119px;
+  left: 126px;
+  transform: scale(0.6875, 0.6875);
+  transition: all 0.3s ease-in;
+}
+
+.screen > .magicButton:checked ~ .info {
+  top: 66px;
+  left: 126px;
+  text-align: left;
+  transition: all 0.3s ease-in;
+}
+
+.screen > .magicButton:checked ~ .info h4 {
+  margin-left: 0;
+  font-size: 16px;
+  color: #111111;
+  transition: all 0.3s ease-in;
+}
+
+.screen > .magicButton:checked ~ .player {
+  bottom: 4px;
+  left: -44px;
+  transform: scale(0.45, 0.45);
+  transition: all 0.3s ease-in;
+}
+
+.screen > .magicButton:checked ~ .footer {
+  bottom: -60px;
+  transition: all 0.3s ease-in;
+}
+
+.screen > .magicButton:checked ~ .current {
+  bottom: 17px;
+  transition: all 0.3s ease-in;
+}
+
+.coverImage {
+  background: url('https://angstyteenwatchingtoomuchtv.files.wordpress.com/2015/07/tumblr_nlhsir3adc1sk2qobo1_12801.gif') no-repeat;
+  background-size: cover;
+  width: 366px;
+  height: 366px;
+  padding: 0;
+  margin: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform-origin: 0% 0%;
+  transition: all 0.3s ease-in;
+}
+
+.bodyPlayer {
+  position: absolute;
+  top: 366px;
+  left: 0;
+  margin: 0;
+  padding: 0;
+  height: 286px;
+  width: 366px;
+  background: #111;
+  transition: all 0.3s ease-in;
+}
+
+.search:before {
+  position: absolute;
+  top: 23px;
+  right: 23px;
+  font-family: FontAwesome;
+  content: '\f002';
+  color: #959595;
+  font-size: 16px;
+  line-height: 16px;
+  cursor: pointer;
+  z-index: 10;
+  transition: all 0.3s ease-in;
+}
+
+.search:hover:before {
+  color: #bbb;
+}
+
+/*.title {
+  width: 215px;
+  text-align: left;
+  text-indent: 15px;
+  transition: all 0.11s ease-in;
+}*/
+
+.scrollcontainer {
+  overflow:auto;
+  height: 200px;
+  width: 200px;
+}
+.listcontainer {
+ position: absolute;
+ left: 300px;
+ bottom: 5px;
+}
+
+td > .heart:checked ~ label.zmr:before {
+  content: "\f004";
+  color: #ff564c;
+  transition: all 0.15s linear;
+}
+
+td > .heart1:checked ~ label.zmr:before {
+  content: "\f004";
+  color: #ff564c;
+  transition: all 0.15s linear;
+}
+
+td > .heart2:checked ~ label.zmr:before {
+  content: "\f004";
+  color: #ff564c;
+  transition: all 0.15s linear;
+}
+
+td > .heart3:checked ~ label.zmr:before {
+  content: "\f004";
+  color: #ff564c;
+  transition: all 0.15s linear;
+}
+
+td > .heart4:checked ~ label.zmr:before {
+  content: "\f004";
+  color: #ff564c;
+  transition: all 0.15s linear;
+}
+
+td > .heart5:checked ~ label.zmr:before {
+  content: "\f004";
+  color: #ff564c;
+  transition: all 0.15s linear;
+}
+
+td > .heart6:checked ~ label.zmr:before {
+  content: "\f004";
+  color: #ff564c;
+  transition: all 0.15s linear;
+}
+
+td > .heart7:checked ~ label.zmr:before {
+  content: "\f004";
+  color: #ff564c;
+  transition: all 0.15s linear;
+}
+
+td > .heart8:checked ~ label.zmr:before {
+  content: "\f004";
+  color: #ff564c;
+  transition: all 0.15s linear;
+}
+
+td > .play:checked ~ label.play:before {
+  content: "\f04c";
+  transition: all 0.15s linear;
+}
+
+td > .love:checked ~ label.love:before {
+  content: "\f004";
+  color: #ff564c;
+  transition: all 0.15s linear;
+}
+
+td > .shuffle:checked ~ label.shuffle:before {
+  color: #ff564c;
+  transition: all 0.15s linear;
+}
+
+td > .repeat:checked ~ label.repeat:before {
+  color: #ff564c;
+  transition: all 0.15s linear;
+}
+
+.shadow {
+  background: rgba(17, 17, 17, 0.8);
+  width: 366px;
   height: 50px;
-  position: relative;
-  &:after {
-    position: absolute;
-    width: 300px;
-    left: 9.5%;
-    content: '';
-    display: block;
-    bottom: 0;
-    border-bottom: 1px solid rgba(#222, 0.1);
-  }
-  &:last-child:after {
-    border-color: transparent;
-  }
-  &:hover {
-    background-color: rgba(#222, 0.02);
-  }
-  &.playing {
-    background-color: rgba($color, 0.15);
-    &:after {
-      border-color: transparent;
-    }
-    &:hover {
-      background-color: rgba($color, 0.2);
-    }
-  }
+  position: absolute;
+  bottom: -12px;
+  left: 0;
+  box-shadow: 0px -15px 40px rgba(17, 17, 17, 0.8);
 }
 
-ol#playlist > li:before {
-  content: counter(customlistcounter) " ";
-  float: left;
-  text-align: right;
-  width: 1em;
-  margin-right: 1em;
-  font-size: 12px;
-  font-weight: bold;
-  opacity: 0.3;
-  vertical-align: baseline;
-  display: inline-block;
+
+.bar {
+  background: url('http://imgh.us/bar_3.svg') no-repeat;
+  background-size: 100%;
+  width: 320px;
+  height: 21px;
+  position: absolute;
+  top: 407px;
+  left: 23px;
+  transform-origin: 0% 0%;
+  transition: all 0.3s ease-in;
 }
 
-ol#playlist li:first-child {
-  counter-reset: customlistcounter;
+.info {
+  width: 157px;
+  position: absolute;
+  left: 104px;
+  top: 440px;
+  transition: all 0.3s ease-in;
 }
 
-// ----- Mobile styles -----
-@media only screen 
-  and (max-device-width: 736px) { 
+
+.player {
+  background: none;
+  text-align: center;
+  font-family: FontAwesome;
+  color: #fff;
+  font-size: 26px;
+  line-height: 26px;
+  width: 216px;
+  height: 300px;
+  position: absolute;
+  bottom: 100px;
+  left: 48%;
+  transform: translate(-50%, 0);
+  z-index: 10;
+  transition: all 0.3s ease-in;
+  border-spacing: 0;
+}
+
+.player td {
+  width: 72px;
+}
+
+audio {
+  visibility: hidden;
+}
+
+.backward:before {
+  content: "\f04a";
+  cursor: pointer;
+  transition: all 0.15s linear;
+}
+
+.backward:hover:before {
+  color: #bbb;
+  transition: all 0.15s linear;
+}
+
+.play:before {
+  content: "\f04b";
+  cursor: pointer;
+  transition: all 0.15s linear;
+}
+
+.play:hover:before {
+  color: #bbb;
+  transition: all 0.15s linear;
+}
+
+.forward:before {
+  content: "\f04e";
+  cursor: pointer;
+  transition: all 0.15s linear;
+}
+
+.forward:hover:before {
+  color: #bbb;
+  transition: all 0.15s linear;
+}
+
+.footer {
+  background: none;
+  font-family: FontAwesome;
+  color: #6d6d6d;
+  font-size: 15px;
+  line-height: 15px;
+  height: 45px;
+  width: 360px;
+  position: absolute;
+  bottom: 10px;
+  left: 23px;
+  z-index: 20;
+  transition: all 0.15s linear;
+  transition: bottom 0.3s linear;
+}
+
+.love:before {
+  content: "\f08a";
+  cursor: pointer;
+  transition: all 0.15s linear;
+}
+
+.love:hover:before {
+  color: #bbb;
+  transition: all 0.15s linear;
+}
+
+
+.shuffle:before {
+  content: "\f074";
+  cursor: pointer;
+  transition: all 0.15s linear;
+}
+
+.shuffle:hover:before {
+  color: #bbb;
+  transition: all 0.15s linear;
+}
+
+.repeat:before {
+  content: "\f01e";
+  cursor: pointer;
+  transition: all 0.15s linear;
+}
+
+.repeat:hover:before {
+  color: #bbb;
+  transition: all 0.15s linear;
+}
+
+.options:before {
+  content: "\f141";
+  cursor: pointer;
+  transition: all 0.15s linear;
+}
+
+.options:hover:before {
+  color: #bbb;
+  transition: all 0.15s linear;
+}
+
+.current {
+  position: absolute;
+  right: 23px;
+  bottom: -60px;
+  transition: all 0.3s ease-in;
 }
