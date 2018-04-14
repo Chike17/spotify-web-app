@@ -99,7 +99,6 @@ let Table = () => {
           </tbody>
         </table>
 
-        <div className = {styles.current} ><h2>STRESSED OUT</h2></div>
    </div>
 
   );

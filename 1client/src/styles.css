@@ -306,9 +306,9 @@ label.zmr:before {
   width: 200px;
 }
 .listcontainer {
- position: absolute;
- left: 550px;
- bottom: 5px;
+ position:absolute;
+ left: 490px;
+ bottom: -50px;
 }
 
 td > .heart:checked ~ label.zmr:before {
@@ -428,8 +428,9 @@ td > .repeat:checked ~ label.repeat:before {
   width: 216px;
   height: 300px;
   position: absolute;
-  bottom: 100px;
-  left: 48%;
+  bottom: 40px;
+  left: 50%;
+  right: 40px;
   transform: translate(-50%, 0);
   z-index: 10;
   transition: all 0.3s ease-in;
