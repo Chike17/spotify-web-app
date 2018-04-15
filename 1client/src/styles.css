@@ -155,6 +155,11 @@ label.zmr:before {
   border-radius: 20px;
 }
 
+.screen > .magicButton:unchecked ~ .testing {
+  color: #111;
+  opacity: 30;
+}
+
 
 .screen > .magicButton:checked ~ .bodyPlayer {
   height: 470px;
@@ -163,53 +168,12 @@ label.zmr:before {
   transition: all 0.3s ease-in;
 }
 
-
-
-
-.screen > .magicButton:checked ~ table tr:nth-child(1) {
-  opacity: 1;
-  animation: harlem 0.3s linear forwards;
-  animation-delay: 0.185s;
-}
-
-.screen > .magicButton:checked ~ table tr:nth-child(2) {
-  animation: harlem 0.3s linear forwards;
-  animation-delay: 0.2s;
-}
-
-.screen > .magicButton:checked ~ table tr:nth-child(3) {
-  animation: harlem 0.3s linear forwards;
-  animation-delay: 0.215s;
-}
-
-.screen > .magicButton:checked ~ table tr:nth-child(4) {
-  animation: harlem 0.3s linear forwards;
-  animation-delay: 0.23s;
-}
-
-.screen > .magicButton:checked ~ table tr:nth-child(5) {
-  animation: harlem 0.3s linear forwards;
-  animation-delay: 0.245s;
-}
-
-.screen > .magicButton:checked ~ table tr:nth-child(6) {
-  animation: harlem 0.3s linear forwards;
-  animation-delay: 0.26s;
-}
-
-.screen > .magicButton:checked ~ table tr:nth-child(7) {
-  animation: harlem 0.3s linear forwards;
-  animation-delay: 0.275s;
-}
-
-.screen > .magicButton:checked ~ table tr:nth-child(8) {
-  animation: harlem 0.3s linear forwards;
-  animation-delay: 0.29s;
-}
-
-.screen > .magicButton:checked ~ table tr:nth-child(9) {
-  animation: harlem 0.3s linear forwards;
-  animation-delay: 0.305s;
+.screen > .magicButton:checked ~ .testing {
+  color:#eef442;
+  opacity:30;
+  left: 0;
+  top: 180px;
+  transition: all 0.3s ease-in;
 }
 
 .screen > .magicButton:checked ~ .bar {
@@ -240,15 +204,7 @@ label.zmr:before {
   transition: all 0.3s ease-in;
 }
 
-.screen > .magicButton:checked ~ .footer {
-  bottom: -60px;
-  transition: all 0.3s ease-in;
-}
 
-.screen > .magicButton:checked ~ .current {
-  bottom: 17px;
-  transition: all 0.3s ease-in;
-}
 .coverImage {
   background: url('https://angstyteenwatchingtoomuchtv.files.wordpress.com/2015/07/tumblr_nlhsir3adc1sk2qobo1_12801.gif') no-repeat;
   background-size: cover;
@@ -306,9 +262,10 @@ label.zmr:before {
   width: 200px;
 }
 .listcontainer {
- position:absolute;
- left: 490px;
- bottom: -50px;
+  position: absolute;
+  left: 90px;
+  top: 420px;
+
 }
 
 td > .heart:checked ~ label.zmr:before {
@@ -428,7 +385,7 @@ td > .repeat:checked ~ label.repeat:before {
   width: 216px;
   height: 300px;
   position: absolute;
-  bottom: 40px;
+  top: 240px;
   left: 50%;
   right: 40px;
   transform: translate(-50%, 0);
@@ -544,4 +501,9 @@ audio {
   right: 23px;
   bottom: -60px;
   transition: all 0.3s ease-in;
+}
+
+.testing {
+  position: absolute;
+  opacity:0;
 }

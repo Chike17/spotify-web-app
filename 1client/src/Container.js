@@ -8,14 +8,13 @@ let Container = () => {
 
      <div className = {styles.screen}>
        <input type = "checkbox" value = "None" className = {styles.magicButton} name="check" />
-       <label className= {styles.main} htmlFor = {styles.magicButton} ></label>
+       <div> Input Box </div>
        <div className = {styles.coverImage}></div>
-       <div className = {styles.search} ></div>
        <div className = {styles.bodyPlayer}></div>
-   
+       <div className = {styles.testing}> Partial Result Data </div>
+      <Table />
      </div> 
 
-    <Table />
 
    </div>
   );
