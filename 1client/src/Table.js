@@ -94,7 +94,7 @@ let Table = () => {
         <table className={styles.player}>
           <tbody>
             <td><input type="checkbox" className={styles.backward}/><label className={styles.backward} htmlFor={styles.backward}></label></td>
-            <td><input type="checkbox" className={styles.play} title="Play" onclick="togglePlayPause()"/><label className={styles.play} htmlFor={styles.play}></label></td>
+            <td><input type="checkbox" className={styles.play} title="Play" /><label className={styles.play} htmlFor={styles.play}></label></td>
             <td><input type="checkbox" className={styles.forward}/><label className={styles.forward}htmlFor={styles.forward}></label></td>
           </tbody>
         </table>

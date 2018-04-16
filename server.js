@@ -44,7 +44,6 @@ var stateKey = 'spotify_auth_state';
 
 var app = express();
 app.use(cookieParser());
-app.use(express.static(__dirname));
 
 app.get('/startapp', function (req, res) {
   var state = generateRandomString(16);
@@ -104,6 +103,7 @@ app.get('/callback', function(req, res) {
         request.get(options, function(error, response, body) {
           console.log(body);
         });
+        app.use(express.static(__dirname));
         var filePath = 'http://localhost:8888/#';
         // we can also pass the token to the browser to make requests from there
         res.redirect(filePath +

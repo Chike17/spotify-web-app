@@ -22544,6 +22544,8 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
+	var spotifyWebApi = new _spotifyWebApiJs2.default();
+	
 	var App = function (_React$Component) {
 	  _inherits(App, _React$Component);
 	
@@ -22555,9 +22557,12 @@
 	    var params = _this.getHashParams();
 	    _this.state = {
 	      something: '',
-	      loggedIn: params.accessToken ? true : false,
+	      loggedIn: params.access_token ? true : false,
 	      nowplaying: { name: 'Not checked', image: '' }
 	    };
+	    if (params.access_token) {
+	      spotifyWebApi.setAccessToken(params.access_token);
+	    }
 	    return _this;
 	  }
 	
@@ -22575,7 +22580,17 @@
 	    }
 	  }, {
 	    key: 'componentDidMount',
-	    value: function componentDidMount() {}
+	    value: function componentDidMount() {
+	      console.log('before api call');
+	      var context = this;
+	      spotifyWebApi.getMyCurrentPlaybackState().then(function (response) {
+	        console.log(response, '******');
+	        context.setState({ nowplaying: { name: response.item.artists[0].name,
+	            image: response.item.album.images[0].url } });
+	      }).catch(function (e) {
+	        console.log(e, 'error!');
+	      });
+	    }
 	  }, {
 	    key: 'render',
 	    value: function render() {
@@ -22594,7 +22609,7 @@
 	          null,
 	          _react2.default.createElement('img', { src: this.state.nowplaying.image, style: { width: 100 } })
 	        ),
-	        _react2.default.createElement(_Container2.default, null)
+	        _react2.default.createElement(_Container2.default, { firstcover: this.state.image })
 	      );
 	    }
 	  }]);
@@ -23290,12 +23305,11 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	var divStyle = {
-	  background: 'url("https://angstyteenwatchingtoomuchtv.files.wordpress.com/2015/07/tumblr_nlhsir3adc1sk2qobo1_12801.gif")',
-	  "background-size": "cover"
-	};
-	
-	var Container = function Container() {
+	var Container = function Container(props) {
+	  var divStyle = {
+	    'background': 'url("https://angstyteenwatchingtoomuchtv.files.wordpress.com/2015/07/tumblr_nlhsir3adc1sk2qobo1_12801.gif")',
+	    'background-size': 'cover'
+	  };
 	  return _react2.default.createElement(
 	    'div',
 	    null,
@@ -23719,7 +23733,7 @@
 	        _react2.default.createElement(
 	          'td',
 	          null,
-	          _react2.default.createElement('input', { type: 'checkbox', className: _styles2.default.play, title: 'Play', onclick: 'togglePlayPause()' }),
+	          _react2.default.createElement('input', { type: 'checkbox', className: _styles2.default.play, title: 'Play' }),
 	          _react2.default.createElement('label', { className: _styles2.default.play, htmlFor: _styles2.default.play })
 	        ),
 	        _react2.default.createElement(

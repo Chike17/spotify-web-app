@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import $ from 'jquery';
 import store from './store.js';
 import Spotify from 'spotify-web-api-js';
+const spotifyWebApi = new Spotify();
 
 
 class App extends React.Component {
@@ -14,9 +15,12 @@ class App extends React.Component {
     const params = this.getHashParams();
     this.state = {
       something: '',
-      loggedIn: params.accessToken ? true : false,
+      loggedIn: params.access_token ? true : false,
       nowplaying: {name: 'Not checked', image: ''}
     };
+    if (params.access_token) {
+      spotifyWebApi.setAccessToken(params.access_token);
+    }
   }
 
   getHashParams() {
@@ -30,8 +34,17 @@ class App extends React.Component {
   }
 
   componentDidMount() {
+    console.log('before api call');
+    let context = this;
+    spotifyWebApi.getMyCurrentPlaybackState()
+    .then((response) => {
+      console.log(response, '******');
+      context.setState({nowplaying: {name: response.item.artists[0].name,
+                                  image: response.item.album.images[0].url}});
+    }).catch((e) => {
+      console.log(e, 'error!');
+    });
   }
-
   render() {
     return (
       <div>
@@ -41,7 +54,7 @@ class App extends React.Component {
         <img src = {this.state.nowplaying.image} style = {{width: 100}}/>
        </div> 
 
-        <Container />
+        <Container firstcover = {this.state.image} />
       </div>
     );
   }

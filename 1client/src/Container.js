@@ -2,13 +2,13 @@ import React from 'react';
 import styles from './styles.css';
 import Table from './Table.js';
 
-let divStyle = {
-  background: 'url("https://angstyteenwatchingtoomuchtv.files.wordpress.com/2015/07/tumblr_nlhsir3adc1sk2qobo1_12801.gif")',
-  "background-size": "cover"
-};
 
 
-let Container = () => {
+let Container = (props) => {
+  let divStyle = {
+    'background': 'url("https://angstyteenwatchingtoomuchtv.files.wordpress.com/2015/07/tumblr_nlhsir3adc1sk2qobo1_12801.gif")',
+    'background-size': 'cover'
+  };
   return (
    <div >
 
