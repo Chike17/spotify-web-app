@@ -22,16 +22,7 @@ class App extends React.Component {
     if (params.access_token) {
       spotifyWebApi.setAccessToken(params.access_token);
     }
-  }
-
-  getHashParams() {
-    let hashParams = {};
-    let e, r = /([^&;=]+)=?([^&;]*)/g,
-    q = window.location.hash.substring(1);
-    while ( e = r.exec(q)) {
-       hashParams[e[1]] = decodeURIComponent(e[2]);
-    }
-    return hashParams;
+    this.setTrackList = this.setTrackList.bind(this);
   }
   componentDidMount() {
     let context = this;
@@ -45,17 +36,35 @@ class App extends React.Component {
     // });
     spotifyWebApi.searchTracks('Love')
       .then(function(response) {
-        console.log(response.tracks.items, 'App Tracklist???');
-
         context.setState({tracklist: response.tracks.items});
       }, function(err) {
         console.error(err);
       }); 
   }
+  getHashParams() {
+    let hashParams = {};
+    let e, r = /([^&;=]+)=?([^&;]*)/g,
+    q = window.location.hash.substring(1);
+    while ( e = r.exec(q)) {
+       hashParams[e[1]] = decodeURIComponent(e[2]);
+    }
+    return hashParams;
+  }
+  setTrackList (input) {
+    let context = this;
+    spotifyWebApi.searchTracks(input)
+    .then(function(response) {
+      context.setState({tracklist: response.tracks.items});
+    }, function(err) {
+      console.error(err);
+    }); 
+  }
   render() {
     return (
       <div> 
-        <Container firstcover = {this.state.nowplaying.image} tracklist = {this.state.tracklist} />
+        <Container firstcover = {this.state.nowplaying.image} 
+                   tracklist = {this.state.tracklist} 
+                   setTrackList = {this.setTrackList}/>
       </div>
     );
   }

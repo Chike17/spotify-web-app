@@ -22564,22 +22564,11 @@
 	    if (params.access_token) {
 	      spotifyWebApi.setAccessToken(params.access_token);
 	    }
+	    _this.setTrackList = _this.setTrackList.bind(_this);
 	    return _this;
 	  }
 	
 	  _createClass(App, [{
-	    key: 'getHashParams',
-	    value: function getHashParams() {
-	      var hashParams = {};
-	      var e = void 0,
-	          r = /([^&;=]+)=?([^&;]*)/g,
-	          q = window.location.hash.substring(1);
-	      while (e = r.exec(q)) {
-	        hashParams[e[1]] = decodeURIComponent(e[2]);
-	      }
-	      return hashParams;
-	    }
-	  }, {
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
 	      var context = this;
@@ -22592,8 +22581,28 @@
 	      //   console.log(e, 'error!');
 	      // });
 	      spotifyWebApi.searchTracks('Love').then(function (response) {
-	        console.log(response.tracks.items, 'App Tracklist???');
-	
+	        context.setState({ tracklist: response.tracks.items });
+	      }, function (err) {
+	        console.error(err);
+	      });
+	    }
+	  }, {
+	    key: 'getHashParams',
+	    value: function getHashParams() {
+	      var hashParams = {};
+	      var e = void 0,
+	          r = /([^&;=]+)=?([^&;]*)/g,
+	          q = window.location.hash.substring(1);
+	      while (e = r.exec(q)) {
+	        hashParams[e[1]] = decodeURIComponent(e[2]);
+	      }
+	      return hashParams;
+	    }
+	  }, {
+	    key: 'setTrackList',
+	    value: function setTrackList(input) {
+	      var context = this;
+	      spotifyWebApi.searchTracks(input).then(function (response) {
 	        context.setState({ tracklist: response.tracks.items });
 	      }, function (err) {
 	        console.error(err);
@@ -22605,7 +22614,9 @@
 	      return _react2.default.createElement(
 	        'div',
 	        null,
-	        _react2.default.createElement(_Container2.default, { firstcover: this.state.nowplaying.image, tracklist: this.state.tracklist })
+	        _react2.default.createElement(_Container2.default, { firstcover: this.state.nowplaying.image,
+	          tracklist: this.state.tracklist,
+	          setTrackList: this.setTrackList })
 	      );
 	    }
 	  }]);
@@ -23299,6 +23310,10 @@
 	
 	var _Table2 = _interopRequireDefault(_Table);
 	
+	var _Input = __webpack_require__(/*! ./Input.js */ 237);
+	
+	var _Input2 = _interopRequireDefault(_Input);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -23312,7 +23327,6 @@
 	  var divStyle = (_divStyle = {
 	    'background': 'url(' + '"' + props.firstcover + '"' + ')'
 	  }, _defineProperty(_divStyle, 'background', 'url("https://angstyteenwatchingtoomuchtv.files.wordpress.com/2015/07/tumblr_nlhsir3adc1sk2qobo1_12801.gif")'), _defineProperty(_divStyle, 'background-size', 'cover'), _divStyle);
-	  console.log(props.tracklist, 'Container tracklist???');
 	  return _react2.default.createElement(
 	    'div',
 	    null,
@@ -23320,11 +23334,7 @@
 	      'div',
 	      { className: _styles2.default.screen },
 	      _react2.default.createElement('input', { type: 'checkbox', value: 'None', className: _styles2.default.magicButton, name: 'check' }),
-	      _react2.default.createElement(
-	        'div',
-	        null,
-	        ' Input Box '
-	      ),
+	      _react2.default.createElement(_Input2.default, { setTrackList: props.setTrackList }),
 	      _react2.default.createElement('div', { className: _styles2.default.coverImage, style: divStyle }),
 	      _react2.default.createElement('div', { className: _styles2.default.bodyPlayer }),
 	      _react2.default.createElement(
@@ -38270,6 +38280,84 @@
 	  module.exports = SpotifyWebApi;
 	}
 
+
+/***/ }),
+/* 237 */
+/*!******************************!*\
+  !*** ./1client/src/Input.js ***!
+  \******************************/
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(/*! react */ 1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _styles = __webpack_require__(/*! ./styles.css */ 185);
+	
+	var _styles2 = _interopRequireDefault(_styles);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var Input = function (_React$Component) {
+	  _inherits(Input, _React$Component);
+	
+	  function Input(props) {
+	    _classCallCheck(this, Input);
+	
+	    var _this = _possibleConstructorReturn(this, (Input.__proto__ || Object.getPrototypeOf(Input)).call(this, props));
+	
+	    _this.state = { value: '' };
+	    _this.handleChange = _this.handleChange.bind(_this);
+	    _this.handleSubmit = _this.handleSubmit.bind(_this);
+	    return _this;
+	  }
+	
+	  _createClass(Input, [{
+	    key: 'handleChange',
+	    value: function handleChange(event) {
+	      var context = this;
+	      var value = event.target.value;
+	      context.setState({ value: event.target.value }, function () {
+	        console.log(value);
+	      });
+	    }
+	  }, {
+	    key: 'handleSubmit',
+	    value: function handleSubmit(event) {
+	      event.preventDefault();
+	      this.props.setTrackList(this.state.value);
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'form',
+	        { onSubmit: this.handleSubmit },
+	        _react2.default.createElement(
+	          'label',
+	          null,
+	          'Search for Tracks',
+	          _react2.default.createElement('input', { type: 'text', value: this.state.value, onChange: this.handleChange })
+	        ),
+	        _react2.default.createElement('input', { type: 'submit', value: 'Submit' })
+	      );
+	    }
+	  }]);
+	
+	  return Input;
+	}(_react2.default.Component);
+	
+	module.exports = Input;
 
 /***/ })
 /******/ ]);
