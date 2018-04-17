@@ -1,3 +1,4 @@
+let stock = 'https://upload.wikimedia.org/wikipedia/commons/e/ea/Spotify_logo_vertical_black.jpg';
 import React from 'react';
 import styles from './styles.css';
 import init from './init.js';
@@ -7,7 +8,18 @@ import $ from 'jquery';
 import store from './store.js';
 import Spotify from 'spotify-web-api-js';
 const spotifyWebApi = new Spotify();
+let audioCtx;
+let saved;
 
+function playSound(buffer) {
+  let source = audioCtx.createBufferSource();
+  //passing in data
+  source.buffer = buffer;
+  //giving the source which sound to play
+  source.connect(audioCtx.destination);
+  //start playing
+  source.start(0);
+}
 
 class App extends React.Component {
   constructor (props) {
@@ -17,29 +29,54 @@ class App extends React.Component {
       something: '',
       loggedIn: params.access_token ? true : false,
       nowplaying: {name: 'Not checked', image: ''},
-      tracklist: []
+      tracklist: [],
+      cover:stock,
+      accessToken: ''
     };
     if (params.access_token) {
       spotifyWebApi.setAccessToken(params.access_token);
+      this.state.accessToken = params.access_token;
     }
     this.setTrackList = this.setTrackList.bind(this);
+
+
+   
+  }
+  playSound(buffer) {
+     //creating source node
+    let source = audioCtx.createBufferSource();
+    //passing in data
+    source.buffer = buffer;
+    //giving the source which sound to play
+    source.connect(audioCtx.destination);
+    //start playing
+    source.start(0);
+
   }
   componentDidMount() {
     let context = this;
-    // spotifyWebApi.getMyCurrentPlaybackState()
-    // .then((response) => {
-    //   console.log(response, '******');
-    //   context.setState({nowplaying: {name: response.item.artists[0].name,
-    //                                  image: response.item.album.images[2].url}});
-    // }).catch((e) => {
-    //   console.log(e, 'error!');
-    // });
+    audioCtx = new AudioContext();
+    console.log(audioCtx, 'audioCtx??uhijrnhrk?');
     spotifyWebApi.searchTracks('Love')
       .then(function(response) {
-        context.setState({tracklist: response.tracks.items});
+        let tracks = response.tracks.items;
+        let url = response.tracks.items[0].preview_url;
+        let cover = response.tracks.items[0].album.images[1].url;
+        window.fetch(url)
+          .then(response => response.arrayBuffer())
+          .then(arrayBuffer => audioCtx.decodeAudioData(arrayBuffer, 
+                                                         audioBuffer => {
+                                                           console.log(audioBuffer, 'audioBuffer?????');
+                                                           playSound(audioBuffer);
+                                                           context.setState({cover: cover, tracklist: tracks});
+                                                         }, 
+                                                         error => 
+                                                         console.error(error)
+                                                       ));
+
       }, function(err) {
-        console.error(err);
-      }); 
+        console.error(err, 'error!!!!!');
+      });
   }
   getHashParams() {
     let hashParams = {};
@@ -54,7 +91,20 @@ class App extends React.Component {
     let context = this;
     spotifyWebApi.searchTracks(input)
     .then(function(response) {
-      context.setState({tracklist: response.tracks.items});
+      let tracks = response.tracks.items;
+      let url = response.tracks.items[0].preview_url;
+      let cover = response.tracks.items[0].album.images[1].url;
+      window.fetch(url)
+          .then(response => response.arrayBuffer())
+          .then(arrayBuffer => audioCtx.decodeAudioData(arrayBuffer, 
+                                                         audioBuffer => {
+                                                           console.log(audioBuffer, 'tracklist audioBuffer?????');
+                                                           playSound(audioBuffer);
+                                                           context.setState({cover: cover, tracklist: tracks});
+                                                         }, 
+                                                         error => 
+                                                         console.error(error)
+                                                       ));
     }, function(err) {
       console.error(err);
     }); 
@@ -64,7 +114,8 @@ class App extends React.Component {
       <div> 
         <Container firstcover = {this.state.nowplaying.image} 
                    tracklist = {this.state.tracklist} 
-                   setTrackList = {this.setTrackList}/>
+                   setTrackList = {this.setTrackList}
+                   cover = {this.state.cover}/>
       </div>
     );
   }

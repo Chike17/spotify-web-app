@@ -148,8 +148,8 @@ label.zmr:before {
 }
 
 .screen > .magicButton:checked ~ .coverImage {
-  transform: scale(0.251, 0.251);
-  left: 23px;
+  transform: scale(0, 0);
+  left: 185px;
   top: 60px;
   transition: all 0.3s ease-in;
   border-radius: 20px;
