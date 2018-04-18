@@ -7,19 +7,11 @@ import { connect } from 'react-redux';
 import $ from 'jquery';
 import store from './store.js';
 import Spotify from 'spotify-web-api-js';
+import fetchBuffer from './fetchBuffer.js';
 const spotifyWebApi = new Spotify();
 let audioCtx;
-let saved;
 
-function playSound(buffer) {
-  let source = audioCtx.createBufferSource();
-  //passing in data
-  source.buffer = buffer;
-  //giving the source which sound to play
-  source.connect(audioCtx.destination);
-  //start playing
-  source.start(0);
-}
+// implement set tracklist
 
 class App extends React.Component {
   constructor (props) {
@@ -28,52 +20,54 @@ class App extends React.Component {
     this.state = {
       something: '',
       loggedIn: params.access_token ? true : false,
-      nowplaying: {name: 'Not checked', image: ''},
       tracklist: [],
-      cover:stock,
-      accessToken: ''
+      cover: stock,
+      accessToken: '',
+      urls: [],
+      trackNumber: 0
     };
     if (params.access_token) {
       spotifyWebApi.setAccessToken(params.access_token);
       this.state.accessToken = params.access_token;
     }
     this.setTrackList = this.setTrackList.bind(this);
-
-
-   
   }
-  playSound(buffer) {
+  playSound(buffer, audioContext) {
+    let context = this;
      //creating source node
-    let source = audioCtx.createBufferSource();
+    let source = audioContext.createBufferSource();
     //passing in data
     source.buffer = buffer;
     //giving the source which sound to play
-    source.connect(audioCtx.destination);
+    source.connect(audioContext.destination);
     //start playing
     source.start(0);
-
+    source.onended = () => {
+      let trackNumber = context.state.trackNumber++;
+      context.fetchBuff(context.state.urls, context.state.trackNumber, audioContext);
+    };
   }
   componentDidMount() {
     let context = this;
     audioCtx = new AudioContext();
-    console.log(audioCtx, 'audioCtx??uhijrnhrk?');
     spotifyWebApi.searchTracks('Love')
       .then(function(response) {
         let tracks = response.tracks.items;
-        let url = response.tracks.items[0].preview_url;
+        tracks = tracks.filter((track) => {
+          return track.preview_url !== null;
+        });
+        console.log(tracks);
         let cover = response.tracks.items[0].album.images[1].url;
-        window.fetch(url)
-          .then(response => response.arrayBuffer())
-          .then(arrayBuffer => audioCtx.decodeAudioData(arrayBuffer, 
-                                                         audioBuffer => {
-                                                           console.log(audioBuffer, 'audioBuffer?????');
-                                                           playSound(audioBuffer);
-                                                           context.setState({cover: cover, tracklist: tracks});
-                                                         }, 
-                                                         error => 
-                                                         console.error(error)
-                                                       ));
-
+        let url1 = response.tracks.items[0].preview_url;
+        let urls = tracks.map((item) => {
+          return item.preview_url;
+        });
+        context.setState({cover: cover, tracklist: tracks, urls: urls}, () => {
+          context.fetchBuff(context.state.urls, context.state.trackNumber, audioCtx);
+        });
+        // fetchBuffer(url1, audioCtx, (buffer) => {
+        //   context.playSound(buffer, audioCtx);
+        // });
       }, function(err) {
         console.error(err, 'error!!!!!');
       });
@@ -87,11 +81,19 @@ class App extends React.Component {
     }
     return hashParams;
   }
+  fetchBuff(urlArray, index, audioContext) {
+    let context = this;
+    console.log('playing', urlArray[index]);
+    fetchBuffer(urlArray[index], audioContext, (buffer) => {
+      context.playSound(buffer, audioContext);
+    });
+  }
   setTrackList (input) {
     let context = this;
     spotifyWebApi.searchTracks(input)
     .then(function(response) {
       let tracks = response.tracks.items;
+      console.log(tracks, 'tracks###################');
       let url = response.tracks.items[0].preview_url;
       let cover = response.tracks.items[0].album.images[1].url;
       window.fetch(url)
@@ -112,7 +114,7 @@ class App extends React.Component {
   render() {
     return (
       <div> 
-        <Container firstcover = {this.state.nowplaying.image} 
+        <Container 
                    tracklist = {this.state.tracklist} 
                    setTrackList = {this.setTrackList}
                    cover = {this.state.cover}/>

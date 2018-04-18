@@ -22536,6 +22536,10 @@
 	
 	var _spotifyWebApiJs2 = _interopRequireDefault(_spotifyWebApiJs);
 	
+	var _fetchBuffer = __webpack_require__(/*! ./fetchBuffer.js */ 238);
+	
+	var _fetchBuffer2 = _interopRequireDefault(_fetchBuffer);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -22548,17 +22552,8 @@
 	
 	var spotifyWebApi = new _spotifyWebApiJs2.default();
 	var audioCtx = void 0;
-	var saved = void 0;
 	
-	function playSound(buffer) {
-	  var source = audioCtx.createBufferSource();
-	  //passing in data
-	  source.buffer = buffer;
-	  //giving the source which sound to play
-	  source.connect(audioCtx.destination);
-	  //start playing
-	  source.start(0);
-	}
+	// implement set tracklist
 	
 	var App = function (_React$Component) {
 	  _inherits(App, _React$Component);
@@ -22572,53 +22567,59 @@
 	    _this.state = {
 	      something: '',
 	      loggedIn: params.access_token ? true : false,
-	      nowplaying: { name: 'Not checked', image: '' },
 	      tracklist: [],
 	      cover: stock,
-	      accessToken: ''
+	      accessToken: '',
+	      urls: [],
+	      trackNumber: 0
 	    };
 	    if (params.access_token) {
 	      spotifyWebApi.setAccessToken(params.access_token);
 	      _this.state.accessToken = params.access_token;
 	    }
 	    _this.setTrackList = _this.setTrackList.bind(_this);
-	
 	    return _this;
 	  }
 	
 	  _createClass(App, [{
 	    key: 'playSound',
-	    value: function playSound(buffer) {
+	    value: function playSound(buffer, audioContext) {
+	      var context = this;
 	      //creating source node
-	      var source = audioCtx.createBufferSource();
+	      var source = audioContext.createBufferSource();
 	      //passing in data
 	      source.buffer = buffer;
 	      //giving the source which sound to play
-	      source.connect(audioCtx.destination);
+	      source.connect(audioContext.destination);
 	      //start playing
 	      source.start(0);
+	      source.onended = function () {
+	        var trackNumber = context.state.trackNumber++;
+	        context.fetchBuff(context.state.urls, context.state.trackNumber, audioContext);
+	      };
 	    }
 	  }, {
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
 	      var context = this;
 	      audioCtx = new AudioContext();
-	      console.log(audioCtx, 'audioCtx??uhijrnhrk?');
 	      spotifyWebApi.searchTracks('Love').then(function (response) {
 	        var tracks = response.tracks.items;
-	        var url = response.tracks.items[0].preview_url;
-	        var cover = response.tracks.items[0].album.images[1].url;
-	        window.fetch(url).then(function (response) {
-	          return response.arrayBuffer();
-	        }).then(function (arrayBuffer) {
-	          return audioCtx.decodeAudioData(arrayBuffer, function (audioBuffer) {
-	            console.log(audioBuffer, 'audioBuffer?????');
-	            playSound(audioBuffer);
-	            context.setState({ cover: cover, tracklist: tracks });
-	          }, function (error) {
-	            return console.error(error);
-	          });
+	        tracks = tracks.filter(function (track) {
+	          return track.preview_url !== null;
 	        });
+	        console.log(tracks);
+	        var cover = response.tracks.items[0].album.images[1].url;
+	        var url1 = response.tracks.items[0].preview_url;
+	        var urls = tracks.map(function (item) {
+	          return item.preview_url;
+	        });
+	        context.setState({ cover: cover, tracklist: tracks, urls: urls }, function () {
+	          context.fetchBuff(context.state.urls, context.state.trackNumber, audioCtx);
+	        });
+	        // fetchBuffer(url1, audioCtx, (buffer) => {
+	        //   context.playSound(buffer, audioCtx);
+	        // });
 	      }, function (err) {
 	        console.error(err, 'error!!!!!');
 	      });
@@ -22636,11 +22637,21 @@
 	      return hashParams;
 	    }
 	  }, {
+	    key: 'fetchBuff',
+	    value: function fetchBuff(urlArray, index, audioContext) {
+	      var context = this;
+	      console.log('playing', urlArray[index]);
+	      (0, _fetchBuffer2.default)(urlArray[index], audioContext, function (buffer) {
+	        context.playSound(buffer, audioContext);
+	      });
+	    }
+	  }, {
 	    key: 'setTrackList',
 	    value: function setTrackList(input) {
 	      var context = this;
 	      spotifyWebApi.searchTracks(input).then(function (response) {
 	        var tracks = response.tracks.items;
+	        console.log(tracks, 'tracks###################');
 	        var url = response.tracks.items[0].preview_url;
 	        var cover = response.tracks.items[0].album.images[1].url;
 	        window.fetch(url).then(function (response) {
@@ -22664,7 +22675,7 @@
 	      return _react2.default.createElement(
 	        'div',
 	        null,
-	        _react2.default.createElement(_Container2.default, { firstcover: this.state.nowplaying.image,
+	        _react2.default.createElement(_Container2.default, {
 	          tracklist: this.state.tracklist,
 	          setTrackList: this.setTrackList,
 	          cover: this.state.cover })
@@ -38335,6 +38346,29 @@
 	  module.exports = SpotifyWebApi;
 	}
 
+
+/***/ }),
+/* 238 */
+/*!************************************!*\
+  !*** ./1client/src/fetchBuffer.js ***!
+  \************************************/
+/***/ (function(module, exports) {
+
+	'use strict';
+	
+	var fetchBuffer = function fetchBuffer(url, context, callback) {
+	  window.fetch(url).then(function (response) {
+	    return response.arrayBuffer();
+	  }).then(function (arrayBuffer) {
+	    return context.decodeAudioData(arrayBuffer, function (audioBuffer) {
+	      callback(audioBuffer);
+	    }, function (error) {
+	      return console.error(error, 'fetch buffer error');
+	    });
+	  });
+	};
+	
+	module.exports = fetchBuffer;
 
 /***/ })
 /******/ ]);
