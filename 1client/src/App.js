@@ -11,7 +11,6 @@ import fetchBuffer from './fetchBuffer.js';
 const spotifyWebApi = new Spotify();
 let audioCtx;
 
-// implement set tracklist
 
 class App extends React.Component {
   constructor (props) {
@@ -24,7 +23,11 @@ class App extends React.Component {
       cover: stock,
       accessToken: '',
       urls: [],
-      trackNumber: 0
+      trackNumber: 0,
+      source: undefined,
+      actx: undefined,
+      pureStop: false
+
     };
     if (params.access_token) {
       spotifyWebApi.setAccessToken(params.access_token);
@@ -32,45 +35,62 @@ class App extends React.Component {
     }
     this.setTrackList = this.setTrackList.bind(this);
   }
-  playSound(buffer, audioContext) {
+  playSong(buffer) {
     let context = this;
      //creating source node
-    let source = audioContext.createBufferSource();
+    let source = this.state.actx.createBufferSource();
+    this.state.source = source;
+    let src = this.state.source;
+    // context.setState({source: src});
     //passing in data
-    source.buffer = buffer;
-    //giving the source which sound to play
-    source.connect(audioContext.destination);
+    src.buffer = buffer;
+    //giving the src which sound to play
+    src.connect(this.state.actx.destination);
     //start playing
-    source.start(0);
-    source.onended = () => {
+    src.start(0);
+    src.onended = () => {
+      if (context.state.pureStop) {
+        return;
+      }
       let trackNumber = context.state.trackNumber++;
-      context.fetchBuff(context.state.urls, context.state.trackNumber, audioContext);
+      context.fetchBuff(context.state.urls, context.state.trackNumber, context.state.actx);
+      console.log(this.state.actx, 'src&&&&&&&&&&');
     };
+  }
+  stopSong() {
+    this.setState({pureStop: true}, () => {
+      this.state.source.stop(this.state.actx.currentTime + 1);
+    });
+  }
+  playNextSong() {
+    // implement
+  }
+  playSongBefore() {
+    // implement
   }
   componentDidMount() {
     let context = this;
     audioCtx = new AudioContext();
-    spotifyWebApi.searchTracks('Love')
-      .then(function(response) {
-        let tracks = response.tracks.items;
-        tracks = tracks.filter((track) => {
-          return track.preview_url !== null;
+    this.setState({actx: audioCtx}, () => {
+      spotifyWebApi.searchTracks('Love')
+        .then(function(response) {
+          let tracks = response.tracks.items;
+          tracks = tracks.filter((track) => {
+            return track.preview_url !== null;
+          });
+          console.log(tracks);
+          let cover = response.tracks.items[0].album.images[1].url;
+          let url1 = response.tracks.items[0].preview_url;
+          let urls = tracks.map((item) => {
+            return item.preview_url;
+          });
+          context.setState({cover: cover, tracklist: tracks, urls: urls}, () => {
+            context.fetchBuff(context.state.urls, context.state.trackNumber, context.state.actx);
+          });
+        }, function(err) {
+          console.error(err, 'error!!!!!');
         });
-        console.log(tracks);
-        let cover = response.tracks.items[0].album.images[1].url;
-        let url1 = response.tracks.items[0].preview_url;
-        let urls = tracks.map((item) => {
-          return item.preview_url;
-        });
-        context.setState({cover: cover, tracklist: tracks, urls: urls}, () => {
-          context.fetchBuff(context.state.urls, context.state.trackNumber, audioCtx);
-        });
-        // fetchBuffer(url1, audioCtx, (buffer) => {
-        //   context.playSound(buffer, audioCtx);
-        // });
-      }, function(err) {
-        console.error(err, 'error!!!!!');
-      });
+    });
   }
   getHashParams() {
     let hashParams = {};
@@ -85,10 +105,11 @@ class App extends React.Component {
     let context = this;
     console.log('playing', urlArray[index]);
     fetchBuffer(urlArray[index], audioContext, (buffer) => {
-      context.playSound(buffer, audioContext);
+      context.playSong(buffer, audioContext);
     });
   }
   setTrackList (input) {
+    // implement to fit current structure of the app
     let context = this;
     spotifyWebApi.searchTracks(input)
     .then(function(response) {
@@ -101,7 +122,7 @@ class App extends React.Component {
           .then(arrayBuffer => audioCtx.decodeAudioData(arrayBuffer, 
                                                          audioBuffer => {
                                                            console.log(audioBuffer, 'tracklist audioBuffer?????');
-                                                           playSound(audioBuffer);
+                                                           playSong(audioBuffer);
                                                            context.setState({cover: cover, tracklist: tracks});
                                                          }, 
                                                          error => 
@@ -117,7 +138,9 @@ class App extends React.Component {
         <Container 
                    tracklist = {this.state.tracklist} 
                    setTrackList = {this.setTrackList}
-                   cover = {this.state.cover}/>
+                   cover = {this.state.cover}
+                   stopSong = {this.stopSong.bind(this)}
+                   />
       </div>
     );
   }
