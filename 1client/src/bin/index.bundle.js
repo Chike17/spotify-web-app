@@ -22572,8 +22572,8 @@
 	      trackNumber: 0,
 	      source: undefined,
 	      actx: undefined,
-	      pureStop: false
-	
+	      pureStop: true,
+	      buffer: ''
 	    };
 	    if (params.access_token) {
 	      spotifyWebApi.setAccessToken(params.access_token);
@@ -22586,8 +22586,6 @@
 	  _createClass(App, [{
 	    key: 'playSong',
 	    value: function playSong(buffer) {
-	      var _this2 = this;
-	
 	      var context = this;
 	      //creating source node
 	      var source = this.state.actx.createBufferSource();
@@ -22601,22 +22599,28 @@
 	      //start playing
 	      src.start(0);
 	      src.onended = function () {
-	        if (context.state.pureStop) {
+	        if (!context.state.pureStop) {
 	          return;
 	        }
 	        var trackNumber = context.state.trackNumber++;
 	        context.fetchBuff(context.state.urls, context.state.trackNumber, context.state.actx);
-	        console.log(_this2.state.actx, 'src&&&&&&&&&&');
 	      };
 	    }
 	  }, {
 	    key: 'stopSong',
 	    value: function stopSong() {
-	      var _this3 = this;
+	      var _this2 = this;
 	
-	      this.setState({ pureStop: true }, function () {
-	        _this3.state.source.stop(_this3.state.actx.currentTime + 1);
-	      });
+	      if (this.state.pureStop) {
+	        this.setState({ pureStop: false }, function () {
+	          _this2.state.source.stop();
+	        });
+	      } else if (!this.state.pureStop) {
+	        console.log('trying to start playing again');
+	        this.setState({ pureStop: true }, function () {
+	          _this2.playSong(_this2.state.buffer);
+	        });
+	      }
 	    }
 	  }, {
 	    key: 'playNextSong',
@@ -22671,7 +22675,8 @@
 	      var context = this;
 	      console.log('playing', urlArray[index]);
 	      (0, _fetchBuffer2.default)(urlArray[index], audioContext, function (buffer) {
-	        context.playSong(buffer, audioContext);
+	        context.state.buffer = buffer;
+	        context.playSong(context.state.buffer, audioContext);
 	      });
 	    }
 	  }, {

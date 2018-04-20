@@ -26,8 +26,8 @@ class App extends React.Component {
       trackNumber: 0,
       source: undefined,
       actx: undefined,
-      pureStop: false
-
+      pureStop: true,
+      buffer: ''
     };
     if (params.access_token) {
       spotifyWebApi.setAccessToken(params.access_token);
@@ -49,18 +49,24 @@ class App extends React.Component {
     //start playing
     src.start(0);
     src.onended = () => {
-      if (context.state.pureStop) {
+      if (!context.state.pureStop) {
         return;
       }
       let trackNumber = context.state.trackNumber++;
       context.fetchBuff(context.state.urls, context.state.trackNumber, context.state.actx);
-      console.log(this.state.actx, 'src&&&&&&&&&&');
     };
   }
   stopSong() {
-    this.setState({pureStop: true}, () => {
-      this.state.source.stop(this.state.actx.currentTime + 1);
-    });
+    if (this.state.pureStop) {
+      this.setState({pureStop: false}, () => {
+        this.state.source.stop();
+      });
+    } else if (!this.state.pureStop) {
+      console.log('trying to start playing again');
+      this.setState({pureStop: true}, () => {
+        this.playSong(this.state.buffer);
+      });
+    }
   }
   playNextSong() {
     // implement
@@ -105,7 +111,8 @@ class App extends React.Component {
     let context = this;
     console.log('playing', urlArray[index]);
     fetchBuffer(urlArray[index], audioContext, (buffer) => {
-      context.playSong(buffer, audioContext);
+      context.state.buffer = buffer;
+      context.playSong(context.state.buffer, audioContext);
     });
   }
   setTrackList (input) {
