@@ -47,7 +47,9 @@ class App extends React.Component {
     //giving the src which sound to play
     src.connect(this.state.actx.destination);
     //start playing
+    
     src.start(0);
+    
     src.onended = () => {
       if (!context.state.pureStop) {
         return;
@@ -62,7 +64,6 @@ class App extends React.Component {
         this.state.source.stop();
       });
     } else if (!this.state.pureStop) {
-      console.log('trying to start playing again');
       this.setState({pureStop: true}, () => {
         this.playSong(this.state.buffer);
       });
@@ -74,11 +75,14 @@ class App extends React.Component {
   playSongBefore() {
     // implement
   }
+  getCurrentTime () {
+    console.log(this.state.actx.currentTime);
+  }
   componentDidMount() {
     let context = this;
     audioCtx = new AudioContext();
     this.setState({actx: audioCtx}, () => {
-      spotifyWebApi.searchTracks('Love')
+      spotifyWebApi.searchTracks('Timberlake')
         .then(function(response) {
           let tracks = response.tracks.items;
           tracks = tracks.filter((track) => {
@@ -112,7 +116,7 @@ class App extends React.Component {
     console.log('playing', urlArray[index]);
     fetchBuffer(urlArray[index], audioContext, (buffer) => {
       context.state.buffer = buffer;
-      context.playSong(context.state.buffer, audioContext);
+      context.playSong(context.state.buffer);
     });
   }
   setTrackList (input) {
@@ -142,7 +146,7 @@ class App extends React.Component {
   render() {
     return (
       <div> 
-        <Container 
+        <Container getCurrentTime = {this.getCurrentTime.bind(this)} 
                    tracklist = {this.state.tracklist} 
                    setTrackList = {this.setTrackList}
                    cover = {this.state.cover}

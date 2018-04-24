@@ -1,10 +1,21 @@
 import React from 'react';
 import styles from './styles.css';
 import TableEntry from './TableEntry.js';
+import ProgressBar from './ProgressBar.js';
 
 let Table = (props) => {
   return (
    <div >
+      <div className = {styles.progresscontainer}> 
+      <ProgressBar />
+      </div>
+      <table className={styles.player}>
+        <tbody>
+          <td><input type="checkbox" className={styles.backward}/><label className={styles.backward} htmlFor={styles.backward}></label></td>
+          <td><input type="checkbox" className={styles.play} title="Play" /><label className={styles.play} htmlFor={styles.play} onClick = {() => { props.stopSong(); }} ></label></td>
+          <td><input type="checkbox" className={styles.forward}/><label className={styles.forward}htmlFor={styles.forward}></label></td>
+        </tbody>
+      </table>
       <div className = {styles.listcontainer}>
         <div className= {styles.scrollcontainer}>
           <table className= {styles.list}>
@@ -15,14 +26,7 @@ let Table = (props) => {
            </tbody>
          </table>
         </div>
-      </div>
-      <table className={styles.player}>
-        <tbody>
-          <td><input type="checkbox" className={styles.backward}/><label className={styles.backward} htmlFor={styles.backward}></label></td>
-          <td><input type="checkbox" className={styles.play} title="Play" /><label className={styles.play} htmlFor={styles.play} onClick = {() => { props.stopSong(); }} ></label></td>
-          <td><input type="checkbox" className={styles.forward}/><label className={styles.forward}htmlFor={styles.forward}></label></td>
-        </tbody>
-      </table>
+      </div> 
    </div>
 
   );

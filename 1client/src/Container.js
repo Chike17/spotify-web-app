@@ -11,7 +11,7 @@ let Container = (props) => {
   };
   return (
    <div >
-     <div className = {styles.screen}>
+     <div className = {styles.screen} onClick = {() => { props.getCurrentTime(); } } >
        <input type = "checkbox" value = "None" className = {styles.magicButton} name="check" />
        <Input setTrackList = {props.setTrackList} />
        <div className = {styles.coverImage} style = {divStyle}></div>

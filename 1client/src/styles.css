@@ -209,6 +209,7 @@ label.zmr:before {
   width: 366px;
   height: 366px;
   padding: 0;
+  bottom: 20px;
   margin-top: 20px;
   position: absolute;
   top: 0;
@@ -219,15 +220,20 @@ label.zmr:before {
 
 .bodyPlayer {
   position: absolute;
-  top: 366px;
+  top: 300px;
   left: 0;
   margin: 0;
   padding: 0;
-  height: 286px;
+  height: 350px; 
   width: 366px;
   background: #111;
   transition: all 0.3s ease-in;
 }
+
+/*height: 470px;
+  left: 0;
+  top: 180px;
+  transition: all 0.3s ease-in;*/
 
 .search:before {
   position: absolute;
@@ -504,4 +510,64 @@ audio {
 .testing {
   position: absolute;
   opacity:0;
+}
+
+.progresscontainer {
+  position: absolute;
+  left: 75px;
+  top: 325px;
+}
+
+.message {
+  height: 20px;
+  text-align: center;
+  font-family: Helvetica, Arial, sans-serif;
+}
+
+.controls {
+  background: #333;
+  padding: 8px;
+}
+
+.button {
+  color: white;
+  width: 20px;
+  margin: 3px 0 0 0;
+  font-size: 16px;
+  text-align: center;
+  display: inline-block;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  outline: none;
+}
+
+.track {
+  position: absolute;
+  text-align: center;
+  width: 200px;
+  margin: 7px 0 0 16px;
+  height: 10px;
+  border: 1px solid #666;
+  display: inline-block;
+  vertical-align: top;
+}
+
+.progress {
+  position: absolute;
+  width: 0%;
+  height: 100%;
+  background: #42f492;
+}
+
+.scrubber {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  margin: -4px 0 0 -9px;
+  background: #42f492;
+  border: solid 3px #ddd;
+  cursor: pointer;
+  box-shadow: 0 0 5px #000, inset 0 0 4px #400;
 }

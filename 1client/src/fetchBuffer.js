@@ -1,3 +1,6 @@
+
+
+
 let fetchBuffer = (url, context, callback) => {
   window.fetch(url)
             .then(response => response.arrayBuffer())
