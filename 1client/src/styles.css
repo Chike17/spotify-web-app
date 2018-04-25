@@ -514,8 +514,8 @@ audio {
 
 .progresscontainer {
   position: absolute;
-  left: 75px;
-  top: 325px;
+  left: 25px;
+  top: 330px;
 }
 
 .message {
@@ -545,7 +545,7 @@ audio {
 .track {
   position: absolute;
   text-align: center;
-  width: 200px;
+  width: 286px;
   margin: 7px 0 0 16px;
   height: 10px;
   border: 1px solid #666;

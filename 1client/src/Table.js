@@ -4,11 +4,9 @@ import TableEntry from './TableEntry.js';
 import ProgressBar from './ProgressBar.js';
 
 let Table = (props) => {
+  console.log(props.tracklist, 'Table tracklist???????');
   return (
    <div >
-      <div className = {styles.progresscontainer}> 
-      <ProgressBar />
-      </div>
       <table className={styles.player}>
         <tbody>
           <td><input type="checkbox" className={styles.backward}/><label className={styles.backward} htmlFor={styles.backward}></label></td>
@@ -21,17 +19,39 @@ let Table = (props) => {
           <table className= {styles.list}>
            <tbody>
               <div>
-               {props.tracklist.map((track, index) => <TableEntry title = {track.name} number = {index} />)}
+               {props.tracklist.map((track, index) => <TableEntry title = {track.name} number = {index} /> )}
               </div>
            </tbody>
          </table>
         </div>
       </div> 
    </div>
-
   );
 };
 
 module.exports = Table;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

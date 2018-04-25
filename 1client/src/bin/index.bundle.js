@@ -22586,27 +22586,27 @@
 	  _createClass(App, [{
 	    key: 'playSong',
 	    value: function playSong(buffer) {
-	      var context = this;
-	      //creating source node
-	      var source = this.state.actx.createBufferSource();
-	      this.state.source = source;
-	      var src = this.state.source;
-	      // context.setState({source: src});
-	      //passing in data
-	      src.buffer = buffer;
-	      //giving the src which sound to play
-	      src.connect(this.state.actx.destination);
-	      //start playing
+	      // let context = this;
+	      //  //creating source node
+	      // let source = this.state.actx.createBufferSource();
+	      // this.state.source = source;
+	      // let src = this.state.source;
+	      // // context.setState({source: src});
+	      // //passing in data
+	      // src.buffer = buffer;
+	      // //giving the src which sound to play
+	      // src.connect(this.state.actx.destination);
+	      // //start playing
 	
-	      src.start(0);
+	      // src.start(0);
 	
-	      src.onended = function () {
-	        if (!context.state.pureStop) {
-	          return;
-	        }
-	        var trackNumber = context.state.trackNumber++;
-	        context.fetchBuff(context.state.urls, context.state.trackNumber, context.state.actx);
-	      };
+	      // src.onended = () => {
+	      //   if (!context.state.pureStop) {
+	      //     return;
+	      //   }
+	      //   let trackNumber = context.state.trackNumber++;
+	      //   context.fetchBuff(context.state.urls, context.state.trackNumber, context.state.actx);
+	      // };
 	    }
 	  }, {
 	    key: 'stopSong',
@@ -22678,12 +22678,12 @@
 	  }, {
 	    key: 'fetchBuff',
 	    value: function fetchBuff(urlArray, index, audioContext) {
-	      var context = this;
-	      console.log('playing', urlArray[index]);
-	      (0, _fetchBuffer2.default)(urlArray[index], audioContext, function (buffer) {
-	        context.state.buffer = buffer;
-	        context.playSong(context.state.buffer);
-	      });
+	      // let context = this;
+	      // console.log('playing', urlArray[index]);
+	      // fetchBuffer(urlArray[index], audioContext, (buffer) => {
+	      //   context.state.buffer = buffer;
+	      //   context.playSong(context.state.buffer);
+	      // });
 	    }
 	  }, {
 	    key: 'setTrackList',
@@ -22718,6 +22718,7 @@
 	        null,
 	        _react2.default.createElement(_Container2.default, { getCurrentTime: this.getCurrentTime.bind(this),
 	          tracklist: this.state.tracklist,
+	          urls: this.state.urls,
 	          setTrackList: this.setTrackList,
 	          cover: this.state.cover,
 	          stopSong: this.stopSong.bind(this)
@@ -22785,7 +22786,7 @@
 	exports.push([module.id, "@import url(https://fonts.googleapis.com/css?family=Open+Sans:300,400,700);", ""]);
 	
 	// module
-	exports.push([module.id, "body {\n  background: #42f492;\n  padding: 0;\n  margin: 0;\n}\n\n@keyframes styles__harlem___Tq51R {\n  0% {\n    transform: scale(1);\n    -webkit-transform: scale(1);\n    -moz-transform: scale(1);\n    -o-transform: scale(1);\n    -ms-transform: scale(1);\n  }\n  20% {\n    transform: scale(1.03, 1);\n    -webkit-transform: scale(1.03, 1);\n    -moz-transform: scale(1.03, 1);\n    -o-transform: scale(1.03, 1);\n    -ms-transform: scale(1.03, 1);\n  }\n  40% {\n    transform: scale(0.97, 1);\n    -webkit-transform: scale(0.97, 1);\n    -moz-transform: scale(0.97, 1);\n    -o-transform: scale(0.97, 1);\n    -ms-transform: scale(0.97, 1);\n  }\n  60% {\n    transform: scale(1.01, 1);\n    -webkit-transform: scale(1.01, 1);\n    -moz-transform: scale(1.01, 1);\n    -o-transform: scale(1.01, 1);\n    -ms-transform: scale(1.01, 1);\n  }\n  80% {\n    transform: scale(0.99, 1);\n    -webkit-transform: scale(0.99, 1);\n    -moz-transform: scale(0.99, 1);\n    -o-transform: scale(0.99, 1);\n    -ms-transform: scale(0.99, 1);\n  }\n  100% {\n    transform: scale(1);\n    -webkit-transform: scale(1);\n    -moz-transform: scale(1);\n    -o-transform: scale(1);\n    -ms-transform: scale(1);\n  }\n}\n\nh2 {\n  margin: 0;\n  padding: 0;\n  font-size: 10px;\n  line-height: 10px;\n  letter-spacing: 2.5px;\n  font-family: 'Open Sans';\n  font-weight: 700;\n  color: #fff;\n}\n\nh3 {\n  margin: 0;\n  padding: 0;\n  font-size: 11px;\n  line-height: 11px;\n  font-family: 'Open Sans';\n  font-weight: 400;\n  color: #777;\n}\n\nh4 {\n  margin: 0 0 5px 29px;\n  padding: 0;\n  font-size: 14px;\n  line-height: 14px;\n  font-family: 'Open Sans';\n  font-weight: 700;\n  color: #fff;\n}\n\nh5 {\n  margin: 0;\n  padding: 0;\n  font-size: 13px;\n  line-height: 13px;\n  font-family: 'Open Sans';\n  font-weight: 700;\n  color: #6d6d6d;\n}\n\nh6 {\n  margin: 0;\n  padding: 0;\n  font-size: 13px;\n  line-height: 13px;\n  font-family: 'Open Sans';\n  font-weight: 700;\n  color: #f0f0f0;\n}\n\n\nlabel.styles__main___3x8Ae:before {\n  position: absolute;\n  top: 23px;\n  left: 23px;\n  font-family: FontAwesome;\n  content: '\\F0C9';\n  color: #959595;\n  font-size: 16px;\n  line-height: 16px;\n  cursor: pointer;\n  z-index: 10;\n  transition: all 0.3s ease-in;\n}\n\nlabel.styles__main___3x8Ae:hover:before {\n  color: #bbb;\n}\n\nlabel.styles__zmr___1opGj:before {\n  font-family: FontAwesome;\n  content: \"\\F08A\";\n  color: #777;\n  font-size: 15px;\n  line-height: 15px;\n  cursor: pointer;\n  z-index: 10;\n  transition: all 0.15s linear;\n}\n\n\n.styles__screen___1r3tJ {\n  background-color: #b8b9ba;\n  padding: 0;\n  height: 650px;\n  width: 366px;\n  position: absolute;\n  left: 50%;\n  top: 0;\n  transform: translate(-50%, 0);\n  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.4);\n  overflow: hidden;\n  margin: 30px 0;\n}\n\n.styles__screen___1r3tJ > .styles__magicButton___2LMsN:checked ~ .styles__coverImage___1Ya5a {\n  transform: scale(0, 0);\n  left: 185px;\n  top: 60px;\n  transition: all 0.3s ease-in;\n  border-radius: 20px;\n}\n\n.styles__screen___1r3tJ > .styles__magicButton___2LMsN:unchecked ~ .styles__testing___OJ-6t {\n  color: #111;\n  opacity: 30;\n}\n\n\n.styles__screen___1r3tJ > .styles__magicButton___2LMsN:checked ~ .styles__bodyPlayer___26WbB {\n  height: 470px;\n  left: 0;\n  top: 180px;\n  transition: all 0.3s ease-in;\n}\n\n.styles__screen___1r3tJ > .styles__magicButton___2LMsN:checked ~ .styles__testing___OJ-6t {\n  color:#eef442;\n  opacity:30;\n  left: 0;\n  top: 180px;\n  transition: all 0.3s ease-in;\n}\n\n.styles__screen___1r3tJ > .styles__magicButton___2LMsN:checked ~ .styles__bar___1zYif {\n  top: 119px;\n  left: 126px;\n  transform: scale(0.6875, 0.6875);\n  transition: all 0.3s ease-in;\n}\n\n.styles__screen___1r3tJ > .styles__magicButton___2LMsN:checked ~ .styles__info___1WdOt {\n  top: 66px;\n  left: 126px;\n  text-align: left;\n  transition: all 0.3s ease-in;\n}\n\n.styles__screen___1r3tJ > .styles__magicButton___2LMsN:checked ~ .styles__info___1WdOt h4 {\n  margin-left: 0;\n  font-size: 16px;\n  color: #111111;\n  transition: all 0.3s ease-in;\n}\n\n.styles__screen___1r3tJ > .styles__magicButton___2LMsN:checked ~ .styles__player___2LRVd {\n  bottom: 4px;\n  left: -44px;\n  transform: scale(0.45, 0.45);\n  transition: all 0.3s ease-in;\n}\n\n\n.styles__coverImage___1Ya5a {\n  width: 366px;\n  height: 366px;\n  padding: 0;\n  bottom: 20px;\n  margin-top: 20px;\n  position: absolute;\n  top: 0;\n  left: 0;\n  transform-origin: 0% 0%;\n  transition: all 0.3s ease-in;\n}\n\n.styles__bodyPlayer___26WbB {\n  position: absolute;\n  top: 300px;\n  left: 0;\n  margin: 0;\n  padding: 0;\n  height: 350px; \n  width: 366px;\n  background: #111;\n  transition: all 0.3s ease-in;\n}\n\n/*height: 470px;\n  left: 0;\n  top: 180px;\n  transition: all 0.3s ease-in;*/\n\n.styles__search___3LoIJ:before {\n  position: absolute;\n  top: 23px;\n  right: 23px;\n  font-family: FontAwesome;\n  content: '\\F002';\n  color: #959595;\n  font-size: 16px;\n  line-height: 16px;\n  cursor: pointer;\n  z-index: 10;\n  transition: all 0.3s ease-in;\n}\n\n.styles__search___3LoIJ:hover:before {\n  color: #bbb;\n}\n\n/*.title {\n  width: 215px;\n  text-align: left;\n  text-indent: 15px;\n  transition: all 0.11s ease-in;\n}*/\n\n.styles__scrollcontainer___350sT {\n  overflow:auto;\n  height: 200px;\n  width: 200px;\n}\n.styles__listcontainer___2g0Ru {\n  position: absolute;\n  left: 90px;\n  top: 420px;\n\n}\n\ntd > .styles__heart___3Psht:checked ~ label.styles__zmr___1opGj:before {\n  content: \"\\F004\";\n  color: #ff564c;\n  transition: all 0.15s linear;\n}\n\ntd > .styles__heart1___3BSMn:checked ~ label.styles__zmr___1opGj:before {\n  content: \"\\F004\";\n  color: #ff564c;\n  transition: all 0.15s linear;\n}\n\ntd > .styles__heart2___2aWhd:checked ~ label.styles__zmr___1opGj:before {\n  content: \"\\F004\";\n  color: #ff564c;\n  transition: all 0.15s linear;\n}\n\ntd > .styles__heart3___2EzPh:checked ~ label.styles__zmr___1opGj:before {\n  content: \"\\F004\";\n  color: #ff564c;\n  transition: all 0.15s linear;\n}\n\ntd > .styles__heart4___2gAfE:checked ~ label.styles__zmr___1opGj:before {\n  content: \"\\F004\";\n  color: #ff564c;\n  transition: all 0.15s linear;\n}\n\ntd > .styles__heart5___Rjdy0:checked ~ label.styles__zmr___1opGj:before {\n  content: \"\\F004\";\n  color: #ff564c;\n  transition: all 0.15s linear;\n}\n\ntd > .styles__heart6___2sMRv:checked ~ label.styles__zmr___1opGj:before {\n  content: \"\\F004\";\n  color: #ff564c;\n  transition: all 0.15s linear;\n}\n\ntd > .styles__heart7___2VQ6Y:checked ~ label.styles__zmr___1opGj:before {\n  content: \"\\F004\";\n  color: #ff564c;\n  transition: all 0.15s linear;\n}\n\ntd > .styles__heart8___33I9x:checked ~ label.styles__zmr___1opGj:before {\n  content: \"\\F004\";\n  color: #ff564c;\n  transition: all 0.15s linear;\n}\n\ntd > .styles__play___31_-M:checked ~ label.styles__play___31_-M:before {\n  content: \"\\F04C\";\n  transition: all 0.15s linear;\n}\n\ntd > .styles__love___2eXdK:checked ~ label.styles__love___2eXdK:before {\n  content: \"\\F004\";\n  color: #ff564c;\n  transition: all 0.15s linear;\n}\n\ntd > .styles__shuffle___2PnDA:checked ~ label.styles__shuffle___2PnDA:before {\n  color: #ff564c;\n  transition: all 0.15s linear;\n}\n\ntd > .styles__repeat___167L0:checked ~ label.styles__repeat___167L0:before {\n  color: #ff564c;\n  transition: all 0.15s linear;\n}\n\n.styles__shadow___cd6Tc {\n  background: rgba(17, 17, 17, 0.8);\n  width: 366px;\n  height: 50px;\n  position: absolute;\n  bottom: -12px;\n  left: 0;\n  box-shadow: 0px -15px 40px rgba(17, 17, 17, 0.8);\n}\n\n\n.styles__bar___1zYif {\n  background: url('http://imgh.us/bar_3.svg') no-repeat;\n  background-size: 100%;\n  width: 320px;\n  height: 21px;\n  position: absolute;\n  top: 407px;\n  left: 23px;\n  transform-origin: 0% 0%;\n  transition: all 0.3s ease-in;\n}\n\n.styles__info___1WdOt {\n  width: 157px;\n  position: absolute;\n  left: 104px;\n  top: 440px;\n  transition: all 0.3s ease-in;\n}\n\n\n.styles__player___2LRVd {\n  background: none;\n  text-align: center;\n  font-family: FontAwesome;\n  color: #fff;\n  font-size: 26px;\n  line-height: 26px;\n  width: 216px;\n  height: 300px;\n  position: absolute;\n  top: 240px;\n  left: 50%;\n  right: 40px;\n  transform: translate(-50%, 0);\n  z-index: 10;\n  transition: all 0.3s ease-in;\n  border-spacing: 0;\n}\n\n.styles__player___2LRVd td {\n  width: 72px;\n}\n\naudio {\n  visibility: hidden;\n}\n\n.styles__backward___17HVN:before {\n  content: \"\\F04A\";\n  cursor: pointer;\n  transition: all 0.15s linear;\n}\n\n.styles__backward___17HVN:hover:before {\n  color: #bbb;\n  transition: all 0.15s linear;\n}\n\n.styles__play___31_-M:before {\n  content: \"\\F04B\";\n  cursor: pointer;\n  transition: all 0.15s linear;\n}\n\n.styles__play___31_-M:hover:before {\n  color: #bbb;\n  transition: all 0.15s linear;\n}\n\n.styles__forward___l1B9_:before {\n  content: \"\\F04E\";\n  cursor: pointer;\n  transition: all 0.15s linear;\n}\n\n.styles__forward___l1B9_:hover:before {\n  color: #bbb;\n  transition: all 0.15s linear;\n}\n\n.styles__footer___t-V25 {\n  background: none;\n  font-family: FontAwesome;\n  color: #6d6d6d;\n  font-size: 15px;\n  line-height: 15px;\n  height: 45px;\n  width: 360px;\n  position: absolute;\n  bottom: 10px;\n  left: 23px;\n  z-index: 20;\n  transition: all 0.15s linear;\n  transition: bottom 0.3s linear;\n}\n\n.styles__love___2eXdK:before {\n  content: \"\\F08A\";\n  cursor: pointer;\n  transition: all 0.15s linear;\n}\n\n.styles__love___2eXdK:hover:before {\n  color: #bbb;\n  transition: all 0.15s linear;\n}\n\n\n.styles__shuffle___2PnDA:before {\n  content: \"\\F074\";\n  cursor: pointer;\n  transition: all 0.15s linear;\n}\n\n.styles__shuffle___2PnDA:hover:before {\n  color: #bbb;\n  transition: all 0.15s linear;\n}\n\n.styles__repeat___167L0:before {\n  content: \"\\F01E\";\n  cursor: pointer;\n  transition: all 0.15s linear;\n}\n\n.styles__repeat___167L0:hover:before {\n  color: #bbb;\n  transition: all 0.15s linear;\n}\n\n.styles__options___3IliN:before {\n  content: \"\\F141\";\n  cursor: pointer;\n  transition: all 0.15s linear;\n}\n\n.styles__options___3IliN:hover:before {\n  color: #bbb;\n  transition: all 0.15s linear;\n}\n\n.styles__current___yRVbr {\n  position: absolute;\n  right: 23px;\n  bottom: -60px;\n  transition: all 0.3s ease-in;\n}\n\n.styles__testing___OJ-6t {\n  position: absolute;\n  opacity:0;\n}\n\n.styles__progresscontainer___2QPd_ {\n  position: absolute;\n  left: 75px;\n  top: 325px;\n}\n\n.styles__message___2SlmP {\n  height: 20px;\n  text-align: center;\n  font-family: Helvetica, Arial, sans-serif;\n}\n\n.styles__controls___jvg_W {\n  background: #333;\n  padding: 8px;\n}\n\n.styles__button___1UJG4 {\n  color: white;\n  width: 20px;\n  margin: 3px 0 0 0;\n  font-size: 16px;\n  text-align: center;\n  display: inline-block;\n  cursor: pointer;\n  background: transparent;\n  border: none;\n  outline: none;\n}\n\n.styles__track___2t1FT {\n  position: absolute;\n  text-align: center;\n  width: 200px;\n  margin: 7px 0 0 16px;\n  height: 10px;\n  border: 1px solid #666;\n  display: inline-block;\n  vertical-align: top;\n}\n\n.styles__progress___1uS5g {\n  position: absolute;\n  width: 0%;\n  height: 100%;\n  background: #42f492;\n}\n\n.styles__scrubber___1JbS9 {\n  position: absolute;\n  width: 18px;\n  height: 18px;\n  border-radius: 50%;\n  margin: -4px 0 0 -9px;\n  background: #42f492;\n  border: solid 3px #ddd;\n  cursor: pointer;\n  box-shadow: 0 0 5px #000, inset 0 0 4px #400;\n}", ""]);
+	exports.push([module.id, "body {\n  background: #42f492;\n  padding: 0;\n  margin: 0;\n}\n\n@keyframes styles__harlem___Tq51R {\n  0% {\n    transform: scale(1);\n    -webkit-transform: scale(1);\n    -moz-transform: scale(1);\n    -o-transform: scale(1);\n    -ms-transform: scale(1);\n  }\n  20% {\n    transform: scale(1.03, 1);\n    -webkit-transform: scale(1.03, 1);\n    -moz-transform: scale(1.03, 1);\n    -o-transform: scale(1.03, 1);\n    -ms-transform: scale(1.03, 1);\n  }\n  40% {\n    transform: scale(0.97, 1);\n    -webkit-transform: scale(0.97, 1);\n    -moz-transform: scale(0.97, 1);\n    -o-transform: scale(0.97, 1);\n    -ms-transform: scale(0.97, 1);\n  }\n  60% {\n    transform: scale(1.01, 1);\n    -webkit-transform: scale(1.01, 1);\n    -moz-transform: scale(1.01, 1);\n    -o-transform: scale(1.01, 1);\n    -ms-transform: scale(1.01, 1);\n  }\n  80% {\n    transform: scale(0.99, 1);\n    -webkit-transform: scale(0.99, 1);\n    -moz-transform: scale(0.99, 1);\n    -o-transform: scale(0.99, 1);\n    -ms-transform: scale(0.99, 1);\n  }\n  100% {\n    transform: scale(1);\n    -webkit-transform: scale(1);\n    -moz-transform: scale(1);\n    -o-transform: scale(1);\n    -ms-transform: scale(1);\n  }\n}\n\nh2 {\n  margin: 0;\n  padding: 0;\n  font-size: 10px;\n  line-height: 10px;\n  letter-spacing: 2.5px;\n  font-family: 'Open Sans';\n  font-weight: 700;\n  color: #fff;\n}\n\nh3 {\n  margin: 0;\n  padding: 0;\n  font-size: 11px;\n  line-height: 11px;\n  font-family: 'Open Sans';\n  font-weight: 400;\n  color: #777;\n}\n\nh4 {\n  margin: 0 0 5px 29px;\n  padding: 0;\n  font-size: 14px;\n  line-height: 14px;\n  font-family: 'Open Sans';\n  font-weight: 700;\n  color: #fff;\n}\n\nh5 {\n  margin: 0;\n  padding: 0;\n  font-size: 13px;\n  line-height: 13px;\n  font-family: 'Open Sans';\n  font-weight: 700;\n  color: #6d6d6d;\n}\n\nh6 {\n  margin: 0;\n  padding: 0;\n  font-size: 13px;\n  line-height: 13px;\n  font-family: 'Open Sans';\n  font-weight: 700;\n  color: #f0f0f0;\n}\n\n\nlabel.styles__main___3x8Ae:before {\n  position: absolute;\n  top: 23px;\n  left: 23px;\n  font-family: FontAwesome;\n  content: '\\F0C9';\n  color: #959595;\n  font-size: 16px;\n  line-height: 16px;\n  cursor: pointer;\n  z-index: 10;\n  transition: all 0.3s ease-in;\n}\n\nlabel.styles__main___3x8Ae:hover:before {\n  color: #bbb;\n}\n\nlabel.styles__zmr___1opGj:before {\n  font-family: FontAwesome;\n  content: \"\\F08A\";\n  color: #777;\n  font-size: 15px;\n  line-height: 15px;\n  cursor: pointer;\n  z-index: 10;\n  transition: all 0.15s linear;\n}\n\n\n.styles__screen___1r3tJ {\n  background-color: #b8b9ba;\n  padding: 0;\n  height: 650px;\n  width: 366px;\n  position: absolute;\n  left: 50%;\n  top: 0;\n  transform: translate(-50%, 0);\n  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.4);\n  overflow: hidden;\n  margin: 30px 0;\n}\n\n.styles__screen___1r3tJ > .styles__magicButton___2LMsN:checked ~ .styles__coverImage___1Ya5a {\n  transform: scale(0, 0);\n  left: 185px;\n  top: 60px;\n  transition: all 0.3s ease-in;\n  border-radius: 20px;\n}\n\n.styles__screen___1r3tJ > .styles__magicButton___2LMsN:unchecked ~ .styles__testing___OJ-6t {\n  color: #111;\n  opacity: 30;\n}\n\n\n.styles__screen___1r3tJ > .styles__magicButton___2LMsN:checked ~ .styles__bodyPlayer___26WbB {\n  height: 470px;\n  left: 0;\n  top: 180px;\n  transition: all 0.3s ease-in;\n}\n\n.styles__screen___1r3tJ > .styles__magicButton___2LMsN:checked ~ .styles__testing___OJ-6t {\n  color:#eef442;\n  opacity:30;\n  left: 0;\n  top: 180px;\n  transition: all 0.3s ease-in;\n}\n\n.styles__screen___1r3tJ > .styles__magicButton___2LMsN:checked ~ .styles__bar___1zYif {\n  top: 119px;\n  left: 126px;\n  transform: scale(0.6875, 0.6875);\n  transition: all 0.3s ease-in;\n}\n\n.styles__screen___1r3tJ > .styles__magicButton___2LMsN:checked ~ .styles__info___1WdOt {\n  top: 66px;\n  left: 126px;\n  text-align: left;\n  transition: all 0.3s ease-in;\n}\n\n.styles__screen___1r3tJ > .styles__magicButton___2LMsN:checked ~ .styles__info___1WdOt h4 {\n  margin-left: 0;\n  font-size: 16px;\n  color: #111111;\n  transition: all 0.3s ease-in;\n}\n\n.styles__screen___1r3tJ > .styles__magicButton___2LMsN:checked ~ .styles__player___2LRVd {\n  bottom: 4px;\n  left: -44px;\n  transform: scale(0.45, 0.45);\n  transition: all 0.3s ease-in;\n}\n\n\n.styles__coverImage___1Ya5a {\n  width: 366px;\n  height: 366px;\n  padding: 0;\n  bottom: 20px;\n  margin-top: 20px;\n  position: absolute;\n  top: 0;\n  left: 0;\n  transform-origin: 0% 0%;\n  transition: all 0.3s ease-in;\n}\n\n.styles__bodyPlayer___26WbB {\n  position: absolute;\n  top: 300px;\n  left: 0;\n  margin: 0;\n  padding: 0;\n  height: 350px; \n  width: 366px;\n  background: #111;\n  transition: all 0.3s ease-in;\n}\n\n/*height: 470px;\n  left: 0;\n  top: 180px;\n  transition: all 0.3s ease-in;*/\n\n.styles__search___3LoIJ:before {\n  position: absolute;\n  top: 23px;\n  right: 23px;\n  font-family: FontAwesome;\n  content: '\\F002';\n  color: #959595;\n  font-size: 16px;\n  line-height: 16px;\n  cursor: pointer;\n  z-index: 10;\n  transition: all 0.3s ease-in;\n}\n\n.styles__search___3LoIJ:hover:before {\n  color: #bbb;\n}\n\n/*.title {\n  width: 215px;\n  text-align: left;\n  text-indent: 15px;\n  transition: all 0.11s ease-in;\n}*/\n\n.styles__scrollcontainer___350sT {\n  overflow:auto;\n  height: 200px;\n  width: 200px;\n}\n.styles__listcontainer___2g0Ru {\n  position: absolute;\n  left: 90px;\n  top: 420px;\n\n}\n\ntd > .styles__heart___3Psht:checked ~ label.styles__zmr___1opGj:before {\n  content: \"\\F004\";\n  color: #ff564c;\n  transition: all 0.15s linear;\n}\n\ntd > .styles__heart1___3BSMn:checked ~ label.styles__zmr___1opGj:before {\n  content: \"\\F004\";\n  color: #ff564c;\n  transition: all 0.15s linear;\n}\n\ntd > .styles__heart2___2aWhd:checked ~ label.styles__zmr___1opGj:before {\n  content: \"\\F004\";\n  color: #ff564c;\n  transition: all 0.15s linear;\n}\n\ntd > .styles__heart3___2EzPh:checked ~ label.styles__zmr___1opGj:before {\n  content: \"\\F004\";\n  color: #ff564c;\n  transition: all 0.15s linear;\n}\n\ntd > .styles__heart4___2gAfE:checked ~ label.styles__zmr___1opGj:before {\n  content: \"\\F004\";\n  color: #ff564c;\n  transition: all 0.15s linear;\n}\n\ntd > .styles__heart5___Rjdy0:checked ~ label.styles__zmr___1opGj:before {\n  content: \"\\F004\";\n  color: #ff564c;\n  transition: all 0.15s linear;\n}\n\ntd > .styles__heart6___2sMRv:checked ~ label.styles__zmr___1opGj:before {\n  content: \"\\F004\";\n  color: #ff564c;\n  transition: all 0.15s linear;\n}\n\ntd > .styles__heart7___2VQ6Y:checked ~ label.styles__zmr___1opGj:before {\n  content: \"\\F004\";\n  color: #ff564c;\n  transition: all 0.15s linear;\n}\n\ntd > .styles__heart8___33I9x:checked ~ label.styles__zmr___1opGj:before {\n  content: \"\\F004\";\n  color: #ff564c;\n  transition: all 0.15s linear;\n}\n\ntd > .styles__play___31_-M:checked ~ label.styles__play___31_-M:before {\n  content: \"\\F04C\";\n  transition: all 0.15s linear;\n}\n\ntd > .styles__love___2eXdK:checked ~ label.styles__love___2eXdK:before {\n  content: \"\\F004\";\n  color: #ff564c;\n  transition: all 0.15s linear;\n}\n\ntd > .styles__shuffle___2PnDA:checked ~ label.styles__shuffle___2PnDA:before {\n  color: #ff564c;\n  transition: all 0.15s linear;\n}\n\ntd > .styles__repeat___167L0:checked ~ label.styles__repeat___167L0:before {\n  color: #ff564c;\n  transition: all 0.15s linear;\n}\n\n.styles__shadow___cd6Tc {\n  background: rgba(17, 17, 17, 0.8);\n  width: 366px;\n  height: 50px;\n  position: absolute;\n  bottom: -12px;\n  left: 0;\n  box-shadow: 0px -15px 40px rgba(17, 17, 17, 0.8);\n}\n\n\n.styles__bar___1zYif {\n  background: url('http://imgh.us/bar_3.svg') no-repeat;\n  background-size: 100%;\n  width: 320px;\n  height: 21px;\n  position: absolute;\n  top: 407px;\n  left: 23px;\n  transform-origin: 0% 0%;\n  transition: all 0.3s ease-in;\n}\n\n.styles__info___1WdOt {\n  width: 157px;\n  position: absolute;\n  left: 104px;\n  top: 440px;\n  transition: all 0.3s ease-in;\n}\n\n\n.styles__player___2LRVd {\n  background: none;\n  text-align: center;\n  font-family: FontAwesome;\n  color: #fff;\n  font-size: 26px;\n  line-height: 26px;\n  width: 216px;\n  height: 300px;\n  position: absolute;\n  top: 240px;\n  left: 50%;\n  right: 40px;\n  transform: translate(-50%, 0);\n  z-index: 10;\n  transition: all 0.3s ease-in;\n  border-spacing: 0;\n}\n\n.styles__player___2LRVd td {\n  width: 72px;\n}\n\naudio {\n  visibility: hidden;\n}\n\n.styles__backward___17HVN:before {\n  content: \"\\F04A\";\n  cursor: pointer;\n  transition: all 0.15s linear;\n}\n\n.styles__backward___17HVN:hover:before {\n  color: #bbb;\n  transition: all 0.15s linear;\n}\n\n.styles__play___31_-M:before {\n  content: \"\\F04B\";\n  cursor: pointer;\n  transition: all 0.15s linear;\n}\n\n.styles__play___31_-M:hover:before {\n  color: #bbb;\n  transition: all 0.15s linear;\n}\n\n.styles__forward___l1B9_:before {\n  content: \"\\F04E\";\n  cursor: pointer;\n  transition: all 0.15s linear;\n}\n\n.styles__forward___l1B9_:hover:before {\n  color: #bbb;\n  transition: all 0.15s linear;\n}\n\n.styles__footer___t-V25 {\n  background: none;\n  font-family: FontAwesome;\n  color: #6d6d6d;\n  font-size: 15px;\n  line-height: 15px;\n  height: 45px;\n  width: 360px;\n  position: absolute;\n  bottom: 10px;\n  left: 23px;\n  z-index: 20;\n  transition: all 0.15s linear;\n  transition: bottom 0.3s linear;\n}\n\n.styles__love___2eXdK:before {\n  content: \"\\F08A\";\n  cursor: pointer;\n  transition: all 0.15s linear;\n}\n\n.styles__love___2eXdK:hover:before {\n  color: #bbb;\n  transition: all 0.15s linear;\n}\n\n\n.styles__shuffle___2PnDA:before {\n  content: \"\\F074\";\n  cursor: pointer;\n  transition: all 0.15s linear;\n}\n\n.styles__shuffle___2PnDA:hover:before {\n  color: #bbb;\n  transition: all 0.15s linear;\n}\n\n.styles__repeat___167L0:before {\n  content: \"\\F01E\";\n  cursor: pointer;\n  transition: all 0.15s linear;\n}\n\n.styles__repeat___167L0:hover:before {\n  color: #bbb;\n  transition: all 0.15s linear;\n}\n\n.styles__options___3IliN:before {\n  content: \"\\F141\";\n  cursor: pointer;\n  transition: all 0.15s linear;\n}\n\n.styles__options___3IliN:hover:before {\n  color: #bbb;\n  transition: all 0.15s linear;\n}\n\n.styles__current___yRVbr {\n  position: absolute;\n  right: 23px;\n  bottom: -60px;\n  transition: all 0.3s ease-in;\n}\n\n.styles__testing___OJ-6t {\n  position: absolute;\n  opacity:0;\n}\n\n.styles__progresscontainer___2QPd_ {\n  position: absolute;\n  left: 25px;\n  top: 330px;\n}\n\n.styles__message___2SlmP {\n  height: 20px;\n  text-align: center;\n  font-family: Helvetica, Arial, sans-serif;\n}\n\n.styles__controls___jvg_W {\n  background: #333;\n  padding: 8px;\n}\n\n.styles__button___1UJG4 {\n  color: white;\n  width: 20px;\n  margin: 3px 0 0 0;\n  font-size: 16px;\n  text-align: center;\n  display: inline-block;\n  cursor: pointer;\n  background: transparent;\n  border: none;\n  outline: none;\n}\n\n.styles__track___2t1FT {\n  position: absolute;\n  text-align: center;\n  width: 286px;\n  margin: 7px 0 0 16px;\n  height: 10px;\n  border: 1px solid #666;\n  display: inline-block;\n  vertical-align: top;\n}\n\n.styles__progress___1uS5g {\n  position: absolute;\n  width: 0%;\n  height: 100%;\n  background: #42f492;\n}\n\n.styles__scrubber___1JbS9 {\n  position: absolute;\n  width: 18px;\n  height: 18px;\n  border-radius: 50%;\n  margin: -4px 0 0 -9px;\n  background: #42f492;\n  border: solid 3px #ddd;\n  cursor: pointer;\n  box-shadow: 0 0 5px #000, inset 0 0 4px #400;\n}", ""]);
 	
 	// exports
 	exports.locals = {
@@ -23410,6 +23411,8 @@
 
 	'use strict';
 	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
 	var _react = __webpack_require__(/*! react */ 1);
 	
 	var _react2 = _interopRequireDefault(_react);
@@ -23426,35 +23429,70 @@
 	
 	var _Input2 = _interopRequireDefault(_Input);
 	
+	var _ProgressBar = __webpack_require__(/*! ./ProgressBar.js */ 194);
+	
+	var _ProgressBar2 = _interopRequireDefault(_ProgressBar);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	var Container = function Container(props) {
-	  var context = undefined;
-	  var divStyle = {
-	    'background': 'url(' + '"' + props.cover + '"' + ')',
-	    'backgroundSize': 'cover'
-	  };
-	  return _react2.default.createElement(
-	    'div',
-	    null,
-	    _react2.default.createElement(
-	      'div',
-	      { className: _styles2.default.screen, onClick: function onClick() {
-	          props.getCurrentTime();
-	        } },
-	      _react2.default.createElement('input', { type: 'checkbox', value: 'None', className: _styles2.default.magicButton, name: 'check' }),
-	      _react2.default.createElement(_Input2.default, { setTrackList: props.setTrackList }),
-	      _react2.default.createElement('div', { className: _styles2.default.coverImage, style: divStyle }),
-	      _react2.default.createElement('div', { className: _styles2.default.bodyPlayer }),
-	      _react2.default.createElement(
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var Container = function (_React$Component) {
+	  _inherits(Container, _React$Component);
+	
+	  function Container(props) {
+	    _classCallCheck(this, Container);
+	
+	    return _possibleConstructorReturn(this, (Container.__proto__ || Object.getPrototypeOf(Container)).call(this, props));
+	  }
+	
+	  _createClass(Container, [{
+	    key: 'forceIt',
+	    value: function forceIt() {
+	      this.forceUpdate();
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var context = this;
+	      var divStyle = {
+	        'background': 'url(' + '"' + this.props.cover + '"' + ')',
+	        'backgroundSize': 'cover'
+	      };
+	      return _react2.default.createElement(
 	        'div',
-	        { className: _styles2.default.testing },
-	        ' Partial Result Data '
-	      ),
-	      _react2.default.createElement(_Table2.default, { tracklist: props.tracklist, stopSong: props.stopSong })
-	    )
-	  );
-	};
+	        null,
+	        _react2.default.createElement(
+	          'div',
+	          { className: _styles2.default.screen, onClick: function onClick() {
+	              props.getCurrentTime();
+	            } },
+	          _react2.default.createElement('input', { type: 'checkbox', value: 'None', className: _styles2.default.magicButton, name: 'check' }),
+	          _react2.default.createElement(_Input2.default, { setTrackList: this.props.setTrackList }),
+	          _react2.default.createElement('div', { className: _styles2.default.coverImage, style: divStyle }),
+	          _react2.default.createElement('div', { className: _styles2.default.bodyPlayer }),
+	          _react2.default.createElement(
+	            'div',
+	            { className: _styles2.default.testing },
+	            ' Partial Result Data '
+	          ),
+	          _react2.default.createElement(_Table2.default, { tracklist: this.props.tracklist, stopSong: this.props.stopSong }),
+	          _react2.default.createElement(
+	            'div',
+	            { className: _styles2.default.progresscontainer },
+	            _react2.default.createElement(_ProgressBar2.default, { urls: this.props.urls, forceIt: this.forceIt.bind(this) })
+	          )
+	        )
+	      );
+	    }
+	  }]);
+	
+	  return Container;
+	}(_react2.default.Component);
 	
 	module.exports = Container;
 
@@ -23486,14 +23524,10 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var Table = function Table(props) {
+	  console.log(props.tracklist, 'Table tracklist???????');
 	  return _react2.default.createElement(
 	    'div',
 	    null,
-	    _react2.default.createElement(
-	      'div',
-	      { className: _styles2.default.progresscontainer },
-	      _react2.default.createElement(_ProgressBar2.default, null)
-	    ),
 	    _react2.default.createElement(
 	      'table',
 	      { className: _styles2.default.player },
@@ -23651,9 +23685,10 @@
 	
 	    _this.ac = new (window.AudioContext || webkitAudioContext)();
 	    _this.url = url;
-	    _this.fetch();
 	    _this.state = {
-	      scrubberStyle: { width: 18 }
+	      url: '',
+	      trackNumber: 0,
+	      progress: 0
 	    };
 	    return _this;
 	  }
@@ -23661,14 +23696,25 @@
 	  _createClass(ProgressBar, [{
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
+	      // this.fetch();
 	      window.addEventListener('mousemove', this.onDrag.bind(this));
 	      window.addEventListener('mouseup', this.onMouseUp.bind(this));
 	    }
 	  }, {
+	    key: 'componentWillReceiveProps',
+	    value: function componentWillReceiveProps(nextProps) {
+	      var context = this;
+	      console.log(nextProps.urls, 'Progress????????????????????????????????????????????????????????????');
+	      this.setState({ url: nextProps.urls[context.state.trackNumber], urls: nextProps.urls }, function () {
+	        context.fetch();
+	      });
+	    }
+	  }, {
 	    key: 'fetch',
 	    value: function fetch() {
+	      var context = this;
 	      var xhr = new XMLHttpRequest();
-	      xhr.open('GET', this.url, true);
+	      xhr.open('GET', context.state.urls[context.state.trackNumber], true);
 	      xhr.responseType = 'arraybuffer';
 	      xhr.onload = function () {
 	        this.decode(xhr.response);
@@ -23711,6 +23757,8 @@
 	        this.source = null;
 	        this.position = this.ac.currentTime - this.startTime;
 	        this.playing = false;
+	        this.state.progress = 0;
+	        // this.fetch();
 	      }
 	    }
 	  }, {
@@ -23725,6 +23773,10 @@
 	  }, {
 	    key: 'updatePosition',
 	    value: function updatePosition() {
+	      // if (this.position === this.buffer.duration) {
+	      //   console.log('restart????');
+	      //   return;
+	      // }
 	      this.position = this.playing ? this.ac.currentTime - this.startTime : this.position;
 	      if (this.position >= this.buffer.duration) {
 	        this.position = this.buffer.duration;
@@ -23749,20 +23801,7 @@
 	      if (!this.dragging) {
 	        return;
 	      }
-	      width = 236;
-	      position = this.startLeft + (e.pageX - this.startX);
-	      position = Math.max(Math.min(width, position), 0);
-	      this.setState({ scrubberStyle: { left: position } });
-	    }
-	  }, {
-	    key: 'onClick',
-	    value: function onClick(e) {
-	      var width = void 0;
-	      var position = void 0;
-	      if (!this.dragging) {
-	        return;
-	      }
-	      width = 236;
+	      width = 286;
 	      position = this.startLeft + (e.pageX - this.startX);
 	      position = Math.max(Math.min(width, position), 0);
 	      this.setState({ scrubberStyle: { left: position } });
@@ -23779,7 +23818,7 @@
 	    value: function onMouseUp() {
 	      var width, left, time;
 	      if (this.dragging) {
-	        var _width = 236;
+	        var _width = 286;
 	        var _left = parseInt(this.state.scrubberStyle.left || 0, 10);
 	        var _time = _left / _width * this.buffer.duration;
 	        this.seek(_time);
@@ -23787,16 +23826,40 @@
 	      }
 	    }
 	  }, {
+	    key: 'playNextSong',
+	    value: function playNextSong() {
+	      if (this.buffer.duration === this.position) {
+	        this.state.trackNumber++;
+	        this.position = 0;
+	        this.fetch();
+	        return;
+	      }
+	    }
+	  }, {
+	    key: 'playPreviousSong',
+	    value: function playPreviousSong() {
+	      if (this.buffer.duration === this.position) {
+	        this.state.trackNumber--;
+	        this.position = 0;
+	        this.fetch();
+	        return;
+	      }
+	    }
+	  }, {
 	    key: 'draw',
 	    value: function draw() {
+	      if (this.buffer.duration === this.position) {
+	        this.state.trackNumber++;
+	        this.position = 0;
+	        this.fetch();
+	        return;
+	      }
+	      console.log('drawing');
 	      var context = this;
 	      var progress = this.updatePosition() / context.buffer.duration;
-	      var width = 236;
-	      context.setState({ progressStyle: { width: progress * width + 'px' } }, function () {
-	        if (!context.dragging) {
-	          context.setState({ scrubberStyle: { width: context.state.scrubberStyle.width + 'px', left: progress * width + 'px' } });
-	        }
-	      });
+	      this.state.progress = progress;
+	      var width = 286;
+	      context.setState({ progressStyle: { width: this.state.progress * width + 'px' } }, function () {});
 	      requestAnimationFrame(context.draw.bind(context));
 	    }
 	  }, {
@@ -23811,11 +23874,6 @@
 	          _react2.default.createElement(
 	            'div',
 	            { className: _styles2.default.progress, style: this.state.progressStyle },
-	            ' '
-	          ),
-	          _react2.default.createElement(
-	            'div',
-	            { className: _styles2.default.scrubber, onMouseDown: this.onMouseDown.bind(this), onDrag: this.onDrag, style: this.state.scrubberStyle },
 	            ' '
 	          )
 	        )

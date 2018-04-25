@@ -36,27 +36,27 @@ class App extends React.Component {
     this.setTrackList = this.setTrackList.bind(this);
   }
   playSong(buffer) {
-    let context = this;
-     //creating source node
-    let source = this.state.actx.createBufferSource();
-    this.state.source = source;
-    let src = this.state.source;
-    // context.setState({source: src});
-    //passing in data
-    src.buffer = buffer;
-    //giving the src which sound to play
-    src.connect(this.state.actx.destination);
-    //start playing
+    // let context = this;
+    //  //creating source node
+    // let source = this.state.actx.createBufferSource();
+    // this.state.source = source;
+    // let src = this.state.source;
+    // // context.setState({source: src});
+    // //passing in data
+    // src.buffer = buffer;
+    // //giving the src which sound to play
+    // src.connect(this.state.actx.destination);
+    // //start playing
     
-    src.start(0);
+    // src.start(0);
     
-    src.onended = () => {
-      if (!context.state.pureStop) {
-        return;
-      }
-      let trackNumber = context.state.trackNumber++;
-      context.fetchBuff(context.state.urls, context.state.trackNumber, context.state.actx);
-    };
+    // src.onended = () => {
+    //   if (!context.state.pureStop) {
+    //     return;
+    //   }
+    //   let trackNumber = context.state.trackNumber++;
+    //   context.fetchBuff(context.state.urls, context.state.trackNumber, context.state.actx);
+    // };
   }
   stopSong() {
     if (this.state.pureStop) {
@@ -112,12 +112,12 @@ class App extends React.Component {
     return hashParams;
   }
   fetchBuff(urlArray, index, audioContext) {
-    let context = this;
-    console.log('playing', urlArray[index]);
-    fetchBuffer(urlArray[index], audioContext, (buffer) => {
-      context.state.buffer = buffer;
-      context.playSong(context.state.buffer);
-    });
+    // let context = this;
+    // console.log('playing', urlArray[index]);
+    // fetchBuffer(urlArray[index], audioContext, (buffer) => {
+    //   context.state.buffer = buffer;
+    //   context.playSong(context.state.buffer);
+    // });
   }
   setTrackList (input) {
     // implement to fit current structure of the app
@@ -148,6 +148,7 @@ class App extends React.Component {
       <div> 
         <Container getCurrentTime = {this.getCurrentTime.bind(this)} 
                    tracklist = {this.state.tracklist} 
+                   urls = {this.state.urls}
                    setTrackList = {this.setTrackList}
                    cover = {this.state.cover}
                    stopSong = {this.stopSong.bind(this)}

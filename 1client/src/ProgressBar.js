@@ -7,18 +7,28 @@ class ProgressBar extends React.Component {
     super(props);
     this.ac = new ( window.AudioContext || webkitAudioContext )();
     this.url = url;
-    this.fetch();
     this.state = {
-      scrubberStyle: {width: 18},
+      url: '',
+      trackNumber: 0,
+      progress: 0
     };
   }
   componentDidMount() {
+    // this.fetch();
     window.addEventListener('mousemove', this.onDrag.bind(this));
     window.addEventListener('mouseup', this.onMouseUp.bind(this));
   }
+  componentWillReceiveProps(nextProps) {
+    let context = this;
+    console.log(nextProps.urls, 'Progress????????????????????????????????????????????????????????????');
+    this.setState({url: nextProps.urls[context.state.trackNumber], urls: nextProps.urls}, () => {
+      context.fetch();
+    }); 
+  }
   fetch () {
+    let context = this;
     var xhr = new XMLHttpRequest();
-    xhr.open('GET', this.url, true);
+    xhr.open('GET', context.state.urls[context.state.trackNumber], true);
     xhr.responseType = 'arraybuffer';
     xhr.onload = function() {
       this.decode(xhr.response);
@@ -53,6 +63,8 @@ class ProgressBar extends React.Component {
       this.source = null;
       this.position = this.ac.currentTime - this.startTime;
       this.playing = false;
+      this.state.progress = 0;
+      // this.fetch();
     }
   }
   seek ( time ) {
@@ -61,8 +73,13 @@ class ProgressBar extends React.Component {
     } else {
       this.position = time;
     }
+    
   }
   updatePosition () {
+    // if (this.position === this.buffer.duration) {
+    //   console.log('restart????');
+    //   return;
+    // }
     this.position = this.playing ? 
     this.ac.currentTime - this.startTime : this.position;
     if ( this.position >= this.buffer.duration ) {
@@ -78,24 +95,14 @@ class ProgressBar extends React.Component {
       this.pause();
     }
   }
+
   onDrag ( e ) {
     let width;
     let position;
     if ( !this.dragging ) {
       return;
     }
-    width = 236;
-    position = this.startLeft + ( e.pageX - this.startX );
-    position = Math.max(Math.min(width, position), 0);
-    this.setState({scrubberStyle: {left: position}});
-  }
-  onClick(e) {
-    let width;
-    let position;
-    if ( !this.dragging ) {
-      return;
-    }
-    width = 236;
+    width = 286;
     position = this.startLeft + ( e.pageX - this.startX );
     position = Math.max(Math.min(width, position), 0);
     this.setState({scrubberStyle: {left: position}});
@@ -108,21 +115,43 @@ class ProgressBar extends React.Component {
   onMouseUp () {
     var width, left, time;
     if ( this.dragging ) {
-      let width = 236;
+      let width = 286;
       let left = parseInt(this.state.scrubberStyle.left || 0, 10);
       let time = left / width * this.buffer.duration;
       this.seek(time);
       this.dragging = false;
     }
   }
+  playNextSong () {
+    if (this.buffer.duration === this.position) {
+      this.state.trackNumber++;
+      this.position = 0;
+      this.fetch();
+      return;
+    } 
+  }
+
+  playPreviousSong() {
+    if (this.buffer.duration === this.position) {
+      this.state.trackNumber--;
+      this.position = 0;
+      this.fetch();
+      return;
+    }
+  }
   draw () {
+    if (this.buffer.duration === this.position) {
+      this.state.trackNumber++;
+      this.position = 0;
+      this.fetch();
+      return;
+    }
+    console.log('drawing');
     let context = this;
     let progress = ( this.updatePosition() / context.buffer.duration );
-    let width = 236;
-    context.setState({progressStyle: {width: progress * width + 'px'} }, () => {
-      if (!context.dragging) {
-        context.setState({scrubberStyle: {width: context.state.scrubberStyle.width + 'px', left: progress * width + 'px'}});
-      }
+    this.state.progress = progress;
+    let width = 286;
+    context.setState({progressStyle: {width: this.state.progress * width + 'px'} }, () => {
     });
     requestAnimationFrame(context.draw.bind(context));
   }
@@ -131,7 +160,6 @@ class ProgressBar extends React.Component {
      <div > 
         <div className= {styles.track} >
           <div className= {styles.progress} style = {this.state.progressStyle} > </div> 
-          <div className= {styles.scrubber} onMouseDown = {this.onMouseDown.bind(this)} onDrag = {this.onDrag} style = {this.state.scrubberStyle} > </div> 
         </div>
      </div>
     );
@@ -139,6 +167,14 @@ class ProgressBar extends React.Component {
 }
 
 module.exports = ProgressBar;   
+
+
+
+
+
+
+
+   
 
 
 
