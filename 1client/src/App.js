@@ -35,29 +35,6 @@ class App extends React.Component {
     }
     this.setTrackList = this.setTrackList.bind(this);
   }
-  playSong(buffer) {
-    // let context = this;
-    //  //creating source node
-    // let source = this.state.actx.createBufferSource();
-    // this.state.source = source;
-    // let src = this.state.source;
-    // // context.setState({source: src});
-    // //passing in data
-    // src.buffer = buffer;
-    // //giving the src which sound to play
-    // src.connect(this.state.actx.destination);
-    // //start playing
-    
-    // src.start(0);
-    
-    // src.onended = () => {
-    //   if (!context.state.pureStop) {
-    //     return;
-    //   }
-    //   let trackNumber = context.state.trackNumber++;
-    //   context.fetchBuff(context.state.urls, context.state.trackNumber, context.state.actx);
-    // };
-  }
   stopSong() {
     if (this.state.pureStop) {
       this.setState({pureStop: false}, () => {
@@ -78,11 +55,9 @@ class App extends React.Component {
   getCurrentTime () {
     console.log(this.state.actx.currentTime);
   }
-  componentDidMount() {
+  spotifyCall (input) {
     let context = this;
-    audioCtx = new AudioContext();
-    this.setState({actx: audioCtx}, () => {
-      spotifyWebApi.searchTracks('Timberlake')
+    spotifyWebApi.searchTracks(input)
         .then(function(response) {
           let tracks = response.tracks.items;
           tracks = tracks.filter((track) => {
@@ -94,12 +69,16 @@ class App extends React.Component {
           let urls = tracks.map((item) => {
             return item.preview_url;
           });
-          context.setState({cover: cover, tracklist: tracks, urls: urls}, () => {
-            context.fetchBuff(context.state.urls, context.state.trackNumber, context.state.actx);
-          });
+          context.setState({cover: cover, tracklist: tracks, urls: urls});
         }, function(err) {
           console.error(err, 'error!!!!!');
         });
+  }
+  componentDidMount() {
+    let context = this;
+    audioCtx = new AudioContext();
+    this.setState({actx: audioCtx}, () => {
+      context.spotifyCall('Timberlake');
     });
   }
   getHashParams() {
@@ -111,37 +90,11 @@ class App extends React.Component {
     }
     return hashParams;
   }
-  fetchBuff(urlArray, index, audioContext) {
-    // let context = this;
-    // console.log('playing', urlArray[index]);
-    // fetchBuffer(urlArray[index], audioContext, (buffer) => {
-    //   context.state.buffer = buffer;
-    //   context.playSong(context.state.buffer);
-    // });
-  }
   setTrackList (input) {
-    // implement to fit current structure of the app
-    let context = this;
-    spotifyWebApi.searchTracks(input)
-    .then(function(response) {
-      let tracks = response.tracks.items;
-      console.log(tracks, 'tracks###################');
-      let url = response.tracks.items[0].preview_url;
-      let cover = response.tracks.items[0].album.images[1].url;
-      window.fetch(url)
-          .then(response => response.arrayBuffer())
-          .then(arrayBuffer => audioCtx.decodeAudioData(arrayBuffer, 
-                                                         audioBuffer => {
-                                                           console.log(audioBuffer, 'tracklist audioBuffer?????');
-                                                           playSong(audioBuffer);
-                                                           context.setState({cover: cover, tracklist: tracks});
-                                                         }, 
-                                                         error => 
-                                                         console.error(error)
-                                                       ));
-    }, function(err) {
-      console.error(err);
-    }); 
+    this.spotifyCall(input);
+  }
+  changeCover(index) {
+    this.setState({cover: this.state.tracklist[index].album.images[1].url});
   }
   render() {
     return (
@@ -152,6 +105,7 @@ class App extends React.Component {
                    setTrackList = {this.setTrackList}
                    cover = {this.state.cover}
                    stopSong = {this.stopSong.bind(this)}
+                   changeCover = {this.changeCover.bind(this)}
                    />
       </div>
     );
@@ -173,6 +127,5 @@ const mapDispatchToProps = (dispatch) => {
 
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
-
 
 

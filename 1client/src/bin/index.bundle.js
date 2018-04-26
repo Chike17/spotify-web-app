@@ -61,9 +61,9 @@
 	
 	var _App2 = _interopRequireDefault(_App);
 	
-	var _reactRedux = __webpack_require__(/*! react-redux */ 196);
+	var _reactRedux = __webpack_require__(/*! react-redux */ 197);
 	
-	var _store = __webpack_require__(/*! ./store.js */ 236);
+	var _store = __webpack_require__(/*! ./store.js */ 237);
 	
 	var _store2 = _interopRequireDefault(_store);
 	
@@ -22522,21 +22522,21 @@
 	
 	var _Container2 = _interopRequireDefault(_Container);
 	
-	var _reactRedux = __webpack_require__(/*! react-redux */ 196);
+	var _reactRedux = __webpack_require__(/*! react-redux */ 197);
 	
-	var _jquery = __webpack_require__(/*! jquery */ 235);
+	var _jquery = __webpack_require__(/*! jquery */ 236);
 	
 	var _jquery2 = _interopRequireDefault(_jquery);
 	
-	var _store = __webpack_require__(/*! ./store.js */ 236);
+	var _store = __webpack_require__(/*! ./store.js */ 237);
 	
 	var _store2 = _interopRequireDefault(_store);
 	
-	var _spotifyWebApiJs = __webpack_require__(/*! spotify-web-api-js */ 238);
+	var _spotifyWebApiJs = __webpack_require__(/*! spotify-web-api-js */ 239);
 	
 	var _spotifyWebApiJs2 = _interopRequireDefault(_spotifyWebApiJs);
 	
-	var _fetchBuffer = __webpack_require__(/*! ./fetchBuffer.js */ 239);
+	var _fetchBuffer = __webpack_require__(/*! ./fetchBuffer.js */ 240);
 	
 	var _fetchBuffer2 = _interopRequireDefault(_fetchBuffer);
 	
@@ -22584,31 +22584,6 @@
 	  }
 	
 	  _createClass(App, [{
-	    key: 'playSong',
-	    value: function playSong(buffer) {
-	      // let context = this;
-	      //  //creating source node
-	      // let source = this.state.actx.createBufferSource();
-	      // this.state.source = source;
-	      // let src = this.state.source;
-	      // // context.setState({source: src});
-	      // //passing in data
-	      // src.buffer = buffer;
-	      // //giving the src which sound to play
-	      // src.connect(this.state.actx.destination);
-	      // //start playing
-	
-	      // src.start(0);
-	
-	      // src.onended = () => {
-	      //   if (!context.state.pureStop) {
-	      //     return;
-	      //   }
-	      //   let trackNumber = context.state.trackNumber++;
-	      //   context.fetchBuff(context.state.urls, context.state.trackNumber, context.state.actx);
-	      // };
-	    }
-	  }, {
 	    key: 'stopSong',
 	    value: function stopSong() {
 	      var _this2 = this;
@@ -22639,28 +22614,32 @@
 	      console.log(this.state.actx.currentTime);
 	    }
 	  }, {
+	    key: 'spotifyCall',
+	    value: function spotifyCall(input) {
+	      var context = this;
+	      spotifyWebApi.searchTracks(input).then(function (response) {
+	        var tracks = response.tracks.items;
+	        tracks = tracks.filter(function (track) {
+	          return track.preview_url !== null;
+	        });
+	        console.log(tracks);
+	        var cover = response.tracks.items[0].album.images[1].url;
+	        var url1 = response.tracks.items[0].preview_url;
+	        var urls = tracks.map(function (item) {
+	          return item.preview_url;
+	        });
+	        context.setState({ cover: cover, tracklist: tracks, urls: urls });
+	      }, function (err) {
+	        console.error(err, 'error!!!!!');
+	      });
+	    }
+	  }, {
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
 	      var context = this;
 	      audioCtx = new AudioContext();
 	      this.setState({ actx: audioCtx }, function () {
-	        spotifyWebApi.searchTracks('Timberlake').then(function (response) {
-	          var tracks = response.tracks.items;
-	          tracks = tracks.filter(function (track) {
-	            return track.preview_url !== null;
-	          });
-	          console.log(tracks);
-	          var cover = response.tracks.items[0].album.images[1].url;
-	          var url1 = response.tracks.items[0].preview_url;
-	          var urls = tracks.map(function (item) {
-	            return item.preview_url;
-	          });
-	          context.setState({ cover: cover, tracklist: tracks, urls: urls }, function () {
-	            context.fetchBuff(context.state.urls, context.state.trackNumber, context.state.actx);
-	          });
-	        }, function (err) {
-	          console.error(err, 'error!!!!!');
-	        });
+	        context.spotifyCall('Timberlake');
 	      });
 	    }
 	  }, {
@@ -22676,39 +22655,14 @@
 	      return hashParams;
 	    }
 	  }, {
-	    key: 'fetchBuff',
-	    value: function fetchBuff(urlArray, index, audioContext) {
-	      // let context = this;
-	      // console.log('playing', urlArray[index]);
-	      // fetchBuffer(urlArray[index], audioContext, (buffer) => {
-	      //   context.state.buffer = buffer;
-	      //   context.playSong(context.state.buffer);
-	      // });
-	    }
-	  }, {
 	    key: 'setTrackList',
 	    value: function setTrackList(input) {
-	      // implement to fit current structure of the app
-	      var context = this;
-	      spotifyWebApi.searchTracks(input).then(function (response) {
-	        var tracks = response.tracks.items;
-	        console.log(tracks, 'tracks###################');
-	        var url = response.tracks.items[0].preview_url;
-	        var cover = response.tracks.items[0].album.images[1].url;
-	        window.fetch(url).then(function (response) {
-	          return response.arrayBuffer();
-	        }).then(function (arrayBuffer) {
-	          return audioCtx.decodeAudioData(arrayBuffer, function (audioBuffer) {
-	            console.log(audioBuffer, 'tracklist audioBuffer?????');
-	            playSong(audioBuffer);
-	            context.setState({ cover: cover, tracklist: tracks });
-	          }, function (error) {
-	            return console.error(error);
-	          });
-	        });
-	      }, function (err) {
-	        console.error(err);
-	      });
+	      this.spotifyCall(input);
+	    }
+	  }, {
+	    key: 'changeCover',
+	    value: function changeCover(index) {
+	      this.setState({ cover: this.state.tracklist[index].album.images[1].url });
 	    }
 	  }, {
 	    key: 'render',
@@ -22721,7 +22675,8 @@
 	          urls: this.state.urls,
 	          setTrackList: this.setTrackList,
 	          cover: this.state.cover,
-	          stopSong: this.stopSong.bind(this)
+	          stopSong: this.stopSong.bind(this),
+	          changeCover: this.changeCover.bind(this)
 	        })
 	      );
 	    }
@@ -23425,11 +23380,11 @@
 	
 	var _Table2 = _interopRequireDefault(_Table);
 	
-	var _Input = __webpack_require__(/*! ./Input.js */ 195);
+	var _Input = __webpack_require__(/*! ./Input.js */ 194);
 	
 	var _Input2 = _interopRequireDefault(_Input);
 	
-	var _ProgressBar = __webpack_require__(/*! ./ProgressBar.js */ 194);
+	var _ProgressBar = __webpack_require__(/*! ./ProgressBar.js */ 195);
 	
 	var _ProgressBar2 = _interopRequireDefault(_ProgressBar);
 	
@@ -23447,17 +23402,17 @@
 	  function Container(props) {
 	    _classCallCheck(this, Container);
 	
-	    return _possibleConstructorReturn(this, (Container.__proto__ || Object.getPrototypeOf(Container)).call(this, props));
+	    var _this = _possibleConstructorReturn(this, (Container.__proto__ || Object.getPrototypeOf(Container)).call(this, props));
+	
+	    _this.state = { playPrev: '', playNext: '', toggle: '' };
+	    return _this;
 	  }
 	
 	  _createClass(Container, [{
-	    key: 'forceIt',
-	    value: function forceIt() {
-	      this.forceUpdate();
-	    }
-	  }, {
 	    key: 'render',
 	    value: function render() {
+	      console.log(this.state.playPrev, 'prev???');
+	      console.log(this.state.playNext, 'next???');
 	      var context = this;
 	      var divStyle = {
 	        'background': 'url(' + '"' + this.props.cover + '"' + ')',
@@ -23468,9 +23423,7 @@
 	        null,
 	        _react2.default.createElement(
 	          'div',
-	          { className: _styles2.default.screen, onClick: function onClick() {
-	              props.getCurrentTime();
-	            } },
+	          { className: _styles2.default.screen },
 	          _react2.default.createElement('input', { type: 'checkbox', value: 'None', className: _styles2.default.magicButton, name: 'check' }),
 	          _react2.default.createElement(_Input2.default, { setTrackList: this.props.setTrackList }),
 	          _react2.default.createElement('div', { className: _styles2.default.coverImage, style: divStyle }),
@@ -23480,11 +23433,15 @@
 	            { className: _styles2.default.testing },
 	            ' Partial Result Data '
 	          ),
-	          _react2.default.createElement(_Table2.default, { tracklist: this.props.tracklist, stopSong: this.props.stopSong }),
+	          _react2.default.createElement(_Table2.default, { tracklist: this.props.tracklist,
+	            stopSong: this.props.stopSong,
+	            playPrev: this.state.playPrev,
+	            playNext: this.state.playNext,
+	            toggle: this.state.toggle }),
 	          _react2.default.createElement(
 	            'div',
 	            { className: _styles2.default.progresscontainer },
-	            _react2.default.createElement(_ProgressBar2.default, { urls: this.props.urls, forceIt: this.forceIt.bind(this) })
+	            _react2.default.createElement(_ProgressBar2.default, { urls: this.props.urls, container: this, changeCover: this.props.changeCover })
 	          )
 	        )
 	      );
@@ -23517,20 +23474,15 @@
 	
 	var _TableEntry2 = _interopRequireDefault(_TableEntry);
 	
-	var _ProgressBar = __webpack_require__(/*! ./ProgressBar.js */ 194);
-	
-	var _ProgressBar2 = _interopRequireDefault(_ProgressBar);
-	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var Table = function Table(props) {
-	  console.log(props.tracklist, 'Table tracklist???????');
 	  return _react2.default.createElement(
 	    'div',
 	    null,
 	    _react2.default.createElement(
 	      'table',
-	      { className: _styles2.default.player },
+	      { className: _styles2.default.player, onClick: console.log(props.playPrev, 'Table play prev???????????????????????????????????') },
 	      _react2.default.createElement(
 	        'tbody',
 	        null,
@@ -23538,27 +23490,31 @@
 	          'td',
 	          null,
 	          _react2.default.createElement('input', { type: 'checkbox', className: _styles2.default.backward }),
-	          _react2.default.createElement('label', { className: _styles2.default.backward, htmlFor: _styles2.default.backward })
+	          _react2.default.createElement('label', { className: _styles2.default.backward, htmlFor: _styles2.default.backward, onClick: function onClick() {
+	              props.playPrev();
+	            } })
 	        ),
 	        _react2.default.createElement(
 	          'td',
 	          null,
 	          _react2.default.createElement('input', { type: 'checkbox', className: _styles2.default.play, title: 'Play' }),
 	          _react2.default.createElement('label', { className: _styles2.default.play, htmlFor: _styles2.default.play, onClick: function onClick() {
-	              props.stopSong();
+	              props.toggle();
 	            } })
 	        ),
 	        _react2.default.createElement(
 	          'td',
 	          null,
 	          _react2.default.createElement('input', { type: 'checkbox', className: _styles2.default.forward }),
-	          _react2.default.createElement('label', { className: _styles2.default.forward, htmlFor: _styles2.default.forward })
+	          _react2.default.createElement('label', { className: _styles2.default.forward, htmlFor: _styles2.default.forward, onClick: function onClick() {
+	              props.playNext();
+	            } })
 	        )
 	      )
 	    ),
 	    _react2.default.createElement(
 	      'div',
-	      { className: _styles2.default.listcontainer },
+	      { className: _styles2.default.listcontainer, onClick: console.log(props.playPrev, 'Table play prev???????????????????????????????????') },
 	      _react2.default.createElement(
 	        'div',
 	        { className: _styles2.default.scrollcontainer },
@@ -23648,246 +23604,6 @@
 
 /***/ }),
 /* 194 */
-/*!************************************!*\
-  !*** ./1client/src/ProgressBar.js ***!
-  \************************************/
-/***/ (function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
-	var _react = __webpack_require__(/*! react */ 1);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var _styles = __webpack_require__(/*! ./styles.css */ 185);
-	
-	var _styles2 = _interopRequireDefault(_styles);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	
-	var url = 'http://static.kevvv.in/sounds/callmemaybe.mp3';
-	
-	var ProgressBar = function (_React$Component) {
-	  _inherits(ProgressBar, _React$Component);
-	
-	  function ProgressBar(props) {
-	    _classCallCheck(this, ProgressBar);
-	
-	    var _this = _possibleConstructorReturn(this, (ProgressBar.__proto__ || Object.getPrototypeOf(ProgressBar)).call(this, props));
-	
-	    _this.ac = new (window.AudioContext || webkitAudioContext)();
-	    _this.url = url;
-	    _this.state = {
-	      url: '',
-	      trackNumber: 0,
-	      progress: 0
-	    };
-	    return _this;
-	  }
-	
-	  _createClass(ProgressBar, [{
-	    key: 'componentDidMount',
-	    value: function componentDidMount() {
-	      // this.fetch();
-	      window.addEventListener('mousemove', this.onDrag.bind(this));
-	      window.addEventListener('mouseup', this.onMouseUp.bind(this));
-	    }
-	  }, {
-	    key: 'componentWillReceiveProps',
-	    value: function componentWillReceiveProps(nextProps) {
-	      var context = this;
-	      console.log(nextProps.urls, 'Progress????????????????????????????????????????????????????????????');
-	      this.setState({ url: nextProps.urls[context.state.trackNumber], urls: nextProps.urls }, function () {
-	        context.fetch();
-	      });
-	    }
-	  }, {
-	    key: 'fetch',
-	    value: function fetch() {
-	      var context = this;
-	      var xhr = new XMLHttpRequest();
-	      xhr.open('GET', context.state.urls[context.state.trackNumber], true);
-	      xhr.responseType = 'arraybuffer';
-	      xhr.onload = function () {
-	        this.decode(xhr.response);
-	      }.bind(this);
-	      xhr.send();
-	    }
-	  }, {
-	    key: 'decode',
-	    value: function decode(arrayBuffer) {
-	      this.ac.decodeAudioData(arrayBuffer, function (audioBuffer) {
-	        this.buffer = audioBuffer;
-	        this.draw();
-	        this.play();
-	      }.bind(this));
-	    }
-	  }, {
-	    key: 'connect',
-	    value: function connect() {
-	      if (this.playing) {
-	        this.pause();
-	      }
-	      this.source = this.ac.createBufferSource();
-	      this.source.buffer = this.buffer;
-	      this.source.connect(this.ac.destination);
-	    }
-	  }, {
-	    key: 'play',
-	    value: function play(position) {
-	      this.connect();
-	      this.position = typeof position === 'number' ? position : this.position || 0;
-	      this.startTime = this.ac.currentTime - (this.position || 0);
-	      this.source.start(this.ac.currentTime, this.position);
-	      this.playing = true;
-	    }
-	  }, {
-	    key: 'pause',
-	    value: function pause() {
-	      if (this.source) {
-	        this.source.stop(0);
-	        this.source = null;
-	        this.position = this.ac.currentTime - this.startTime;
-	        this.playing = false;
-	        this.state.progress = 0;
-	        // this.fetch();
-	      }
-	    }
-	  }, {
-	    key: 'seek',
-	    value: function seek(time) {
-	      if (this.playing) {
-	        this.play(time);
-	      } else {
-	        this.position = time;
-	      }
-	    }
-	  }, {
-	    key: 'updatePosition',
-	    value: function updatePosition() {
-	      // if (this.position === this.buffer.duration) {
-	      //   console.log('restart????');
-	      //   return;
-	      // }
-	      this.position = this.playing ? this.ac.currentTime - this.startTime : this.position;
-	      if (this.position >= this.buffer.duration) {
-	        this.position = this.buffer.duration;
-	        this.pause();
-	      }
-	      return this.position;
-	    }
-	  }, {
-	    key: 'toggle',
-	    value: function toggle() {
-	      if (!this.playing) {
-	        this.play();
-	      } else {
-	        this.pause();
-	      }
-	    }
-	  }, {
-	    key: 'onDrag',
-	    value: function onDrag(e) {
-	      var width = void 0;
-	      var position = void 0;
-	      if (!this.dragging) {
-	        return;
-	      }
-	      width = 286;
-	      position = this.startLeft + (e.pageX - this.startX);
-	      position = Math.max(Math.min(width, position), 0);
-	      this.setState({ scrubberStyle: { left: position } });
-	    }
-	  }, {
-	    key: 'onMouseDown',
-	    value: function onMouseDown(e) {
-	      this.dragging = true;
-	      this.startX = e.pageX;
-	      this.startLeft = parseInt(this.state.scrubberStyle.left || 0, 10);
-	    }
-	  }, {
-	    key: 'onMouseUp',
-	    value: function onMouseUp() {
-	      var width, left, time;
-	      if (this.dragging) {
-	        var _width = 286;
-	        var _left = parseInt(this.state.scrubberStyle.left || 0, 10);
-	        var _time = _left / _width * this.buffer.duration;
-	        this.seek(_time);
-	        this.dragging = false;
-	      }
-	    }
-	  }, {
-	    key: 'playNextSong',
-	    value: function playNextSong() {
-	      if (this.buffer.duration === this.position) {
-	        this.state.trackNumber++;
-	        this.position = 0;
-	        this.fetch();
-	        return;
-	      }
-	    }
-	  }, {
-	    key: 'playPreviousSong',
-	    value: function playPreviousSong() {
-	      if (this.buffer.duration === this.position) {
-	        this.state.trackNumber--;
-	        this.position = 0;
-	        this.fetch();
-	        return;
-	      }
-	    }
-	  }, {
-	    key: 'draw',
-	    value: function draw() {
-	      if (this.buffer.duration === this.position) {
-	        this.state.trackNumber++;
-	        this.position = 0;
-	        this.fetch();
-	        return;
-	      }
-	      console.log('drawing');
-	      var context = this;
-	      var progress = this.updatePosition() / context.buffer.duration;
-	      this.state.progress = progress;
-	      var width = 286;
-	      context.setState({ progressStyle: { width: this.state.progress * width + 'px' } }, function () {});
-	      requestAnimationFrame(context.draw.bind(context));
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      return _react2.default.createElement(
-	        'div',
-	        null,
-	        _react2.default.createElement(
-	          'div',
-	          { className: _styles2.default.track },
-	          _react2.default.createElement(
-	            'div',
-	            { className: _styles2.default.progress, style: this.state.progressStyle },
-	            ' '
-	          )
-	        )
-	      );
-	    }
-	  }]);
-	
-	  return ProgressBar;
-	}(_react2.default.Component);
-	
-	module.exports = ProgressBar;
-
-/***/ }),
-/* 195 */
 /*!******************************!*\
   !*** ./1client/src/Input.js ***!
   \******************************/
@@ -23963,7 +23679,303 @@
 	module.exports = Input;
 
 /***/ }),
+/* 195 */
+/*!************************************!*\
+  !*** ./1client/src/ProgressBar.js ***!
+  \************************************/
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(/*! react */ 1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _styles = __webpack_require__(/*! ./styles.css */ 185);
+	
+	var _styles2 = _interopRequireDefault(_styles);
+	
+	var _Controls = __webpack_require__(/*! ./Controls.js */ 196);
+	
+	var _Controls2 = _interopRequireDefault(_Controls);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var url = 'http://static.kevvv.in/sounds/callmemaybe.mp3';
+	
+	var ProgressBar = function (_React$Component) {
+	  _inherits(ProgressBar, _React$Component);
+	
+	  function ProgressBar(props) {
+	    _classCallCheck(this, ProgressBar);
+	
+	    var _this = _possibleConstructorReturn(this, (ProgressBar.__proto__ || Object.getPrototypeOf(ProgressBar)).call(this, props));
+	
+	    _this.ac = new (window.AudioContext || webkitAudioContext)();
+	    _this.url = url;
+	    _this.state = {
+	      url: '',
+	      trackNumber: 0,
+	      progress: 0
+	    };
+	    return _this;
+	  }
+	
+	  _createClass(ProgressBar, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      // this.fetch();
+	      window.addEventListener('mousemove', this.onDrag.bind(this));
+	      window.addEventListener('mouseup', this.onMouseUp.bind(this));
+	    }
+	  }, {
+	    key: 'componentWillReceiveProps',
+	    value: function componentWillReceiveProps(nextProps) {
+	      var context = this;
+	      this.props.container.state.playPrev = this.playPreviousSong.bind(this);
+	      this.props.container.state.playNext = this.playNextSong.bind(this);
+	      this.props.container.state.toggle = this.toggle.bind(this);
+	      this.setState({ url: nextProps.urls[context.state.trackNumber], urls: nextProps.urls }, function () {
+	        context.fetch();
+	      });
+	    }
+	  }, {
+	    key: 'fetch',
+	    value: function fetch() {
+	      var context = this;
+	      var xhr = new XMLHttpRequest();
+	      xhr.open('GET', context.state.urls[context.state.trackNumber], true);
+	      xhr.responseType = 'arraybuffer';
+	      xhr.onload = function () {
+	        this.decode(xhr.response);
+	      }.bind(this);
+	      xhr.send();
+	    }
+	  }, {
+	    key: 'decode',
+	    value: function decode(arrayBuffer) {
+	      this.ac.decodeAudioData(arrayBuffer, function (audioBuffer) {
+	        this.buffer = audioBuffer;
+	        this.draw();
+	        this.play();
+	      }.bind(this));
+	    }
+	  }, {
+	    key: 'connect',
+	    value: function connect() {
+	      if (this.playing) {
+	        this.pause();
+	      }
+	      this.source = this.ac.createBufferSource();
+	      this.source.buffer = this.buffer;
+	      this.source.connect(this.ac.destination);
+	    }
+	  }, {
+	    key: 'play',
+	    value: function play(position) {
+	      this.connect();
+	      this.position = typeof position === 'number' ? position : this.position || 0;
+	      this.startTime = this.ac.currentTime - (this.position || 0);
+	      this.source.start(this.ac.currentTime, this.position);
+	      this.playing = true;
+	    }
+	  }, {
+	    key: 'pause',
+	    value: function pause() {
+	      if (this.source) {
+	        this.source.stop(0);
+	        this.source = null;
+	        this.position = this.ac.currentTime - this.startTime;
+	        this.playing = false;
+	      }
+	    }
+	  }, {
+	    key: 'seek',
+	    value: function seek(time) {
+	      if (this.playing) {
+	        this.play(time);
+	      } else {
+	        this.position = time;
+	      }
+	    }
+	  }, {
+	    key: 'updatePosition',
+	    value: function updatePosition() {
+	      this.position = this.playing ? this.ac.currentTime - this.startTime : this.position;
+	      if (this.position >= this.buffer.duration) {
+	        this.position = this.buffer.duration;
+	        this.pause();
+	      }
+	      return this.position;
+	    }
+	  }, {
+	    key: 'toggle',
+	    value: function toggle() {
+	      if (!this.playing) {
+	        this.play();
+	      } else {
+	        this.pause();
+	      }
+	    }
+	  }, {
+	    key: 'onDrag',
+	    value: function onDrag(e) {
+	      var width = void 0;
+	      var position = void 0;
+	      if (!this.dragging) {
+	        return;
+	      }
+	      width = 286;
+	      position = this.startLeft + (e.pageX - this.startX);
+	      position = Math.max(Math.min(width, position), 0);
+	      this.setState({ scrubberStyle: { left: position } });
+	    }
+	  }, {
+	    key: 'onMouseDown',
+	    value: function onMouseDown(e) {
+	      this.dragging = true;
+	      this.startX = e.pageX;
+	      this.startLeft = parseInt(this.state.scrubberStyle.left || 0, 10);
+	    }
+	  }, {
+	    key: 'onMouseUp',
+	    value: function onMouseUp() {
+	      var width, left, time;
+	      if (this.dragging) {
+	        var _width = 286;
+	        var _left = parseInt(this.state.scrubberStyle.left || 0, 10);
+	        var _time = _left / _width * this.buffer.duration;
+	        this.seek(_time);
+	        this.dragging = false;
+	      }
+	    }
+	  }, {
+	    key: 'playNextSong',
+	    value: function playNextSong() {
+	      this.pause();
+	      this.state.trackNumber++;
+	      this.position = 0;
+	      this.fetch();
+	      this.props.changeCover(this.state.trackNumber);
+	      return;
+	    }
+	  }, {
+	    key: 'playPreviousSong',
+	    value: function playPreviousSong() {
+	      this.pause();
+	      this.state.trackNumber--;
+	      this.position = 0;
+	      this.fetch();
+	      this.props.changeCover(this.state.trackNumber);
+	      return;
+	    }
+	  }, {
+	    key: 'draw',
+	    value: function draw() {
+	      if (this.buffer.duration === this.position) {
+	        this.state.trackNumber++;
+	        this.position = 0;
+	        this.fetch();
+	        this.props.changeCover(this.state.trackNumber);
+	        return;
+	      }
+	      var context = this;
+	      var progress = this.updatePosition() / context.buffer.duration;
+	      this.state.progress = progress;
+	      var width = 286;
+	      context.setState({ progressStyle: { width: this.state.progress * width + 'px' } }, function () {});
+	      requestAnimationFrame(context.draw.bind(context));
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        _react2.default.createElement(
+	          'div',
+	          { className: _styles2.default.track },
+	          _react2.default.createElement(
+	            'div',
+	            { className: _styles2.default.progress, style: this.state.progressStyle },
+	            ' '
+	          )
+	        )
+	      );
+	    }
+	  }]);
+	
+	  return ProgressBar;
+	}(_react2.default.Component);
+	
+	module.exports = ProgressBar;
+
+/***/ }),
 /* 196 */
+/*!*********************************!*\
+  !*** ./1client/src/Controls.js ***!
+  \*********************************/
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var _react = __webpack_require__(/*! react */ 1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _styles = __webpack_require__(/*! ./styles.css */ 185);
+	
+	var _styles2 = _interopRequireDefault(_styles);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var Controls = function Controls(props) {
+	  return _react2.default.createElement(
+	    'div',
+	    null,
+	    _react2.default.createElement(
+	      'table',
+	      { className: _styles2.default.player },
+	      _react2.default.createElement(
+	        'tbody',
+	        null,
+	        _react2.default.createElement(
+	          'td',
+	          null,
+	          _react2.default.createElement('input', { type: 'checkbox', className: _styles2.default.backward }),
+	          _react2.default.createElement('label', { className: _styles2.default.backward, htmlFor: _styles2.default.backward })
+	        ),
+	        _react2.default.createElement(
+	          'td',
+	          null,
+	          _react2.default.createElement('input', { type: 'checkbox', className: _styles2.default.play, title: 'Play' }),
+	          _react2.default.createElement('label', { className: _styles2.default.play, htmlFor: _styles2.default.play, onClick: function onClick() {
+	              props.stopSong();
+	            } })
+	        ),
+	        _react2.default.createElement(
+	          'td',
+	          null,
+	          _react2.default.createElement('input', { type: 'checkbox', className: _styles2.default.forward }),
+	          _react2.default.createElement('label', { className: _styles2.default.forward, htmlFor: _styles2.default.forward })
+	        )
+	      )
+	    )
+	  );
+	};
+	
+	module.exports = Controls;
+
+/***/ }),
+/* 197 */
 /*!************************************!*\
   !*** ./~/react-redux/lib/index.js ***!
   \************************************/
@@ -23974,15 +23986,15 @@
 	exports.__esModule = true;
 	exports.connect = exports.connectAdvanced = exports.createProvider = exports.Provider = undefined;
 	
-	var _Provider = __webpack_require__(/*! ./components/Provider */ 197);
+	var _Provider = __webpack_require__(/*! ./components/Provider */ 198);
 	
 	var _Provider2 = _interopRequireDefault(_Provider);
 	
-	var _connectAdvanced = __webpack_require__(/*! ./components/connectAdvanced */ 202);
+	var _connectAdvanced = __webpack_require__(/*! ./components/connectAdvanced */ 203);
 	
 	var _connectAdvanced2 = _interopRequireDefault(_connectAdvanced);
 	
-	var _connect = __webpack_require__(/*! ./connect/connect */ 206);
+	var _connect = __webpack_require__(/*! ./connect/connect */ 207);
 	
 	var _connect2 = _interopRequireDefault(_connect);
 	
@@ -23994,7 +24006,7 @@
 	exports.connect = _connect2.default;
 
 /***/ }),
-/* 197 */
+/* 198 */
 /*!**************************************************!*\
   !*** ./~/react-redux/lib/components/Provider.js ***!
   \**************************************************/
@@ -24007,13 +24019,13 @@
 	
 	var _react = __webpack_require__(/*! react */ 1);
 	
-	var _propTypes = __webpack_require__(/*! prop-types */ 198);
+	var _propTypes = __webpack_require__(/*! prop-types */ 199);
 	
 	var _propTypes2 = _interopRequireDefault(_propTypes);
 	
-	var _PropTypes = __webpack_require__(/*! ../utils/PropTypes */ 200);
+	var _PropTypes = __webpack_require__(/*! ../utils/PropTypes */ 201);
 	
-	var _warning = __webpack_require__(/*! ../utils/warning */ 201);
+	var _warning = __webpack_require__(/*! ../utils/warning */ 202);
 	
 	var _warning2 = _interopRequireDefault(_warning);
 	
@@ -24089,7 +24101,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! ./../../../process/browser.js */ 3)))
 
 /***/ }),
-/* 198 */
+/* 199 */
 /*!*******************************!*\
   !*** ./~/prop-types/index.js ***!
   \*******************************/
@@ -24121,13 +24133,13 @@
 	} else {
 	  // By explicitly using `prop-types` you are opting into new production behavior.
 	  // http://fb.me/prop-types-in-prod
-	  module.exports = __webpack_require__(/*! ./factoryWithThrowingShims */ 199)();
+	  module.exports = __webpack_require__(/*! ./factoryWithThrowingShims */ 200)();
 	}
 	
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! ./../process/browser.js */ 3)))
 
 /***/ }),
-/* 199 */
+/* 200 */
 /*!**************************************************!*\
   !*** ./~/prop-types/factoryWithThrowingShims.js ***!
   \**************************************************/
@@ -24194,7 +24206,7 @@
 
 
 /***/ }),
-/* 200 */
+/* 201 */
 /*!**********************************************!*\
   !*** ./~/react-redux/lib/utils/PropTypes.js ***!
   \**********************************************/
@@ -24205,7 +24217,7 @@
 	exports.__esModule = true;
 	exports.storeShape = exports.subscriptionShape = undefined;
 	
-	var _propTypes = __webpack_require__(/*! prop-types */ 198);
+	var _propTypes = __webpack_require__(/*! prop-types */ 199);
 	
 	var _propTypes2 = _interopRequireDefault(_propTypes);
 	
@@ -24225,7 +24237,7 @@
 	});
 
 /***/ }),
-/* 201 */
+/* 202 */
 /*!********************************************!*\
   !*** ./~/react-redux/lib/utils/warning.js ***!
   \********************************************/
@@ -24258,7 +24270,7 @@
 	}
 
 /***/ }),
-/* 202 */
+/* 203 */
 /*!*********************************************************!*\
   !*** ./~/react-redux/lib/components/connectAdvanced.js ***!
   \*********************************************************/
@@ -24272,21 +24284,21 @@
 	
 	exports.default = connectAdvanced;
 	
-	var _hoistNonReactStatics = __webpack_require__(/*! hoist-non-react-statics */ 203);
+	var _hoistNonReactStatics = __webpack_require__(/*! hoist-non-react-statics */ 204);
 	
 	var _hoistNonReactStatics2 = _interopRequireDefault(_hoistNonReactStatics);
 	
-	var _invariant = __webpack_require__(/*! invariant */ 204);
+	var _invariant = __webpack_require__(/*! invariant */ 205);
 	
 	var _invariant2 = _interopRequireDefault(_invariant);
 	
 	var _react = __webpack_require__(/*! react */ 1);
 	
-	var _Subscription = __webpack_require__(/*! ../utils/Subscription */ 205);
+	var _Subscription = __webpack_require__(/*! ../utils/Subscription */ 206);
 	
 	var _Subscription2 = _interopRequireDefault(_Subscription);
 	
-	var _PropTypes = __webpack_require__(/*! ../utils/PropTypes */ 200);
+	var _PropTypes = __webpack_require__(/*! ../utils/PropTypes */ 201);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -24573,7 +24585,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! ./../../../process/browser.js */ 3)))
 
 /***/ }),
-/* 203 */
+/* 204 */
 /*!********************************************!*\
   !*** ./~/hoist-non-react-statics/index.js ***!
   \********************************************/
@@ -24654,7 +24666,7 @@
 
 
 /***/ }),
-/* 204 */
+/* 205 */
 /*!********************************!*\
   !*** ./~/invariant/browser.js ***!
   \********************************/
@@ -24713,7 +24725,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! ./../process/browser.js */ 3)))
 
 /***/ }),
-/* 205 */
+/* 206 */
 /*!*************************************************!*\
   !*** ./~/react-redux/lib/utils/Subscription.js ***!
   \*************************************************/
@@ -24817,7 +24829,7 @@
 	exports.default = Subscription;
 
 /***/ }),
-/* 206 */
+/* 207 */
 /*!**********************************************!*\
   !*** ./~/react-redux/lib/connect/connect.js ***!
   \**********************************************/
@@ -24831,27 +24843,27 @@
 	
 	exports.createConnect = createConnect;
 	
-	var _connectAdvanced = __webpack_require__(/*! ../components/connectAdvanced */ 202);
+	var _connectAdvanced = __webpack_require__(/*! ../components/connectAdvanced */ 203);
 	
 	var _connectAdvanced2 = _interopRequireDefault(_connectAdvanced);
 	
-	var _shallowEqual = __webpack_require__(/*! ../utils/shallowEqual */ 207);
+	var _shallowEqual = __webpack_require__(/*! ../utils/shallowEqual */ 208);
 	
 	var _shallowEqual2 = _interopRequireDefault(_shallowEqual);
 	
-	var _mapDispatchToProps = __webpack_require__(/*! ./mapDispatchToProps */ 208);
+	var _mapDispatchToProps = __webpack_require__(/*! ./mapDispatchToProps */ 209);
 	
 	var _mapDispatchToProps2 = _interopRequireDefault(_mapDispatchToProps);
 	
-	var _mapStateToProps = __webpack_require__(/*! ./mapStateToProps */ 231);
+	var _mapStateToProps = __webpack_require__(/*! ./mapStateToProps */ 232);
 	
 	var _mapStateToProps2 = _interopRequireDefault(_mapStateToProps);
 	
-	var _mergeProps = __webpack_require__(/*! ./mergeProps */ 232);
+	var _mergeProps = __webpack_require__(/*! ./mergeProps */ 233);
 	
 	var _mergeProps2 = _interopRequireDefault(_mergeProps);
 	
-	var _selectorFactory = __webpack_require__(/*! ./selectorFactory */ 233);
+	var _selectorFactory = __webpack_require__(/*! ./selectorFactory */ 234);
 	
 	var _selectorFactory2 = _interopRequireDefault(_selectorFactory);
 	
@@ -24953,7 +24965,7 @@
 	exports.default = createConnect();
 
 /***/ }),
-/* 207 */
+/* 208 */
 /*!*************************************************!*\
   !*** ./~/react-redux/lib/utils/shallowEqual.js ***!
   \*************************************************/
@@ -24995,7 +25007,7 @@
 	}
 
 /***/ }),
-/* 208 */
+/* 209 */
 /*!*********************************************************!*\
   !*** ./~/react-redux/lib/connect/mapDispatchToProps.js ***!
   \*********************************************************/
@@ -25008,9 +25020,9 @@
 	exports.whenMapDispatchToPropsIsMissing = whenMapDispatchToPropsIsMissing;
 	exports.whenMapDispatchToPropsIsObject = whenMapDispatchToPropsIsObject;
 	
-	var _redux = __webpack_require__(/*! redux */ 209);
+	var _redux = __webpack_require__(/*! redux */ 210);
 	
-	var _wrapMapToProps = __webpack_require__(/*! ./wrapMapToProps */ 229);
+	var _wrapMapToProps = __webpack_require__(/*! ./wrapMapToProps */ 230);
 	
 	function whenMapDispatchToPropsIsFunction(mapDispatchToProps) {
 	  return typeof mapDispatchToProps === 'function' ? (0, _wrapMapToProps.wrapMapToPropsFunc)(mapDispatchToProps, 'mapDispatchToProps') : undefined;
@@ -25031,7 +25043,7 @@
 	exports.default = [whenMapDispatchToPropsIsFunction, whenMapDispatchToPropsIsMissing, whenMapDispatchToPropsIsObject];
 
 /***/ }),
-/* 209 */
+/* 210 */
 /*!******************************!*\
   !*** ./~/redux/lib/index.js ***!
   \******************************/
@@ -25042,27 +25054,27 @@
 	exports.__esModule = true;
 	exports.compose = exports.applyMiddleware = exports.bindActionCreators = exports.combineReducers = exports.createStore = undefined;
 	
-	var _createStore = __webpack_require__(/*! ./createStore */ 210);
+	var _createStore = __webpack_require__(/*! ./createStore */ 211);
 	
 	var _createStore2 = _interopRequireDefault(_createStore);
 	
-	var _combineReducers = __webpack_require__(/*! ./combineReducers */ 224);
+	var _combineReducers = __webpack_require__(/*! ./combineReducers */ 225);
 	
 	var _combineReducers2 = _interopRequireDefault(_combineReducers);
 	
-	var _bindActionCreators = __webpack_require__(/*! ./bindActionCreators */ 226);
+	var _bindActionCreators = __webpack_require__(/*! ./bindActionCreators */ 227);
 	
 	var _bindActionCreators2 = _interopRequireDefault(_bindActionCreators);
 	
-	var _applyMiddleware = __webpack_require__(/*! ./applyMiddleware */ 227);
+	var _applyMiddleware = __webpack_require__(/*! ./applyMiddleware */ 228);
 	
 	var _applyMiddleware2 = _interopRequireDefault(_applyMiddleware);
 	
-	var _compose = __webpack_require__(/*! ./compose */ 228);
+	var _compose = __webpack_require__(/*! ./compose */ 229);
 	
 	var _compose2 = _interopRequireDefault(_compose);
 	
-	var _warning = __webpack_require__(/*! ./utils/warning */ 225);
+	var _warning = __webpack_require__(/*! ./utils/warning */ 226);
 	
 	var _warning2 = _interopRequireDefault(_warning);
 	
@@ -25086,7 +25098,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! ./../../process/browser.js */ 3)))
 
 /***/ }),
-/* 210 */
+/* 211 */
 /*!************************************!*\
   !*** ./~/redux/lib/createStore.js ***!
   \************************************/
@@ -25098,11 +25110,11 @@
 	exports.ActionTypes = undefined;
 	exports['default'] = createStore;
 	
-	var _isPlainObject = __webpack_require__(/*! lodash/isPlainObject */ 211);
+	var _isPlainObject = __webpack_require__(/*! lodash/isPlainObject */ 212);
 	
 	var _isPlainObject2 = _interopRequireDefault(_isPlainObject);
 	
-	var _symbolObservable = __webpack_require__(/*! symbol-observable */ 221);
+	var _symbolObservable = __webpack_require__(/*! symbol-observable */ 222);
 	
 	var _symbolObservable2 = _interopRequireDefault(_symbolObservable);
 	
@@ -25355,15 +25367,15 @@
 	}
 
 /***/ }),
-/* 211 */
+/* 212 */
 /*!***********************************!*\
   !*** ./~/lodash/isPlainObject.js ***!
   \***********************************/
 /***/ (function(module, exports, __webpack_require__) {
 
-	var baseGetTag = __webpack_require__(/*! ./_baseGetTag */ 212),
-	    getPrototype = __webpack_require__(/*! ./_getPrototype */ 218),
-	    isObjectLike = __webpack_require__(/*! ./isObjectLike */ 220);
+	var baseGetTag = __webpack_require__(/*! ./_baseGetTag */ 213),
+	    getPrototype = __webpack_require__(/*! ./_getPrototype */ 219),
+	    isObjectLike = __webpack_require__(/*! ./isObjectLike */ 221);
 	
 	/** `Object#toString` result references. */
 	var objectTag = '[object Object]';
@@ -25426,15 +25438,15 @@
 
 
 /***/ }),
-/* 212 */
+/* 213 */
 /*!*********************************!*\
   !*** ./~/lodash/_baseGetTag.js ***!
   \*********************************/
 /***/ (function(module, exports, __webpack_require__) {
 
-	var Symbol = __webpack_require__(/*! ./_Symbol */ 213),
-	    getRawTag = __webpack_require__(/*! ./_getRawTag */ 216),
-	    objectToString = __webpack_require__(/*! ./_objectToString */ 217);
+	var Symbol = __webpack_require__(/*! ./_Symbol */ 214),
+	    getRawTag = __webpack_require__(/*! ./_getRawTag */ 217),
+	    objectToString = __webpack_require__(/*! ./_objectToString */ 218);
 	
 	/** `Object#toString` result references. */
 	var nullTag = '[object Null]',
@@ -25463,13 +25475,13 @@
 
 
 /***/ }),
-/* 213 */
+/* 214 */
 /*!*****************************!*\
   !*** ./~/lodash/_Symbol.js ***!
   \*****************************/
 /***/ (function(module, exports, __webpack_require__) {
 
-	var root = __webpack_require__(/*! ./_root */ 214);
+	var root = __webpack_require__(/*! ./_root */ 215);
 	
 	/** Built-in value references. */
 	var Symbol = root.Symbol;
@@ -25478,13 +25490,13 @@
 
 
 /***/ }),
-/* 214 */
+/* 215 */
 /*!***************************!*\
   !*** ./~/lodash/_root.js ***!
   \***************************/
 /***/ (function(module, exports, __webpack_require__) {
 
-	var freeGlobal = __webpack_require__(/*! ./_freeGlobal */ 215);
+	var freeGlobal = __webpack_require__(/*! ./_freeGlobal */ 216);
 	
 	/** Detect free variable `self`. */
 	var freeSelf = typeof self == 'object' && self && self.Object === Object && self;
@@ -25496,7 +25508,7 @@
 
 
 /***/ }),
-/* 215 */
+/* 216 */
 /*!*********************************!*\
   !*** ./~/lodash/_freeGlobal.js ***!
   \*********************************/
@@ -25510,13 +25522,13 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ }),
-/* 216 */
+/* 217 */
 /*!********************************!*\
   !*** ./~/lodash/_getRawTag.js ***!
   \********************************/
 /***/ (function(module, exports, __webpack_require__) {
 
-	var Symbol = __webpack_require__(/*! ./_Symbol */ 213);
+	var Symbol = __webpack_require__(/*! ./_Symbol */ 214);
 	
 	/** Used for built-in method references. */
 	var objectProto = Object.prototype;
@@ -25565,7 +25577,7 @@
 
 
 /***/ }),
-/* 217 */
+/* 218 */
 /*!*************************************!*\
   !*** ./~/lodash/_objectToString.js ***!
   \*************************************/
@@ -25596,13 +25608,13 @@
 
 
 /***/ }),
-/* 218 */
+/* 219 */
 /*!***********************************!*\
   !*** ./~/lodash/_getPrototype.js ***!
   \***********************************/
 /***/ (function(module, exports, __webpack_require__) {
 
-	var overArg = __webpack_require__(/*! ./_overArg */ 219);
+	var overArg = __webpack_require__(/*! ./_overArg */ 220);
 	
 	/** Built-in value references. */
 	var getPrototype = overArg(Object.getPrototypeOf, Object);
@@ -25611,7 +25623,7 @@
 
 
 /***/ }),
-/* 219 */
+/* 220 */
 /*!******************************!*\
   !*** ./~/lodash/_overArg.js ***!
   \******************************/
@@ -25635,7 +25647,7 @@
 
 
 /***/ }),
-/* 220 */
+/* 221 */
 /*!**********************************!*\
   !*** ./~/lodash/isObjectLike.js ***!
   \**********************************/
@@ -25673,7 +25685,7 @@
 
 
 /***/ }),
-/* 221 */
+/* 222 */
 /*!******************************************!*\
   !*** ./~/symbol-observable/lib/index.js ***!
   \******************************************/
@@ -25685,7 +25697,7 @@
 	  value: true
 	});
 	
-	var _ponyfill = __webpack_require__(/*! ./ponyfill.js */ 223);
+	var _ponyfill = __webpack_require__(/*! ./ponyfill.js */ 224);
 	
 	var _ponyfill2 = _interopRequireDefault(_ponyfill);
 	
@@ -25708,10 +25720,10 @@
 	
 	var result = (0, _ponyfill2['default'])(root);
 	exports['default'] = result;
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(/*! ./../../webpack/buildin/module.js */ 222)(module)))
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(/*! ./../../webpack/buildin/module.js */ 223)(module)))
 
 /***/ }),
-/* 222 */
+/* 223 */
 /*!***********************************!*\
   !*** (webpack)/buildin/module.js ***!
   \***********************************/
@@ -25730,7 +25742,7 @@
 
 
 /***/ }),
-/* 223 */
+/* 224 */
 /*!*********************************************!*\
   !*** ./~/symbol-observable/lib/ponyfill.js ***!
   \*********************************************/
@@ -25761,7 +25773,7 @@
 	};
 
 /***/ }),
-/* 224 */
+/* 225 */
 /*!****************************************!*\
   !*** ./~/redux/lib/combineReducers.js ***!
   \****************************************/
@@ -25772,13 +25784,13 @@
 	exports.__esModule = true;
 	exports['default'] = combineReducers;
 	
-	var _createStore = __webpack_require__(/*! ./createStore */ 210);
+	var _createStore = __webpack_require__(/*! ./createStore */ 211);
 	
-	var _isPlainObject = __webpack_require__(/*! lodash/isPlainObject */ 211);
+	var _isPlainObject = __webpack_require__(/*! lodash/isPlainObject */ 212);
 	
 	var _isPlainObject2 = _interopRequireDefault(_isPlainObject);
 	
-	var _warning = __webpack_require__(/*! ./utils/warning */ 225);
+	var _warning = __webpack_require__(/*! ./utils/warning */ 226);
 	
 	var _warning2 = _interopRequireDefault(_warning);
 	
@@ -25913,7 +25925,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! ./../../process/browser.js */ 3)))
 
 /***/ }),
-/* 225 */
+/* 226 */
 /*!**************************************!*\
   !*** ./~/redux/lib/utils/warning.js ***!
   \**************************************/
@@ -25946,7 +25958,7 @@
 	}
 
 /***/ }),
-/* 226 */
+/* 227 */
 /*!*******************************************!*\
   !*** ./~/redux/lib/bindActionCreators.js ***!
   \*******************************************/
@@ -26005,7 +26017,7 @@
 	}
 
 /***/ }),
-/* 227 */
+/* 228 */
 /*!****************************************!*\
   !*** ./~/redux/lib/applyMiddleware.js ***!
   \****************************************/
@@ -26019,7 +26031,7 @@
 	
 	exports['default'] = applyMiddleware;
 	
-	var _compose = __webpack_require__(/*! ./compose */ 228);
+	var _compose = __webpack_require__(/*! ./compose */ 229);
 	
 	var _compose2 = _interopRequireDefault(_compose);
 	
@@ -26071,7 +26083,7 @@
 	}
 
 /***/ }),
-/* 228 */
+/* 229 */
 /*!********************************!*\
   !*** ./~/redux/lib/compose.js ***!
   \********************************/
@@ -26115,7 +26127,7 @@
 	}
 
 /***/ }),
-/* 229 */
+/* 230 */
 /*!*****************************************************!*\
   !*** ./~/react-redux/lib/connect/wrapMapToProps.js ***!
   \*****************************************************/
@@ -26128,7 +26140,7 @@
 	exports.getDependsOnOwnProps = getDependsOnOwnProps;
 	exports.wrapMapToPropsFunc = wrapMapToPropsFunc;
 	
-	var _verifyPlainObject = __webpack_require__(/*! ../utils/verifyPlainObject */ 230);
+	var _verifyPlainObject = __webpack_require__(/*! ../utils/verifyPlainObject */ 231);
 	
 	var _verifyPlainObject2 = _interopRequireDefault(_verifyPlainObject);
 	
@@ -26202,7 +26214,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! ./../../../process/browser.js */ 3)))
 
 /***/ }),
-/* 230 */
+/* 231 */
 /*!******************************************************!*\
   !*** ./~/react-redux/lib/utils/verifyPlainObject.js ***!
   \******************************************************/
@@ -26213,11 +26225,11 @@
 	exports.__esModule = true;
 	exports.default = verifyPlainObject;
 	
-	var _isPlainObject = __webpack_require__(/*! lodash/isPlainObject */ 211);
+	var _isPlainObject = __webpack_require__(/*! lodash/isPlainObject */ 212);
 	
 	var _isPlainObject2 = _interopRequireDefault(_isPlainObject);
 	
-	var _warning = __webpack_require__(/*! ./warning */ 201);
+	var _warning = __webpack_require__(/*! ./warning */ 202);
 	
 	var _warning2 = _interopRequireDefault(_warning);
 	
@@ -26230,7 +26242,7 @@
 	}
 
 /***/ }),
-/* 231 */
+/* 232 */
 /*!******************************************************!*\
   !*** ./~/react-redux/lib/connect/mapStateToProps.js ***!
   \******************************************************/
@@ -26242,7 +26254,7 @@
 	exports.whenMapStateToPropsIsFunction = whenMapStateToPropsIsFunction;
 	exports.whenMapStateToPropsIsMissing = whenMapStateToPropsIsMissing;
 	
-	var _wrapMapToProps = __webpack_require__(/*! ./wrapMapToProps */ 229);
+	var _wrapMapToProps = __webpack_require__(/*! ./wrapMapToProps */ 230);
 	
 	function whenMapStateToPropsIsFunction(mapStateToProps) {
 	  return typeof mapStateToProps === 'function' ? (0, _wrapMapToProps.wrapMapToPropsFunc)(mapStateToProps, 'mapStateToProps') : undefined;
@@ -26257,7 +26269,7 @@
 	exports.default = [whenMapStateToPropsIsFunction, whenMapStateToPropsIsMissing];
 
 /***/ }),
-/* 232 */
+/* 233 */
 /*!*************************************************!*\
   !*** ./~/react-redux/lib/connect/mergeProps.js ***!
   \*************************************************/
@@ -26274,7 +26286,7 @@
 	exports.whenMergePropsIsFunction = whenMergePropsIsFunction;
 	exports.whenMergePropsIsOmitted = whenMergePropsIsOmitted;
 	
-	var _verifyPlainObject = __webpack_require__(/*! ../utils/verifyPlainObject */ 230);
+	var _verifyPlainObject = __webpack_require__(/*! ../utils/verifyPlainObject */ 231);
 	
 	var _verifyPlainObject2 = _interopRequireDefault(_verifyPlainObject);
 	
@@ -26324,7 +26336,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! ./../../../process/browser.js */ 3)))
 
 /***/ }),
-/* 233 */
+/* 234 */
 /*!******************************************************!*\
   !*** ./~/react-redux/lib/connect/selectorFactory.js ***!
   \******************************************************/
@@ -26337,7 +26349,7 @@
 	exports.pureFinalPropsSelectorFactory = pureFinalPropsSelectorFactory;
 	exports.default = finalPropsSelectorFactory;
 	
-	var _verifySubselectors = __webpack_require__(/*! ./verifySubselectors */ 234);
+	var _verifySubselectors = __webpack_require__(/*! ./verifySubselectors */ 235);
 	
 	var _verifySubselectors2 = _interopRequireDefault(_verifySubselectors);
 	
@@ -26446,7 +26458,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! ./../../../process/browser.js */ 3)))
 
 /***/ }),
-/* 234 */
+/* 235 */
 /*!*********************************************************!*\
   !*** ./~/react-redux/lib/connect/verifySubselectors.js ***!
   \*********************************************************/
@@ -26457,7 +26469,7 @@
 	exports.__esModule = true;
 	exports.default = verifySubselectors;
 	
-	var _warning = __webpack_require__(/*! ../utils/warning */ 201);
+	var _warning = __webpack_require__(/*! ../utils/warning */ 202);
 	
 	var _warning2 = _interopRequireDefault(_warning);
 	
@@ -26480,7 +26492,7 @@
 	}
 
 /***/ }),
-/* 235 */
+/* 236 */
 /*!*********************************!*\
   !*** ./~/jquery/dist/jquery.js ***!
   \*********************************/
@@ -36853,7 +36865,7 @@
 
 
 /***/ }),
-/* 236 */
+/* 237 */
 /*!******************************!*\
   !*** ./1client/src/store.js ***!
   \******************************/
@@ -36865,13 +36877,13 @@
 	  value: true
 	});
 	
-	var _redux = __webpack_require__(/*! redux */ 209);
+	var _redux = __webpack_require__(/*! redux */ 210);
 	
-	var _reduxLogger = __webpack_require__(/*! redux-logger */ 237);
+	var _reduxLogger = __webpack_require__(/*! redux-logger */ 238);
 	
 	var _reduxLogger2 = _interopRequireDefault(_reduxLogger);
 	
-	var _reactRedux = __webpack_require__(/*! react-redux */ 196);
+	var _reactRedux = __webpack_require__(/*! react-redux */ 197);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -36901,7 +36913,7 @@
 	exports.default = store;
 
 /***/ }),
-/* 237 */
+/* 238 */
 /*!*********************************************!*\
   !*** ./~/redux-logger/dist/redux-logger.js ***!
   \*********************************************/
@@ -36912,7 +36924,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ }),
-/* 238 */
+/* 239 */
 /*!*****************************************************!*\
   !*** ./~/spotify-web-api-js/src/spotify-web-api.js ***!
   \*****************************************************/
@@ -38686,7 +38698,7 @@
 
 
 /***/ }),
-/* 239 */
+/* 240 */
 /*!************************************!*\
   !*** ./1client/src/fetchBuffer.js ***!
   \************************************/

@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from './styles.css';
+import Controls from './Controls.js';
 let url = 'http://static.kevvv.in/sounds/callmemaybe.mp3';
 
 class ProgressBar extends React.Component {
@@ -20,7 +21,9 @@ class ProgressBar extends React.Component {
   }
   componentWillReceiveProps(nextProps) {
     let context = this;
-    console.log(nextProps.urls, 'Progress????????????????????????????????????????????????????????????');
+    this.props.container.state.playPrev = this.playPreviousSong.bind(this);
+    this.props.container.state.playNext = this.playNextSong.bind(this);
+    this.props.container.state.toggle = this.toggle.bind(this);
     this.setState({url: nextProps.urls[context.state.trackNumber], urls: nextProps.urls}, () => {
       context.fetch();
     }); 
@@ -63,8 +66,6 @@ class ProgressBar extends React.Component {
       this.source = null;
       this.position = this.ac.currentTime - this.startTime;
       this.playing = false;
-      this.state.progress = 0;
-      // this.fetch();
     }
   }
   seek ( time ) {
@@ -76,10 +77,6 @@ class ProgressBar extends React.Component {
     
   }
   updatePosition () {
-    // if (this.position === this.buffer.duration) {
-    //   console.log('restart????');
-    //   return;
-    // }
     this.position = this.playing ? 
     this.ac.currentTime - this.startTime : this.position;
     if ( this.position >= this.buffer.duration ) {
@@ -123,30 +120,29 @@ class ProgressBar extends React.Component {
     }
   }
   playNextSong () {
-    if (this.buffer.duration === this.position) {
-      this.state.trackNumber++;
-      this.position = 0;
-      this.fetch();
-      return;
-    } 
+    this.pause();
+    this.state.trackNumber++;
+    this.position = 0;
+    this.fetch();
+    this.props.changeCover(this.state.trackNumber);
+    return;
   }
-
   playPreviousSong() {
-    if (this.buffer.duration === this.position) {
-      this.state.trackNumber--;
-      this.position = 0;
-      this.fetch();
-      return;
-    }
+    this.pause();
+    this.state.trackNumber--;
+    this.position = 0;
+    this.fetch();
+    this.props.changeCover(this.state.trackNumber);
+    return;
   }
   draw () {
     if (this.buffer.duration === this.position) {
       this.state.trackNumber++;
       this.position = 0;
       this.fetch();
+      this.props.changeCover(this.state.trackNumber);
       return;
     }
-    console.log('drawing');
     let context = this;
     let progress = ( this.updatePosition() / context.buffer.duration );
     this.state.progress = progress;
@@ -159,7 +155,7 @@ class ProgressBar extends React.Component {
     return (
      <div > 
         <div className= {styles.track} >
-          <div className= {styles.progress} style = {this.state.progressStyle} > </div> 
+          <div className= {styles.progress} style = {this.state.progressStyle} > </div>
         </div>
      </div>
     );

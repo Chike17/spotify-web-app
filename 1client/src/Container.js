@@ -8,11 +8,11 @@ import ProgressBar from './ProgressBar.js';
 class Container extends React.Component {
   constructor(props) {
     super(props);
-  }
-  forceIt() {
-    this.forceUpdate();
+    this.state = {playPrev: '', playNext: '', toggle: ''};
   }
   render() {
+    console.log(this.state.playPrev, 'prev???');
+    console.log(this.state.playNext, 'next???');
     let context = this;
     let divStyle = {
       'background': 'url(' + '"' + this.props.cover + '"' + ')',
@@ -20,15 +20,19 @@ class Container extends React.Component {
     }; 
     return (
       <div>
-         <div className = {styles.screen} onClick = {() => { props.getCurrentTime(); } } >
+         <div className = {styles.screen} >
          <input type = "checkbox" value = "None" className = {styles.magicButton} name="check" />
          <Input setTrackList = {this.props.setTrackList} />
          <div className = {styles.coverImage} style = {divStyle}></div>
          <div className = {styles.bodyPlayer}></div>
          <div className = {styles.testing}> Partial Result Data </div>
-         <Table tracklist = {this.props.tracklist} stopSong = {this.props.stopSong}/>
+         <Table tracklist = {this.props.tracklist} 
+                stopSong = {this.props.stopSong} 
+                playPrev = {this.state.playPrev} 
+                playNext = {this.state.playNext}
+                toggle = {this.state.toggle}/>
          <div className = {styles.progresscontainer}>
-            <ProgressBar urls = {this.props.urls} forceIt = {this.forceIt.bind(this)}/>
+            <ProgressBar urls = {this.props.urls} container = {this} changeCover = {this.props.changeCover} />
         </div>
      </div> 
      
