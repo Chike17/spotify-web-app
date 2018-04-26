@@ -22573,7 +22573,9 @@
 	      source: undefined,
 	      actx: undefined,
 	      pureStop: true,
-	      buffer: ''
+	      buffer: '',
+	      preResults: false,
+	      numTracks: 0
 	    };
 	    if (params.access_token) {
 	      spotifyWebApi.setAccessToken(params.access_token);
@@ -22618,20 +22620,33 @@
 	    value: function spotifyCall(input) {
 	      var context = this;
 	      spotifyWebApi.searchTracks(input).then(function (response) {
-	        var tracks = response.tracks.items;
-	        tracks = tracks.filter(function (track) {
-	          return track.preview_url !== null;
-	        });
-	        console.log(tracks);
-	        var cover = response.tracks.items[0].album.images[1].url;
-	        var url1 = response.tracks.items[0].preview_url;
-	        var urls = tracks.map(function (item) {
-	          return item.preview_url;
-	        });
-	        context.setState({ cover: cover, tracklist: tracks, urls: urls });
+	        if (context.state.preResults) {
+	          console.log(input);
+	          var length = response.tracks.items.length;
+	          context.setState({ numTracks: length });
+	        } else if (!context.preResults) {
+	          var tracks = response.tracks.items;
+	          tracks = tracks.filter(function (track) {
+	            return track.preview_url !== null;
+	          });
+	          console.log(tracks);
+	          var cover = response.tracks.items[0].album.images[1].url;
+	          var url1 = response.tracks.items[0].preview_url;
+	          var urls = tracks.map(function (item) {
+	            return item.preview_url;
+	          });
+	          context.state.preResults = false;
+	          context.setState({ cover: cover, tracklist: tracks, urls: urls });
+	        }
 	      }, function (err) {
 	        console.error(err, 'error!!!!!');
 	      });
+	    }
+	  }, {
+	    key: 'getpreResults',
+	    value: function getpreResults(input) {
+	      this.state.preResults = true;
+	      this.spotifyCall(input);
 	    }
 	  }, {
 	    key: 'componentDidMount',
@@ -22657,6 +22672,9 @@
 	  }, {
 	    key: 'setTrackList',
 	    value: function setTrackList(input) {
+	      var context = this;
+	      console.log('set track list??????');
+	      context.state.preResults = false;
 	      this.spotifyCall(input);
 	    }
 	  }, {
@@ -22676,7 +22694,9 @@
 	          setTrackList: this.setTrackList,
 	          cover: this.state.cover,
 	          stopSong: this.stopSong.bind(this),
-	          changeCover: this.changeCover.bind(this)
+	          changeCover: this.changeCover.bind(this),
+	          getpreResults: this.getpreResults.bind(this),
+	          numofTracks: this.state.numTracks
 	        })
 	      );
 	    }
@@ -23425,13 +23445,16 @@
 	          'div',
 	          { className: _styles2.default.screen },
 	          _react2.default.createElement('input', { type: 'checkbox', value: 'None', className: _styles2.default.magicButton, name: 'check' }),
-	          _react2.default.createElement(_Input2.default, { setTrackList: this.props.setTrackList }),
+	          _react2.default.createElement(_Input2.default, { setTrackList: this.props.setTrackList,
+	            getpreResults: this.props.getpreResults }),
 	          _react2.default.createElement('div', { className: _styles2.default.coverImage, style: divStyle }),
 	          _react2.default.createElement('div', { className: _styles2.default.bodyPlayer }),
 	          _react2.default.createElement(
 	            'div',
 	            { className: _styles2.default.testing },
-	            ' Partial Result Data '
+	            ' Number of Results: ',
+	            this.props.numofTracks,
+	            ' '
 	          ),
 	          _react2.default.createElement(_Table2.default, { tracklist: this.props.tracklist,
 	            stopSong: this.props.stopSong,
@@ -23482,7 +23505,7 @@
 	    null,
 	    _react2.default.createElement(
 	      'table',
-	      { className: _styles2.default.player, onClick: console.log(props.playPrev, 'Table play prev???????????????????????????????????') },
+	      { className: _styles2.default.player },
 	      _react2.default.createElement(
 	        'tbody',
 	        null,
@@ -23514,7 +23537,7 @@
 	    ),
 	    _react2.default.createElement(
 	      'div',
-	      { className: _styles2.default.listcontainer, onClick: console.log(props.playPrev, 'Table play prev???????????????????????????????????') },
+	      { className: _styles2.default.listcontainer },
 	      _react2.default.createElement(
 	        'div',
 	        { className: _styles2.default.scrollcontainer },
@@ -23649,7 +23672,7 @@
 	      var context = this;
 	      var value = event.target.value;
 	      context.setState({ value: event.target.value }, function () {
-	        console.log(value);
+	        context.props.getpreResults(value);
 	      });
 	    }
 	  }, {

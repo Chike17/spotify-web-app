@@ -27,7 +27,9 @@ class App extends React.Component {
       source: undefined,
       actx: undefined,
       pureStop: true,
-      buffer: ''
+      buffer: '',
+      preResults: false,
+      numTracks: 0
     };
     if (params.access_token) {
       spotifyWebApi.setAccessToken(params.access_token);
@@ -59,20 +61,31 @@ class App extends React.Component {
     let context = this;
     spotifyWebApi.searchTracks(input)
         .then(function(response) {
-          let tracks = response.tracks.items;
-          tracks = tracks.filter((track) => {
-            return track.preview_url !== null;
-          });
-          console.log(tracks);
-          let cover = response.tracks.items[0].album.images[1].url;
-          let url1 = response.tracks.items[0].preview_url;
-          let urls = tracks.map((item) => {
-            return item.preview_url;
-          });
-          context.setState({cover: cover, tracklist: tracks, urls: urls});
+          if (context.state.preResults) {
+            console.log(input);
+            let length = response.tracks.items.length;
+            context.setState({numTracks: length});
+          } else if (!context.preResults) {
+            let tracks = response.tracks.items;
+            tracks = tracks.filter((track) => {
+              return track.preview_url !== null;
+            });
+            console.log(tracks);
+            let cover = response.tracks.items[0].album.images[1].url;
+            let url1 = response.tracks.items[0].preview_url;
+            let urls = tracks.map((item) => {
+              return item.preview_url;
+            });
+            context.state.preResults = false;
+            context.setState({cover: cover, tracklist: tracks, urls: urls});
+          }
         }, function(err) {
           console.error(err, 'error!!!!!');
         });
+  }
+  getpreResults(input) {
+    this.state.preResults = true;
+    this.spotifyCall(input);
   }
   componentDidMount() {
     let context = this;
@@ -91,6 +104,9 @@ class App extends React.Component {
     return hashParams;
   }
   setTrackList (input) {
+    let context = this;
+    console.log('set track list??????');
+    context.state.preResults = false;
     this.spotifyCall(input);
   }
   changeCover(index) {
@@ -106,6 +122,8 @@ class App extends React.Component {
                    cover = {this.state.cover}
                    stopSong = {this.stopSong.bind(this)}
                    changeCover = {this.changeCover.bind(this)}
+                   getpreResults = {this.getpreResults.bind(this)}
+                   numofTracks = {this.state.numTracks}
                    />
       </div>
     );

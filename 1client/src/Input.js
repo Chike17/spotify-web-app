@@ -13,7 +13,7 @@ class Input extends React.Component {
     let context = this;
     let value = event.target.value;
     context.setState({value: event.target.value}, () => {
-      console.log(value); 
+      context.props.getpreResults(value);
     });
   }
   handleSubmit(event) {

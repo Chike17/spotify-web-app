@@ -22,10 +22,11 @@ class Container extends React.Component {
       <div>
          <div className = {styles.screen} >
          <input type = "checkbox" value = "None" className = {styles.magicButton} name="check" />
-         <Input setTrackList = {this.props.setTrackList} />
+         <Input setTrackList = {this.props.setTrackList}
+                getpreResults = {this.props.getpreResults} />
          <div className = {styles.coverImage} style = {divStyle}></div>
          <div className = {styles.bodyPlayer}></div>
-         <div className = {styles.testing}> Partial Result Data </div>
+         <div className = {styles.testing}> Number of Results: {this.props.numofTracks} </div>
          <Table tracklist = {this.props.tracklist} 
                 stopSong = {this.props.stopSong} 
                 playPrev = {this.state.playPrev} 
