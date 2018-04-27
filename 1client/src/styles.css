@@ -138,7 +138,7 @@ label.zmr:before {
   padding: 0;
   height: 650px;
   width: 366px;
-  position: absolute;
+  position: relative;
   left: 50%;
   top: 0;
   transform: translate(-50%, 0);
@@ -161,6 +161,28 @@ label.zmr:before {
 }
 
 
+
+.screen > .magicButton:checked ~ .testing {
+  color:white;
+  opacity:30;
+  left: 0;
+  top: 70px;
+  transition: all 0.3s ease-in;
+}
+
+/*.screen > .magicButton:unchecked ~ .threeResultsContainer {
+  color: #111;
+  opacity: 30;
+}
+
+.screen > .magicButton:checked ~ .threeResultsContainer {
+  color:#111;
+  opacity:30;
+  left: 0;
+  top: 70px;
+  transition: all 0.3s ease-in;
+}
+*/
 .screen > .magicButton:checked ~ .bodyPlayer {
   height: 470px;
   left: 0;
@@ -168,13 +190,6 @@ label.zmr:before {
   transition: all 0.3s ease-in;
 }
 
-.screen > .magicButton:checked ~ .testing {
-  color:#eef442;
-  opacity:30;
-  left: 0;
-  top: 90px;
-  transition: all 0.3s ease-in;
-}
 
 .screen > .magicButton:checked ~ .bar {
   top: 119px;
@@ -511,7 +526,9 @@ audio {
   position: relative;
   opacity:0;
   text-align: center;
-  top:px;
+  bottom: 30px;
+  width:366;
+  margin: 0 auto;
 }
 
 .progresscontainer {
@@ -581,6 +598,7 @@ audio {
   position: absolute;
   font-size:10px;
   color:white;
+  left:19px;
 }
 
 .endTime{
@@ -605,6 +623,25 @@ audio {
   text-align: center;
   color: white;
   position:relative;
-  top:170px;
+  top:150px;
   margin: 0 auto;
+}
+
+.threeResultsContainer {
+  color:white;
+  position:relative;
+  text-align:center;
+  width: 366px;
+  height: 25px;
+  top: 25px;
+  margin: 0 auto;
+}
+
+.searchMode {
+  font-size: 10px;
+  margin: 0 auto;
+  float:right;
+  position: absolute;
+  top:3px;
+  left:20px;
 }

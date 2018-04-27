@@ -24,13 +24,20 @@ class Container extends React.Component {
     return (
       <div>
          <div className = {styles.screen} >
-         <input type = "checkbox" value = "None" className = {styles.magicButton} name="check" />
+         <div className =  {styles.searchMode}> search mode </div>
+         <input type = "checkbox" value = "Node" className = {styles.magicButton} name="check" />
          <div className = {styles.coverImage} style = {divStyle}> </div>
          <div className = {styles.newTracks}>SEARCH FOR A NEW TRACKLIST </div>
          <Input setTrackList = {this.props.setTrackList}
                 getpreResults = {this.props.getpreResults}/>
          <div className = {styles.bodyPlayer}> </div>
-         <div className = {styles.testing}> First 3 Results </div>
+         <div className = {styles.testing}> First 3 Results 
+           <div className = {styles.threeResultsContainer}> 
+              <div> 1. Song By Artist </div>
+              <div> 2. Song By Artist </div> 
+              <div> 3. Song By Artist </div> 
+           </div>
+         </div>
          <Table tracklist = {this.props.tracklist} 
                 stopSong = {this.props.stopSong} 
                 playPrev = {this.state.playPrev} 
@@ -39,11 +46,11 @@ class Container extends React.Component {
                 toggle = {this.state.toggle}/>
               <div className = {styles.nowPlaying} > Now Playing Song by Artist </div>
               <div className = {styles.progresscontainer}> 
-              <div className = {styles.running}> Running </div>
+              <div className = {styles.running}> 0:00 </div>
                <div>
                   <ProgressBar urls = {this.props.urls} container = {this} changeCover = {this.props.changeCover} />
                </div>
-              <div className = {styles.endTime}> End Time </div>
+              <div className = {styles.endTime}> 0:00 </div>
               </div>
      </div> 
      
