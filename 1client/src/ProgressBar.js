@@ -24,6 +24,7 @@ class ProgressBar extends React.Component {
     this.props.container.state.playPrev = this.playPreviousSong.bind(this);
     this.props.container.state.playNext = this.playNextSong.bind(this);
     this.props.container.state.toggle = this.toggle.bind(this);
+    this.props.container.state.clickEvent = this.playOnClick.bind(this); 
     this.setState({url: nextProps.urls[context.state.trackNumber], urls: nextProps.urls}, () => {
       context.fetch();
     }); 
@@ -130,6 +131,14 @@ class ProgressBar extends React.Component {
   playPreviousSong() {
     this.pause();
     this.state.trackNumber--;
+    this.position = 0;
+    this.fetch();
+    this.props.changeCover(this.state.trackNumber);
+    return;
+  }
+  playOnClick(index) {
+    this.pause();
+    this.state.trackNumber = index;
     this.position = 0;
     this.fetch();
     this.props.changeCover(this.state.trackNumber);

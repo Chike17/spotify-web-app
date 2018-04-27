@@ -8,7 +8,7 @@ import ProgressBar from './ProgressBar.js';
 class Container extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {playPrev: '', playNext: '', toggle: ''};
+    this.state = {playPrev: '', playNext: '', toggle: '', clickEvent: ''};
   }
   render() {
     console.log(this.state.playPrev, 'prev???');
@@ -31,6 +31,7 @@ class Container extends React.Component {
                 stopSong = {this.props.stopSong} 
                 playPrev = {this.state.playPrev} 
                 playNext = {this.state.playNext}
+                clickE = {this.state.clickEvent}
                 toggle = {this.state.toggle}/>
          <div className = {styles.progresscontainer}>
             <ProgressBar urls = {this.props.urls} container = {this} changeCover = {this.props.changeCover} />

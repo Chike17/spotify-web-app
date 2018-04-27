@@ -23424,7 +23424,7 @@
 	
 	    var _this = _possibleConstructorReturn(this, (Container.__proto__ || Object.getPrototypeOf(Container)).call(this, props));
 	
-	    _this.state = { playPrev: '', playNext: '', toggle: '' };
+	    _this.state = { playPrev: '', playNext: '', toggle: '', clickEvent: '' };
 	    return _this;
 	  }
 	
@@ -23460,6 +23460,7 @@
 	            stopSong: this.props.stopSong,
 	            playPrev: this.state.playPrev,
 	            playNext: this.state.playNext,
+	            clickE: this.state.clickEvent,
 	            toggle: this.state.toggle }),
 	          _react2.default.createElement(
 	            'div',
@@ -23550,8 +23551,8 @@
 	            _react2.default.createElement(
 	              'div',
 	              null,
-	              props.tracklist.map(function (track, index) {
-	                return _react2.default.createElement(_TableEntry2.default, { title: track.name, number: index });
+	              props.tracklist.map(function (track, i) {
+	                return _react2.default.createElement(_TableEntry2.default, { title: track.name, clicked: props.clickE, index: i });
 	              })
 	            )
 	          )
@@ -23588,7 +23589,9 @@
 	      null,
 	      _react2.default.createElement(
 	         'tr',
-	         { className: _styles2.default.song },
+	         { className: _styles2.default.song, onClick: function onClick() {
+	               props.clicked(props.index);
+	            } },
 	         _react2.default.createElement(
 	            'td',
 	            { className: _styles2.default.nr },
@@ -23596,7 +23599,7 @@
 	               'h5',
 	               null,
 	               ' ',
-	               props.number,
+	               props.index,
 	               ' '
 	            )
 	         ),
@@ -23766,6 +23769,7 @@
 	      this.props.container.state.playPrev = this.playPreviousSong.bind(this);
 	      this.props.container.state.playNext = this.playNextSong.bind(this);
 	      this.props.container.state.toggle = this.toggle.bind(this);
+	      this.props.container.state.clickEvent = this.playOnClick.bind(this);
 	      this.setState({ url: nextProps.urls[context.state.trackNumber], urls: nextProps.urls }, function () {
 	        context.fetch();
 	      });
@@ -23895,6 +23899,16 @@
 	    value: function playPreviousSong() {
 	      this.pause();
 	      this.state.trackNumber--;
+	      this.position = 0;
+	      this.fetch();
+	      this.props.changeCover(this.state.trackNumber);
+	      return;
+	    }
+	  }, {
+	    key: 'playOnClick',
+	    value: function playOnClick(index) {
+	      this.pause();
+	      this.state.trackNumber = index;
 	      this.position = 0;
 	      this.fetch();
 	      this.props.changeCover(this.state.trackNumber);

@@ -17,7 +17,7 @@ let Table = (props) => {
           <table className= {styles.list}>
            <tbody>
               <div>
-               {props.tracklist.map((track, index) => <TableEntry title = {track.name} number = {index} /> )}
+               {props.tracklist.map((track, i) => <TableEntry title = {track.name} clicked = {props.clickE} index = {i} /> )}
               </div>
            </tbody>
          </table>
