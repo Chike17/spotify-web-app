@@ -100,7 +100,7 @@ class ProgressBar extends React.Component {
     if ( !this.dragging ) {
       return;
     }
-    width = 286;
+    width = 185;
     position = this.startLeft + ( e.pageX - this.startX );
     position = Math.max(Math.min(width, position), 0);
     this.setState({scrubberStyle: {left: position}});
@@ -113,7 +113,7 @@ class ProgressBar extends React.Component {
   onMouseUp () {
     var width, left, time;
     if ( this.dragging ) {
-      let width = 286;
+      let width = 185;
       let left = parseInt(this.state.scrubberStyle.left || 0, 10);
       let time = left / width * this.buffer.duration;
       this.seek(time);
@@ -155,7 +155,7 @@ class ProgressBar extends React.Component {
     let context = this;
     let progress = ( this.updatePosition() / context.buffer.duration );
     this.state.progress = progress;
-    let width = 286;
+    let width = 185;
     context.setState({progressStyle: {width: this.state.progress * width + 'px'} }, () => {
     });
     requestAnimationFrame(context.draw.bind(context));
@@ -172,13 +172,7 @@ class ProgressBar extends React.Component {
 }
 
 module.exports = ProgressBar;   
-
-
-
-
-
-
-
+   
    
 
 

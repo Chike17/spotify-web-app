@@ -172,7 +172,7 @@ label.zmr:before {
   color:#eef442;
   opacity:30;
   left: 0;
-  top: 180px;
+  top: 90px;
   transition: all 0.3s ease-in;
 }
 
@@ -508,14 +508,19 @@ audio {
 }
 
 .testing {
-  position: absolute;
+  position: relative;
   opacity:0;
+  text-align: center;
+  top:px;
 }
 
 .progresscontainer {
   position: absolute;
-  left: 25px;
-  top: 330px;
+  left: 38px;
+  top: 345px;
+  width:300px;
+  height:20px;
+  margin: 0 auto;
 }
 
 .message {
@@ -544,9 +549,9 @@ audio {
 
 .track {
   position: absolute;
-  text-align: center;
-  width: 286px;
-  margin: 7px 0 0 16px;
+  width: 185px;
+  left:50px;
+  margin: 0 auto;
   height: 10px;
   border: 1px solid #666;
   display: inline-block;
@@ -570,4 +575,36 @@ audio {
   border: solid 3px #ddd;
   cursor: pointer;
   box-shadow: 0 0 5px #000, inset 0 0 4px #400;
+}
+
+.running{
+  position: absolute;
+  font-size:10px;
+  color:white;
+}
+
+.endTime{
+  position: absolute;
+  font-size:10px;
+  color:white;
+  left: 253px;
+}
+
+.inputBox{
+  text-align:center;
+  top: 500px;
+}
+
+.newTracks {
+  text-align:center;
+  margin-top: 50px;
+  margin-bottom: 15px;
+}
+
+.nowPlaying {
+  text-align: center;
+  color: white;
+  position:relative;
+  top:170px;
+  margin: 0 auto;
 }

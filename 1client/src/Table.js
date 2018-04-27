@@ -7,9 +7,9 @@ let Table = (props) => {
    <div >
       <table className={styles.player} >
         <tbody>
-          <td><input type="checkbox" className={styles.backward}/><label className={styles.backward} htmlFor={styles.backward} onClick = {() => { props.playPrev(); }} ></label></td>
-          <td><input type="checkbox" className={styles.play} title="Play" /><label className={styles.play} htmlFor={styles.play} onClick = {() => { props.toggle(); }} ></label></td>
-          <td><input type="checkbox" className={styles.forward}/><label className={styles.forward}htmlFor={styles.forward} onClick = {() => { props.playNext(); } } ></label></td>
+          <td> <label className={styles.backward} htmlFor={styles.backward} onClick = {() => { props.playPrev(); }} ></label></td>
+          <td> <label className={styles.play} htmlFor={styles.play} onClick = {() => { props.toggle(); }} ></label></td>
+          <td> <label className={styles.forward}htmlFor={styles.forward} onClick = {() => { props.playNext(); } } ></label></td>
         </tbody>
       </table>
       <div className = {styles.listcontainer} >

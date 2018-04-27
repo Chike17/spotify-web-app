@@ -8,7 +8,6 @@ class Input extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
-
   handleChange(event) {
     let context = this;
     let value = event.target.value;
@@ -22,11 +21,15 @@ class Input extends React.Component {
   }
   render() {
     return (
-      <form onSubmit={this.handleSubmit}>
-        <label>
-          <input type="text" value={this.state.value} onChange={this.handleChange} />
-        </label>
-      </form>
+      <div>
+       <div className = {styles.inputBox}>
+          <form onSubmit={this.handleSubmit} >
+            <label >
+              <input type="text" value={this.state.value} onChange={this.handleChange}  />
+            </label>
+          </form>
+        </div>
+      </div>
     );
   }
 }
