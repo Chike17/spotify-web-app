@@ -4,8 +4,8 @@ import styles from './styles.css';
 
 let TableEntry = (props) => {
 	let title = props.title;
-	if (title.length >= 26){
-	  title = title.substring(0, 25) + '...'; 
+		if (title.length >= 26) {
+		title = title.substring(0, 25) + '...'; 
 	}
   return (
      <div className={styles.tableEntryDiv} >

@@ -8,6 +8,27 @@ body {
   margin: 0;
 }
 
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #888; 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+}
+
+
 @keyframes harlem {
   0% {
     transform: scale(1);
@@ -139,7 +160,7 @@ label.zmr:before {
   background: rgb(6, 6, 9);
   padding: 0;
   min-height: 432px;
-  height: 650px;
+  height: 640px;
   /*each song is 49.439px*/
   width: 299px;
   position: relative;
@@ -277,7 +298,6 @@ label.zmr:before {
   color: #bbb;
 }
 .scrollcontainer {
-  overflow: auto;
   height: 100%;
   width: 100%;
   position: relative;

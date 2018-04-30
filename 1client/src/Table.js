@@ -4,8 +4,12 @@ import TableEntry from './TableEntry.js';
 import FaIconPack from 'react-icons/lib/fa';
 import backward from 'react-icons/lib/fa/backward';
 import FontAwesome from 'react-fontawesome';
+import InfiniteScroll from 'react-simple-infinite-scroll';
+import ScrollArea from 'react-scrollbar';
+
 
 let Table = (props) => {
+  let divStyle = {overflow: 'auto', height: 'inherit', display: 'block'};
   return (
    <div >
       <table className={styles.player} >
@@ -15,16 +19,14 @@ let Table = (props) => {
           <td> <i className={[styles.fore,'fas','fa-step-forward'].join(' ')} htmlFor={styles.forward} onClick = {() => { props.playNext(); } } ></i></td>
         </tbody>
       </table>
-      <div className = {styles.listcontainer} >
-        <div className= {styles.scrollcontainer}>
+      <div className = {styles.listcontainer} style = {divStyle}>
           <table className= {styles.list}>
-           <tbody>
+           <tbody style = {{'height': '220px', 'overflow':'scroll', 'display': 'block', 'overflow-x': 'hidden'}}>
               <div>
                {props.tracklist.map((track, i) => <TableEntry title = {track.name} clicked = {props.clickE} index = {i + 1} /> )}
               </div>
            </tbody>
          </table>
-        </div>
       </div> 
    </div>
   );

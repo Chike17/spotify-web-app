@@ -5,7 +5,6 @@ import Input from './Input.js';
 import ProgressBar from './ProgressBar.js'; 
 
 
-
 class Container extends React.Component {
   constructor(props) {
     super(props);
@@ -22,11 +21,11 @@ class Container extends React.Component {
     let inputStyle = {
       left: '100px',
       'background-color':'black'
-    }
+    };
     return (
-      <div>
+      <div >
          <div className = {styles.screen} styles = {screenHeight} >
-         <div className =  {styles.searchMode}> Search Mode </div>
+         <div className = {styles.searchMode}> Search Mode </div>
          <input type = "checkbox" value = "Node" className = {styles.magicButton} name="check" />
          <div className = {styles.coverImage} style = {divStyle}> </div>
          <div className = {styles.newTracks}></div>
