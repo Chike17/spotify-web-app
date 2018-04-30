@@ -1,15 +1,18 @@
 import React from 'react';
 import styles from './styles.css';
 import TableEntry from './TableEntry.js';
+import FaIconPack from 'react-icons/lib/fa';
+import backward from 'react-icons/lib/fa/backward';
+import FontAwesome from 'react-fontawesome';
 
 let Table = (props) => {
   return (
    <div >
       <table className={styles.player} >
         <tbody>
-          <td> <label className={styles.backward} htmlFor={styles.backward} onClick = {() => { props.playPrev(); }} ></label></td>
-          <td> <label className={styles.play} htmlFor={styles.play} onClick = {() => { props.toggle(); }} ></label></td>
-          <td> <label className={styles.forward}htmlFor={styles.forward} onClick = {() => { props.playNext(); } } ></label></td>
+          <td> <i className={[styles.back,'fas','fa-step-backward'].join(' ')} htmlFor={styles.backward} onClick = {() => { props.playPrev(); }} ></i></td>
+          <td> <i className={[styles.play,'fas','fa-play'].join(' ')} htmlFor={styles.play} onClick = {() => { props.toggle(); }} ></i></td>
+          <td> <i className={[styles.fore,'fas','fa-step-forward'].join(' ')} htmlFor={styles.forward} onClick = {() => { props.playNext(); } } ></i></td>
         </tbody>
       </table>
       <div className = {styles.listcontainer} >
@@ -17,7 +20,7 @@ let Table = (props) => {
           <table className= {styles.list}>
            <tbody>
               <div>
-               {props.tracklist.map((track, i) => <TableEntry title = {track.name} clicked = {props.clickE} index = {i} /> )}
+               {props.tracklist.map((track, i) => <TableEntry title = {track.name} clicked = {props.clickE} index = {i + 1} /> )}
               </div>
            </tbody>
          </table>

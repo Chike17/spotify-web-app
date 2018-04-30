@@ -3,6 +3,7 @@ import styles from './styles.css';
 import Controls from './Controls.js';
 let url = 'http://static.kevvv.in/sounds/callmemaybe.mp3';
 
+
 class ProgressBar extends React.Component {
   constructor (props) {
     super(props);
@@ -100,7 +101,7 @@ class ProgressBar extends React.Component {
     if ( !this.dragging ) {
       return;
     }
-    width = 185;
+    width = 300;
     position = this.startLeft + ( e.pageX - this.startX );
     position = Math.max(Math.min(width, position), 0);
     this.setState({scrubberStyle: {left: position}});
@@ -113,7 +114,7 @@ class ProgressBar extends React.Component {
   onMouseUp () {
     var width, left, time;
     if ( this.dragging ) {
-      let width = 185;
+      let width = 300;
       let left = parseInt(this.state.scrubberStyle.left || 0, 10);
       let time = left / width * this.buffer.duration;
       this.seek(time);
@@ -155,7 +156,7 @@ class ProgressBar extends React.Component {
     let context = this;
     let progress = ( this.updatePosition() / context.buffer.duration );
     this.state.progress = progress;
-    let width = 185;
+    let width = 300;
     context.setState({progressStyle: {width: this.state.progress * width + 'px'} }, () => {
     });
     requestAnimationFrame(context.draw.bind(context));

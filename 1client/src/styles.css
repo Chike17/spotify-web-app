@@ -1,7 +1,9 @@
 @import url(https://fonts.googleapis.com/css?family=Open+Sans:300,400,700);
 
 body {
-  background: #42f492;
+  /*background: #42f492;*/
+  background: #111;
+  /*background: rgb(6, 6, 9);*/
   padding: 0;
   margin: 0;
 }
@@ -57,7 +59,7 @@ h2 {
   font-size: 10px;
   line-height: 10px;
   letter-spacing: 2.5px;
-  font-family: 'Open Sans';
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-weight: 700;
   color: #fff;
 }
@@ -67,17 +69,17 @@ h3 {
   padding: 0;
   font-size: 11px;
   line-height: 11px;
-  font-family: 'Open Sans';
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-weight: 400;
   color: #777;
 }
 
 h4 {
-  margin: 0 0 5px 29px;
+  margin: 0 0 0 0;
   padding: 0;
   font-size: 14px;
   line-height: 14px;
-  font-family: 'Open Sans';
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-weight: 700;
   color: #fff;
 }
@@ -87,7 +89,7 @@ h5 {
   padding: 0;
   font-size: 13px;
   line-height: 13px;
-  font-family: 'Open Sans';
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-weight: 700;
   color: #6d6d6d;
 }
@@ -97,7 +99,7 @@ h6 {
   padding: 0;
   font-size: 13px;
   line-height: 13px;
-  font-family: 'Open Sans';
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-weight: 700;
   color: #f0f0f0;
 }
@@ -134,10 +136,12 @@ label.zmr:before {
 
 
 .screen {
-  background-color: #b8b9ba;
+  background: rgb(6, 6, 9);
   padding: 0;
+  min-height: 432px;
   height: 650px;
-  width: 366px;
+  /*each song is 49.439px*/
+  width: 299px;
   position: relative;
   left: 50%;
   top: 0;
@@ -148,16 +152,17 @@ label.zmr:before {
 }
 
 .screen > .magicButton:checked ~ .coverImage {
-  transform: scale(0, 0);
-  left: 185px;
-  top: 60px;
+  transform: scale(0.0001, 0.0001);
+  left: 160px;
+  top: 80px;
   transition: all 0.3s ease-in;
-  border-radius: 20px;
 }
 
 .screen > .magicButton:unchecked ~ .testing {
   color: #111;
   opacity: 30;
+  left: 50%;
+  transform: translate(-50%,0%);
 }
 
 
@@ -165,8 +170,9 @@ label.zmr:before {
 .screen > .magicButton:checked ~ .testing {
   color:white;
   opacity:30;
-  left: 0;
-  top: 70px;
+  left: 50%;
+  top: 10px;
+  transform: translate(-50%,0%);
   transition: all 0.3s ease-in;
 }
 
@@ -221,14 +227,16 @@ label.zmr:before {
 
 
 .coverImage {
-  width: 366px;
-  height: 366px;
+  width: 300px;
+  height: 300px;
   padding: 0;
   bottom: 20px;
   margin-top: 20px;
   position: absolute;
   top: 0;
-  left: 0;
+  left: 50%;
+  transform:translate(-50%,0%);
+  z-index: 1000;
   transform-origin: 0% 0%;
   transition: all 0.3s ease-in;
 }
@@ -240,8 +248,10 @@ label.zmr:before {
   margin: 0;
   padding: 0;
   height: 350px; 
-  width: 366px;
-  background: #111;
+  width: 100%;
+  /*background: #111;*/
+  /*background: #282828;*/
+  background: rgb(6, 6, 9);
   transition: all 0.3s ease-in;
 }
 
@@ -263,81 +273,135 @@ label.zmr:before {
   z-index: 10;
   transition: all 0.3s ease-in;
 }
-
 .search:hover:before {
   color: #bbb;
 }
-
-/*.title {
-  width: 215px;
-  text-align: left;
-  text-indent: 15px;
-  transition: all 0.11s ease-in;
-}*/
-
 .scrollcontainer {
-  overflow:auto;
-  height: 200px;
-  width: 200px;
+  overflow: auto;
+  height: 100%;
+  width: 100%;
+  position: relative;
+  left: 50%;
+  transform: translate(-50%,0%);
 }
+
 .listcontainer {
   position: absolute;
-  left: 90px;
-  top: 420px;
+  left: 50%;
+  top: 430px;
+  transform: translate(-50%,0%);
+  width: 100%;
+}
+.list {
+  position:relative;
+  left: 50%;
+  transform: translate(-50%,0%);
+}
 
+.songEntry {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  flex-wrap: wrap;
+  padding: 6px 0px;
+}
+.nr {
+  width: 5%;
+  text-align: center;
+  padding: 5px 2.5px 5px 7.5px;
+  position: relative;
+  top: 10px;
+}
+.nr h5 {
+  font-size: 11px;
+  font-weight: 300;
+  color:#444;
+}
+.title {
+  width: calc(100% - 17% - 23px);
+  padding: 5px 0px 5px 10px;
+}
+.title:hover {
+  color: #42f492;
+}
+.title h6{
+  font-size: 13px;
+  font-weight: 300;
+  color: #eee;
+}
+.length {
+  width: 12%;
+  text-align: center;
+  padding: 5px 3px 5px 0px;
+  position: relative;
+  top: 0px;
+}
+.length h5 {
+  font-size: 11px;
+  font-weight: 300;
+  color:#444;
+}
+.artistName {
+  padding-left: calc(5% + 20px);
+  width: 100%;
+}
+.artistName h6{
+  font-size: 11px;
+  font-weight: 300;
+  color: #888;
 }
 
 td > .heart:checked ~ label.zmr:before {
   content: "\f004";
-  color: #ff564c;
+  color: #42f492;
   transition: all 0.15s linear;
 }
 
 td > .heart1:checked ~ label.zmr:before {
   content: "\f004";
-  color: #ff564c;
+  color: #42f492;
   transition: all 0.15s linear;
 }
 
 td > .heart2:checked ~ label.zmr:before {
   content: "\f004";
-  color: #ff564c;
+  color: #42f492;
   transition: all 0.15s linear;
 }
 
 td > .heart3:checked ~ label.zmr:before {
   content: "\f004";
-  color: #ff564c;
+  color: #42f492;
   transition: all 0.15s linear;
 }
 
 td > .heart4:checked ~ label.zmr:before {
   content: "\f004";
-  color: #ff564c;
+  color: #42f492;
   transition: all 0.15s linear;
 }
 
 td > .heart5:checked ~ label.zmr:before {
   content: "\f004";
-  color: #ff564c;
+  color: #42f492;
   transition: all 0.15s linear;
 }
 
 td > .heart6:checked ~ label.zmr:before {
   content: "\f004";
-  color: #ff564c;
+  color: #42f492;
   transition: all 0.15s linear;
 }
 
 td > .heart7:checked ~ label.zmr:before {
   content: "\f004";
-  color: #ff564c;
+  color: #42f492;
   transition: all 0.15s linear;
 }
 
 td > .heart8:checked ~ label.zmr:before {
   content: "\f004";
-  color: #ff564c;
+  color: #42f492;
   transition: all 0.15s linear;
 }
 
@@ -348,17 +412,17 @@ td > .play:checked ~ label.play:before {
 
 td > .love:checked ~ label.love:before {
   content: "\f004";
-  color: #ff564c;
+  color: #42f492;
   transition: all 0.15s linear;
 }
 
 td > .shuffle:checked ~ label.shuffle:before {
-  color: #ff564c;
+  color: #42f492;
   transition: all 0.15s linear;
 }
 
 td > .repeat:checked ~ label.repeat:before {
-  color: #ff564c;
+  color: #42f492;
   transition: all 0.15s linear;
 }
 
@@ -404,7 +468,7 @@ td > .repeat:checked ~ label.repeat:before {
   width: 216px;
   height: 300px;
   position: absolute;
-  top: 240px;
+  top: 250px;
   left: 50%;
   right: 40px;
   transform: translate(-50%, 0);
@@ -421,13 +485,14 @@ audio {
   visibility: hidden;
 }
 
-.backward:before {
+.back:before {
   content: "\f04a";
   cursor: pointer;
+  color: white;
   transition: all 0.15s linear;
 }
 
-.backward:hover:before {
+.back:hover:before {
   color: #bbb;
   transition: all 0.15s linear;
 }
@@ -443,13 +508,13 @@ audio {
   transition: all 0.15s linear;
 }
 
-.forward:before {
+.fore:before {
   content: "\f04e";
   cursor: pointer;
   transition: all 0.15s linear;
 }
 
-.forward:hover:before {
+.fore:hover:before {
   color: #bbb;
   transition: all 0.15s linear;
 }
@@ -521,22 +586,51 @@ audio {
   bottom: -60px;
   transition: all 0.3s ease-in;
 }
+.searchInputBox {
+  width:80%;
+  position: absolute;
+  left: 50%;
+  top: 40px;
+  transform: translate(-50%,0%);
+  background: none;
+  border:none;
+  border-bottom:1px solid #444;
+  outline:none;
+  color:#ddd;
+}
 
 .testing {
   position: relative;
   opacity:0;
   text-align: center;
-  bottom: 30px;
-  width:366;
+  width:300;
+  top: 50px;
+  left: 50%;
+  transform:translate(-50%,0%);
   margin: 0 auto;
+  bottom: 100px;
+}
+.userMessageContainer {
+  color: #444;
+  font-weight: 300;
+  font-size: 12px;
+  position: absolute;
+  top: 55px;
+  left: 50%;
+  transform: translate(-50%,0%);
+  width: 100%;
+  text-align: center;
+  z-index: 100;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
 .progresscontainer {
   position: absolute;
-  left: 38px;
-  top: 345px;
+  left: 50%;
+  top: 320px;
+  transform: translate(-50%,0%);
   width:300px;
-  height:20px;
+  height:3px;
   margin: 0 auto;
 }
 
@@ -566,11 +660,10 @@ audio {
 
 .track {
   position: absolute;
-  width: 185px;
-  left:50px;
+  width: 300px;
+  left: 0px;
   margin: 0 auto;
-  height: 10px;
-  border: 1px solid #666;
+  height: 3px;
   display: inline-block;
   vertical-align: top;
 }
@@ -596,16 +689,19 @@ audio {
 
 .running{
   position: absolute;
-  font-size:10px;
-  color:white;
-  left:19px;
+  font-size:12px;
+  color: #888;
+  font-weight: 300;
+  left:10px;
+  top: 8px;
 }
 
 .endTime{
   position: absolute;
-  font-size:10px;
-  color:white;
-  left: 253px;
+  font-size: 12px;
+  color: #888;
+  left: 270px;
+  top: 8px;
 }
 
 .inputBox{
@@ -617,31 +713,73 @@ audio {
   text-align:center;
   margin-top: 50px;
   margin-bottom: 15px;
+  color:white;
 }
 
-.nowPlaying {
+
+.songArtistContainer {
   text-align: center;
   color: white;
-  position:relative;
-  top:150px;
-  margin: 0 auto;
+  position: absolute;
+  top: 325px;
+  left: 50%;
+  transform: translate(-50%,0%);
+  width: 300px;
+}
+.song {
+  text-align: center;
+  padding: 8px 0px 2px 0px;
+  color: #fff;
+}
+.song h4 {
+  position: relative;
+  left: 50%;
+  transform: translate(-50%,0%);
+  font-size: 15px;
+  width: 50%;
+  font-weight: 300;
+}
+.artist {
+  text-align: center;
+}
+.artist h4{
+  text-align: center;
+  position: relative;
+  left: 50%;
+  transform: translate(-50%,0%);
+  font-size: 11px;
+  color: #888;
+  padding-top: 4px;
+  width: 50%;
+  font-weight: 300;
 }
 
 .threeResultsContainer {
-  color:white;
+  color: #ddd;
   position:relative;
   text-align:center;
-  width: 366px;
-  height: 25px;
-  top: 25px;
+  bottom: 5px;
+  font-size: 12px;
+  padding:20px;
   margin: 0 auto;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+.threeResultsContainer div{
+  padding: 10px 0px;
 }
 
 .searchMode {
-  font-size: 10px;
+  font-size: 9.5px;
   margin: 0 auto;
   float:right;
   position: absolute;
-  top:3px;
-  left:20px;
+  top: 3px;
+  left: 22px;
+  color: #ddd;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+.coverContainer {
+  width:304px;
+  height: 150px;
 }

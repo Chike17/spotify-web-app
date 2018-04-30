@@ -29,7 +29,8 @@ class App extends React.Component {
       pureStop: true,
       buffer: '',
       preResults: false,
-      numTracks: 0
+      numTracks: 0,
+      length: 0
     };
     if (params.access_token) {
       spotifyWebApi.setAccessToken(params.access_token);
@@ -70,6 +71,8 @@ class App extends React.Component {
             tracks = tracks.filter((track) => {
               return track.preview_url !== null;
             });
+            let length = tracks.length;
+            context.setState({length: length});
             console.log(tracks);
             let cover = response.tracks.items[0].album.images[1].url;
             let url1 = response.tracks.items[0].preview_url;
@@ -124,6 +127,7 @@ class App extends React.Component {
                    changeCover = {this.changeCover.bind(this)}
                    getpreResults = {this.getpreResults.bind(this)}
                    numofTracks = {this.state.numTracks}
+                   length = {this.state.length}
                    />
       </div>
     );
