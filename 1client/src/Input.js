@@ -25,7 +25,10 @@ class Input extends React.Component {
        <div className = {styles.inputBox}>
           <form onSubmit={this.handleSubmit} >
             <label >
-              <input type="text" value={this.state.value} onChange={this.handleChange}  />
+              <input className = {styles.searchInputBox}
+                     type="text" value={this.state.value} 
+                     onChange={this.handleChange}  
+                     placeholder = "Search" />
             </label>
           </form>
         </div>

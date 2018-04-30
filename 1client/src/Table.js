@@ -9,7 +9,7 @@ import ScrollArea from 'react-scrollbar';
 
 
 let Table = (props) => {
-  let divStyle = {overflow: 'auto', height: 'inherit', display: 'block'};
+  let divStyle = {overflow: 'auto', height: '100% ', display: 'block'};
   return (
    <div >
       <table className={styles.player} >
@@ -21,7 +21,7 @@ let Table = (props) => {
       </table>
       <div className = {styles.listcontainer} style = {divStyle}>
           <table className= {styles.list}>
-           <tbody style = {{'height': '220px', 'overflow':'scroll', 'display': 'block', 'overflow-x': 'hidden'}}>
+           <tbody style = {{'height': '135px', 'overflow':'auto', 'display': 'block', 'overflow-x': 'hidden'}}>
               <div>
                {props.tracklist.map((track, i) => <TableEntry title = {track.name} clicked = {props.clickE} index = {i + 1} /> )}
               </div>

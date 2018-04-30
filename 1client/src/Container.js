@@ -8,10 +8,34 @@ import ProgressBar from './ProgressBar.js';
 class Container extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {playPrev: '', playNext: '', toggle: '', clickEvent: ''};
+    this.state = {playPrev: '', 
+                  playNext: '', 
+                  toggle: '', 
+                  clickEvent: '',
+                  partials: [{song: 'song', artist: 'artist'},
+                             {song: 'song', artist: 'artist'},
+                             {song: 'song', artist: 'artist'},
+                             {song: 'song', artist: 'artist'},
+                             {song: 'song', artist: 'artist'}]};
+   
+  }
+  componentWillReceiveProps (nextProps) {
+    let infoFiltered = nextProps.fiveResults.map((info) => {
+      if (info['song'].length > 20) {
+        let song = info['song'].substring(0, 17) + '...';
+        info['song'] = song;
+      }
+      if (info['artist'].length > 20) {
+        let artist = info['artist'].substring(0, 17) + '...';
+        info['artist'] = artist; 
+      }
+      return info;
+    });
+    this.setState({partials: infoFiltered});
+  }
+  componentDidMount() {
   }
   render() {
-    console.log((this.props.length * 49.439) + 432, 'length!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
     let context = this;
     let divStyle = {
       'background': 'url(' + '"' + this.props.cover + '"' + ')',
@@ -20,7 +44,7 @@ class Container extends React.Component {
     let screenHeight = {height: (this.props.length * 49.439) + 432 + 'px'}
     let inputStyle = {
       left: '100px',
-      'background-color':'black'
+      'background-color': 'black'
     };
     return (
       <div >
@@ -29,18 +53,14 @@ class Container extends React.Component {
          <input type = "checkbox" value = "Node" className = {styles.magicButton} name="check" />
          <div className = {styles.coverImage} style = {divStyle}> </div>
          <div className = {styles.newTracks}></div>
-         <input setTrackList = {this.props.setTrackList}
+         <Input setTrackList = {this.props.setTrackList}
                 getpreResults = {this.props.getpreResults}
-                placeholder = "Search"
-                className={styles.searchInputBox} />
-         <p className={styles.userMessageContainer}>First 5 results</p>
+           />
+         <p className={styles.userMessageContainer}>First 6 results</p>
          <div className = {styles.testing}>  
            <div className = {styles.threeResultsContainer}> 
-              <div> Jesus Walks by Kanye West </div>
-              <div> Excuse Me Miss by Jay-Z  </div>
-              <div> DNA. by Kendrick Lamar  </div>
-              <div> Finesse by Bruno Mars ft. Cardi B </div>
-              <div> I'm The Plug by Drake </div>
+              {this.state.partials.map((item) => 
+                <div> {item.song} by {item.artist} </div>)}
            </div>
          <div className = {styles.bodyPlayer}> </div>
          </div>

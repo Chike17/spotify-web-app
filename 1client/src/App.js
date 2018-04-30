@@ -30,7 +30,8 @@ class App extends React.Component {
       buffer: '',
       preResults: false,
       numTracks: 0,
-      length: 0
+      length: 0,
+      fiveResults: []
     };
     if (params.access_token) {
       spotifyWebApi.setAccessToken(params.access_token);
@@ -63,9 +64,18 @@ class App extends React.Component {
     spotifyWebApi.searchTracks(input)
         .then(function(response) {
           if (context.state.preResults) {
-            console.log(input);
-            let length = response.tracks.items.length;
-            context.setState({numTracks: length});
+            let items = response.tracks.items;
+            let length = items.length;
+            let fiveTracks = items.splice(0, 5);
+            let info = [];
+            for (let i = 0; i < fiveTracks.length; i++) {
+              info.push({song: fiveTracks[i].name, 
+                        artist: fiveTracks[i].album.artists[0].name});
+            }
+            context.setState({fiveResults: info});
+            if (length === 5) {
+              context.state.fiveResults = [];
+            }
           } else if (!context.preResults) {
             let tracks = response.tracks.items;
             tracks = tracks.filter((track) => {
@@ -80,6 +90,7 @@ class App extends React.Component {
               return item.preview_url;
             });
             context.state.preResults = false;
+            context.state.fiveResults = [];
             context.setState({cover: cover, tracklist: tracks, urls: urls});
           }
         }, function(err) {
@@ -128,6 +139,7 @@ class App extends React.Component {
                    getpreResults = {this.getpreResults.bind(this)}
                    numofTracks = {this.state.numTracks}
                    length = {this.state.length}
+                   fiveResults = {this.state.fiveResults}
                    />
       </div>
     );
