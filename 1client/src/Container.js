@@ -56,7 +56,7 @@ class Container extends React.Component {
          <Input setTrackList = {this.props.setTrackList}
                 getpreResults = {this.props.getpreResults}
            />
-         <p className={styles.userMessageContainer}>First 6 results</p>
+         <p className={styles.userMessageContainer}> {this.props.userMessage}</p>
          <div className = {styles.testing}>  
            <div className = {styles.threeResultsContainer}> 
               {this.state.partials.map((item) => 
@@ -69,7 +69,8 @@ class Container extends React.Component {
                 playPrev = {this.state.playPrev} 
                 playNext = {this.state.playNext}
                 clickE = {this.state.clickEvent}
-                toggle = {this.state.toggle}/>
+                toggle = {this.state.toggle}
+          />
               <div className = {styles.songArtistContainer} >  
                 <div className = {styles.song} ><h4> Trophies </h4></div>
                 <div className = {styles.artist} ><h4> Drake </h4></div>
@@ -77,7 +78,10 @@ class Container extends React.Component {
               <div className = {styles.progresscontainer}> 
               <div className = {styles.running}> 0:00 </div>
                <div>
-                  <ProgressBar urls = {this.props.urls} container = {this} changeCover = {this.props.changeCover} />
+                  <ProgressBar urls = {this.props.urls} 
+                               container = {this} 
+                               changeCover = {this.props.changeCover}
+                               partialStatus = {this.props.partialStatus}/>
                </div>
               <div className = {styles.endTime}> 0:00 </div>
               </div>

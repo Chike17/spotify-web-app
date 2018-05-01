@@ -31,7 +31,8 @@ class App extends React.Component {
       preResults: false,
       numTracks: 0,
       length: 0,
-      fiveResults: []
+      fiveResults: [],
+      'userMessage': 'Top 6 Results | Ready to Submit'
     };
     if (params.access_token) {
       spotifyWebApi.setAccessToken(params.access_token);
@@ -50,12 +51,6 @@ class App extends React.Component {
       });
     }
   }
-  playNextSong() {
-    // implement
-  }
-  playSongBefore() {
-    // implement
-  }
   getCurrentTime () {
     console.log(this.state.actx.currentTime);
   }
@@ -63,7 +58,10 @@ class App extends React.Component {
     let context = this;
     spotifyWebApi.searchTracks(input)
         .then(function(response) {
+          context.setState({userMessage: 'Top 6 Results | Ready to Submit'});
           if (context.state.preResults) {
+            console.log('PRERESULTS!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+            context.preResults = false;
             let items = response.tracks.items;
             let length = items.length;
             let fiveTracks = items.splice(0, 5);
@@ -72,29 +70,30 @@ class App extends React.Component {
               info.push({song: fiveTracks[i].name, 
                         artist: fiveTracks[i].album.artists[0].name});
             }
-            context.setState({fiveResults: info});
-            if (length === 5) {
-              context.state.fiveResults = [];
-            }
-          } else if (!context.preResults) {
+            context.setState({fiveResults: info}, () => {
+              if (length === 5) {
+                context.state.fiveResults = [];
+              } 
+            });
+          } else if (!context.state.preResults) {
+            console.log('SUBMIT!!!!!!!!!!!!!!!!!!!!!!!!!!!');
             let tracks = response.tracks.items;
             tracks = tracks.filter((track) => {
               return track.preview_url !== null;
             });
             let length = tracks.length;
             context.setState({length: length});
-            console.log(tracks);
             let cover = response.tracks.items[0].album.images[1].url;
-            let url1 = response.tracks.items[0].preview_url;
             let urls = tracks.map((item) => {
               return item.preview_url;
             });
-            context.state.preResults = false;
-            context.state.fiveResults = [];
-            context.setState({cover: cover, tracklist: tracks, urls: urls});
+            context.state.preResults = true;
+            context.setState({cover: cover, tracklist: tracks, urls: urls}, () => {
+              context.state.fiveResults = [];
+            });
           }
         }, function(err) {
-          console.error(err, 'error!!!!!');
+          context.setState({userMessage: 'ERROR. PLEASE TRY AGAIN!!!'});
         });
   }
   getpreResults(input) {
@@ -102,11 +101,9 @@ class App extends React.Component {
     this.spotifyCall(input);
   }
   componentDidMount() {
-    let context = this;
-    audioCtx = new AudioContext();
-    this.setState({actx: audioCtx}, () => {
-      context.spotifyCall('Timberlake');
-    });
+    // this.setState({actx: audioCtx}, () => {
+    //   context.spotifyCall('Timberlake');
+    // });
   }
   getHashParams() {
     let hashParams = {};
@@ -118,9 +115,7 @@ class App extends React.Component {
     return hashParams;
   }
   setTrackList (input) {
-    let context = this;
-    console.log('set track list??????');
-    context.state.preResults = false;
+    this.state.preResults = false;
     this.spotifyCall(input);
   }
   changeCover(index) {
@@ -140,6 +135,8 @@ class App extends React.Component {
                    numofTracks = {this.state.numTracks}
                    length = {this.state.length}
                    fiveResults = {this.state.fiveResults}
+                   partialStatus = {this.state.preResults}
+                   userMessage = {this.state.userMessage}
                    />
       </div>
     );

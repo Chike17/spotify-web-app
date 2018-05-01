@@ -2,6 +2,8 @@ import React from 'react';
 import styles from './styles.css';
 import Controls from './Controls.js';
 let url = 'http://static.kevvv.in/sounds/callmemaybe.mp3';
+import _ from 'lodash';
+console.log(_, 'lodash!!!!!!!!!!');
 
 
 class ProgressBar extends React.Component {
@@ -12,11 +14,11 @@ class ProgressBar extends React.Component {
     this.state = {
       url: '',
       trackNumber: 0,
-      progress: 0
+      progress: 0,
+      'urlsTracker': []
     };
   }
   componentDidMount() {
-    // this.fetch();
     window.addEventListener('mousemove', this.onDrag.bind(this));
     window.addEventListener('mouseup', this.onMouseUp.bind(this));
   }
@@ -25,10 +27,32 @@ class ProgressBar extends React.Component {
     this.props.container.state.playPrev = this.playPreviousSong.bind(this);
     this.props.container.state.playNext = this.playNextSong.bind(this);
     this.props.container.state.toggle = this.toggle.bind(this);
-    this.props.container.state.clickEvent = this.playOnClick.bind(this); 
-    this.setState({url: nextProps.urls[context.state.trackNumber], urls: nextProps.urls}, () => {
-      context.fetch();
-    }); 
+    this.props.container.state.clickEvent = this.playOnClick.bind(this);
+    if (this.hitNext) {
+      this.hitNext = false;
+      return;
+    }
+    if (this.hitPrevious) {
+      this.hitPrevious = false;
+      return;
+    }
+    if (!this.props.partialStatus) {
+      this.pause();
+      this.position = 0;
+      this.state.trackNumber = 0;
+      this.state.urlsTracker.push(nextProps.urls);
+      let urlTr = this.state.urlsTracker;
+      if (urlTr[1]) {
+        this.state.urls = urlTr[1];
+        this.state.urlsTracker = [];
+        return;
+      } else {
+        this.state.urls = urlTr[0]; 
+      }
+      this.setState({url: this.state.urls[context.state.trackNumber], urls: nextProps.urls}, () => {
+        context.fetch();
+      }); 
+    }
   }
   fetch () {
     let context = this;
@@ -125,12 +149,14 @@ class ProgressBar extends React.Component {
     this.pause();
     this.state.trackNumber++;
     this.position = 0;
+    this.hitNext = true;
     this.fetch();
     this.props.changeCover(this.state.trackNumber);
     return;
   }
   playPreviousSong() {
     this.pause();
+    this.hitPrevious = true;
     this.state.trackNumber--;
     this.position = 0;
     this.fetch();
@@ -138,12 +164,14 @@ class ProgressBar extends React.Component {
     return;
   }
   playOnClick(index) {
-    this.pause();
-    this.state.trackNumber = index;
-    this.position = 0;
-    this.fetch();
-    this.props.changeCover(this.state.trackNumber);
-    return;
+    index = index - 1;
+    console.log(index, 'index????????????????????????????????');
+    // this.pause();
+    // this.state.trackNumber = index;
+    // this.position = 0;
+    // this.fetch();
+    // this.props.changeCover(index);
+    // return;
   }
   draw () {
     if (this.buffer.duration === this.position) {
