@@ -72,8 +72,8 @@ class Container extends React.Component {
                 toggle = {this.state.toggle}
           />
               <div className = {styles.songArtistContainer} >  
-                <div className = {styles.song} ><h4> Trophies </h4></div>
-                <div className = {styles.artist} ><h4> Drake </h4></div>
+                <div className = {styles.song} ><h4> {this.props.songAndArtist.song} </h4></div>
+                <div className = {styles.artist} ><h4> {this.props.songAndArtist.artist} </h4></div>
               </div>
               <div className = {styles.progresscontainer}> 
               <div className = {styles.running}> 0:00 </div>
@@ -81,8 +81,7 @@ class Container extends React.Component {
                   <ProgressBar urls = {this.props.urls} 
                                container = {this} 
                                changeCover = {this.props.changeCover}
-                               partialStatus = {this.props.partialStatus}/>
-               </div>
+                               partialStatus = {this.props.partialStatus}/>               </div>
               <div className = {styles.endTime}> 0:00 </div>
               </div>
        </div> 

@@ -9,12 +9,12 @@ let TableEntry = (props) => {
   }
   return (
      <div className={styles.tableEntryDiv} >
-         <tr className={styles.songEntry} >
-            <td className={styles.nr} ><h5> {props.index} </h5></td>
-            <td className={styles.title} onClick = {() => { props.clicked(props.index); }}><h6>{title}</h6></td>
-            <td className={styles.length}> <h5> 0:00 </h5></td>
-            <td className={styles.artistName}><h6> Drake </h6></td>
-          </tr>
+         <div className={styles.songEntry} >
+            <div className={styles.nr} ><h5> {props.index} </h5> </div>
+            <div className={styles.title} > <h6> {title}</h6> </div>
+            <div className={styles.length}> <h5> 0:00 </h5> </div>
+            <div className={styles.artistName} onClick = {() => { props.clicked(props.index); }}><h6> Drake </h6> </div>
+          </div>
      </div>
   );
 };

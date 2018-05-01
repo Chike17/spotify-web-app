@@ -20,13 +20,13 @@ let Table = (props) => {
         </tbody>
       </table>
       <div className = {styles.listcontainer} style = {divStyle}>
-          <table className= {styles.list}>
-           <tbody style = {{'height': '135px', 'overflow':'auto', 'display': 'block', 'overflow-x': 'hidden'}}>
+          <div className= {styles.list}>
+           <div style = {{'height': '135px', 'overflow': 'auto', 'display': 'block', 'overflow-x': 'hidden'}}>
               <div>
-               {props.tracklist.map((track, i) => <TableEntry title = {track.name} clicked = {props.clickE} index = {i + 1} /> )}
+               {props.tracklist.map((track, i) => <TableEntry title = {track.name} clicked = {props.clickE} index = {i + 1} onClick = {() => { props.clickE(i); }}/> )}
               </div>
-           </tbody>
-         </table>
+           </div>
+         </div>
       </div> 
    </div>
   );

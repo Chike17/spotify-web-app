@@ -32,7 +32,8 @@ class App extends React.Component {
       numTracks: 0,
       length: 0,
       fiveResults: [],
-      'userMessage': 'Top 6 Results | Ready to Submit'
+      'userMessage': 'Top 6 Results | Ready to Submit',
+      songAndArtist: {song: 'N/A', artist: 'N/A'}
     };
     if (params.access_token) {
       spotifyWebApi.setAccessToken(params.access_token);
@@ -76,7 +77,6 @@ class App extends React.Component {
               } 
             });
           } else if (!context.state.preResults) {
-            console.log('SUBMIT!!!!!!!!!!!!!!!!!!!!!!!!!!!');
             let tracks = response.tracks.items;
             tracks = tracks.filter((track) => {
               return track.preview_url !== null;
@@ -84,16 +84,21 @@ class App extends React.Component {
             let length = tracks.length;
             context.setState({length: length});
             let cover = response.tracks.items[0].album.images[1].url;
+            let song = response.tracks.items[0].name;
+            let artist = response.tracks.items[0].album.artists[0].name;
             let urls = tracks.map((item) => {
               return item.preview_url;
             });
             context.state.preResults = true;
-            context.setState({cover: cover, tracklist: tracks, urls: urls}, () => {
+            context.setState({cover: cover, 
+                              tracklist: tracks, 
+                              urls: urls,
+                              songAndArtist: {song: song, artist: artist}}, () => {
               context.state.fiveResults = [];
             });
           }
         }, function(err) {
-          context.setState({userMessage: 'ERROR. PLEASE TRY AGAIN!!!'});
+          context.setState({userMessage: 'INVALID ENTRY!!! TRY AGAIN!!!'});
         });
   }
   getpreResults(input) {
@@ -119,7 +124,15 @@ class App extends React.Component {
     this.spotifyCall(input);
   }
   changeCover(index) {
-    this.setState({cover: this.state.tracklist[index].album.images[1].url});
+    let context = this;
+    this.setState({cover: this.state.tracklist[index].album.images[1].url}, () => {
+      context.changeSongandArtist(index);
+    });
+  }
+  changeSongandArtist (index) {
+    let song = this.state.tracklist[index].name;
+    let artist = this.state.tracklist[index].album.artists[0].name;
+    this.setState({songAndArtist: {artist: artist, song: song}});
   }
   render() {
     return (
@@ -137,6 +150,7 @@ class App extends React.Component {
                    fiveResults = {this.state.fiveResults}
                    partialStatus = {this.state.preResults}
                    userMessage = {this.state.userMessage}
+                   songAndArtist = {this.state.songAndArtist}
                    />
       </div>
     );
