@@ -1,9 +1,11 @@
 STARTING THE APP
 1. Issue the command npm install from the root of the project.
-2. Issue the command npm run from the root of the project.
+2. Issue the command npm start from the root of the project.
 3. Open your Chrome Browser and to go http://localhost:8888/startapp
 4. Sign in with Facebook or Spotify
 5. Once in the App go to Search Mode by checking on the box in the top left corner of the App. Give the App an entry and begin using it.
+6. Uncheck search Mode to see the cover of the song that is currently playing.
+7. Songs that are next in the queue automatically get played.
 
 UI Considerations
 1. The scroll for the songs in the queue works almost exclusively when the mouse is placed directly on the scroll bar. Given more time I would have the scroll work when the mouse is placed anywhere on the queue of songs. React seems to make it a bit tricky to get that to work. I thought that it had something to do with me using a table element for the songs in the queue but that doesn't seem to be the problem.
