@@ -149,7 +149,6 @@ class ProgressBar extends React.Component {
     if (this.state.trackNumber === this.state.urls.length) {
       this.pause();
       this.state.trackNumber = 0;
-      return;
     }
     this.position = 0;
     this.props.changeCover(this.state.trackNumber);

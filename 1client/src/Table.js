@@ -1,11 +1,6 @@
 import React from 'react';
 import styles from './styles.css';
 import TableEntry from './TableEntry.js';
-import FaIconPack from 'react-icons/lib/fa';
-import backward from 'react-icons/lib/fa/backward';
-import FontAwesome from 'react-fontawesome';
-import InfiniteScroll from 'react-simple-infinite-scroll';
-import ScrollArea from 'react-scrollbar';
 
 
 let Table = (props) => {
