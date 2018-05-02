@@ -1,13 +1,9 @@
 import React from 'react';
 import styles from './styles.css';
-import init from './init.js';
 import Container from './Container.js';
 import { connect } from 'react-redux';
-import $ from 'jquery';
 import store from './store.js';
 import Spotify from 'spotify-web-api-js';
-import fetchBuffer from './fetchBuffer.js';
-import _ from 'lodash';
 let stock = 'https://static1.squarespace.com/static/585e12abe4fcb5ea1248900e/t/5aab1c5b03ce6430365833ac/1521163366180/Spotify+Square.png?format=300w';
 const spotifyWebApi = new Spotify();
 
@@ -63,7 +59,7 @@ class App extends React.Component {
     let context = this;
     spotifyWebApi.searchTracks(input)
         .then(function(response) {
-          context.setState({userMessage: 'Top 6 Results | Ready to Submit'});
+          context.setState({userMessage: 'FIRST 6 RESULTS | READY TO SUBMIT'});
           if (context.state.preResults) {
             context.preResults = false;
             let items = response.tracks.items;
@@ -74,6 +70,10 @@ class App extends React.Component {
             }).map((track) => {
                 return {song: track.name, artist: track.album.artists[0].name }
             });
+            if (!sixTracks.length) {
+              context.setState({userMessage: "NOT FOUND. CAN'T SUBMIT. TRY AGAIN"});
+              return;
+            }
             context.setState({fiveResults: sixTracks}, () => {
               if (length === 5) {
                 context.state.fiveResults = [];
@@ -162,13 +162,13 @@ class App extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-
+    // implement
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-
+    // implement
   };
 
 };

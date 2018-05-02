@@ -2,7 +2,6 @@ import React from 'react';
 import styles from './styles.css';
 import Controls from './Controls.js';
 let url = 'http://static.kevvv.in/sounds/callmemaybe.mp3';
-import _ from 'lodash';
 
 
 class ProgressBar extends React.Component {
@@ -150,6 +149,7 @@ class ProgressBar extends React.Component {
     if (this.state.trackNumber === this.state.urls.length) {
       this.pause();
       this.state.trackNumber = 0;
+      return;
     }
     this.position = 0;
     this.props.changeCover(this.state.trackNumber);
@@ -173,8 +173,7 @@ class ProgressBar extends React.Component {
     return;
   }
   playOnClick(index) {
-    index = index - 1;
-    console.log(index, 'index????????????????????????????????');
+    // index = index - 1;
     // this.pause();
     // this.state.trackNumber = index;
     // this.position = 0;
@@ -190,6 +189,13 @@ class ProgressBar extends React.Component {
       this.props.changeCover(this.state.trackNumber);
       this.props.changeSongAndArtist(this.state.trackNumber);
       return;
+    }
+    if (this.state.trackNumber === this.state.urls.length) {
+      this.state.trackNumber = 0;
+      this.position = 0;
+      this.fetch();
+      this.props.changeCover(this.state.trackNumber);
+      this.props.changeSongAndArtist(this.state.trackNumber);
     }
     let context = this;
     let progress = ( this.updatePosition() / context.buffer.duration );
