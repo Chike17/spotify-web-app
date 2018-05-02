@@ -45,11 +45,11 @@ class Container extends React.Component {
   }
   shouldComponentUpdate() {
     let displaySA = this.props.songAndArtist;
-    if (displaySA.song.length > 15) {
-      displaySA['song'] = displaySA.song.substring(0, 15) + '...';
+    if (displaySA.song.length > 12) {
+      displaySA['song'] = displaySA.song.substring(0, 12) + '...';
     }
-    if (displaySA.song.artist > 15) {
-      displaySA['artist'] = displaySA.artist.substring(0, 15) + '...';
+    if (displaySA.song.artist > 12) {
+      displaySA['artist'] = displaySA.artist.substring(0, 12) + '...';
     }
    if (!displaySA.trackNumber) {
       this.setState({song: displaySA.song, 

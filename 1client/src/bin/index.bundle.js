@@ -22685,7 +22685,7 @@
 	    key: 'setTrackList',
 	    value: function setTrackList(input) {
 	      this.state.preResults = false;
-	      _lodash2.default.debounce(this.spotifyCall(input), 500)();
+	      this.spotifyCall(input);
 	    }
 	  }, {
 	    key: 'changeCover',
@@ -23511,11 +23511,11 @@
 	    key: 'shouldComponentUpdate',
 	    value: function shouldComponentUpdate() {
 	      var displaySA = this.props.songAndArtist;
-	      if (displaySA.song.length > 15) {
-	        displaySA['song'] = displaySA.song.substring(0, 15) + '...';
+	      if (displaySA.song.length > 12) {
+	        displaySA['song'] = displaySA.song.substring(0, 12) + '...';
 	      }
-	      if (displaySA.song.artist > 15) {
-	        displaySA['artist'] = displaySA.artist.substring(0, 15) + '...';
+	      if (displaySA.song.artist > 12) {
+	        displaySA['artist'] = displaySA.artist.substring(0, 12) + '...';
 	      }
 	      if (!displaySA.trackNumber) {
 	        this.setState({ song: displaySA.song,
@@ -52836,7 +52836,7 @@
 	      this.pause();
 	      this.hitNext = true;
 	      this.state.trackNumber++;
-	      if (this.state.trackNumber === this.state.urls.length - 1) {
+	      if (this.state.trackNumber === this.state.urls.length) {
 	        this.pause();
 	        this.state.trackNumber = 0;
 	      }

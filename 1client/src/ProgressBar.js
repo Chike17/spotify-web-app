@@ -147,7 +147,7 @@ class ProgressBar extends React.Component {
     this.pause();
     this.hitNext = true;
     this.state.trackNumber++;
-    if (this.state.trackNumber === this.state.urls.length - 1) {
+    if (this.state.trackNumber === this.state.urls.length) {
       this.pause();
       this.state.trackNumber = 0;
     }

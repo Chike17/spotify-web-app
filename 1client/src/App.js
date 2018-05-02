@@ -106,6 +106,7 @@ class App extends React.Component {
   getpreResults(input) {
     this.state.preResults = true;
     this.spotifyCall(input);
+
   }
   componentDidMount() {
   }
@@ -120,7 +121,7 @@ class App extends React.Component {
   }
   setTrackList (input) {
     this.state.preResults = false;
-    _.debounce(this.spotifyCall(input), 500)();
+    this.spotifyCall(input)
   }
   changeCover(index) {
     let context = this;
