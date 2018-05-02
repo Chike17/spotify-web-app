@@ -1,6 +1,6 @@
 STARTING THE APP
-1. Issue the command npm install from the root of the project.
-2. Issue the command npm start from the root of the project.
+1. Issue the command npm install from the root of the project directory.
+2. Issue the command npm start from the root of the project directory.
 3. Open your Chrome Browser and to go http://localhost:8888/startapp
 4. Sign in with Facebook or Spotify
 5. The song queue will be empty when the app first appears.
