@@ -33,7 +33,7 @@ class App extends React.Component {
       length: 0,
       fiveResults: [],
       'userMessage': 'Top 6 Results | Ready to Submit',
-      songAndArtist: {song: 'N/A', artist: 'N/A'}
+      songAndArtist: {song: 'App', artist: 'App'}
     };
     if (params.access_token) {
       spotifyWebApi.setAccessToken(params.access_token);
@@ -56,6 +56,9 @@ class App extends React.Component {
     console.log(this.state.actx.currentTime);
   }
   spotifyCall (input) {
+    if (!input.length) {
+      return;
+    }
     let context = this;
     spotifyWebApi.searchTracks(input)
         .then(function(response) {
@@ -77,19 +80,18 @@ class App extends React.Component {
               } 
             });
           } else if (!context.state.preResults) {
+            context.state.preResults = true;
             let tracks = response.tracks.items;
             tracks = tracks.filter((track) => {
               return track.preview_url !== null;
             });
             let length = tracks.length;
-            context.setState({length: length});
             let cover = response.tracks.items[0].album.images[1].url;
             let song = response.tracks.items[0].name;
             let artist = response.tracks.items[0].album.artists[0].name;
             let urls = tracks.map((item) => {
               return item.preview_url;
             });
-            context.state.preResults = true;
             context.setState({cover: cover, 
                               tracklist: tracks, 
                               urls: urls,
@@ -126,10 +128,9 @@ class App extends React.Component {
   changeCover(index) {
     let context = this;
     this.setState({cover: this.state.tracklist[index].album.images[1].url}, () => {
-      context.changeSongandArtist(index);
     });
   }
-  changeSongandArtist (index) {
+  changeSongAndArtist (index) {
     let song = this.state.tracklist[index].name;
     let artist = this.state.tracklist[index].album.artists[0].name;
     this.setState({songAndArtist: {artist: artist, song: song}});
@@ -147,6 +148,7 @@ class App extends React.Component {
                    getpreResults = {this.getpreResults.bind(this)}
                    numofTracks = {this.state.numTracks}
                    length = {this.state.length}
+                   changeSongAndArtist = {this.changeSongAndArtist.bind(this)}
                    fiveResults = {this.state.fiveResults}
                    partialStatus = {this.state.preResults}
                    userMessage = {this.state.userMessage}

@@ -22579,7 +22579,7 @@
 	      length: 0,
 	      fiveResults: [],
 	      'userMessage': 'Top 6 Results | Ready to Submit',
-	      songAndArtist: { song: 'N/A', artist: 'N/A' }
+	      songAndArtist: { song: 'App', artist: 'App' }
 	    };
 	    if (params.access_token) {
 	      spotifyWebApi.setAccessToken(params.access_token);
@@ -22612,6 +22612,9 @@
 	  }, {
 	    key: 'spotifyCall',
 	    value: function spotifyCall(input) {
+	      if (!input.length) {
+	        return;
+	      }
 	      var context = this;
 	      spotifyWebApi.searchTracks(input).then(function (response) {
 	        context.setState({ userMessage: 'Top 6 Results | Ready to Submit' });
@@ -22632,19 +22635,18 @@
 	            }
 	          });
 	        } else if (!context.state.preResults) {
+	          context.state.preResults = true;
 	          var tracks = response.tracks.items;
 	          tracks = tracks.filter(function (track) {
 	            return track.preview_url !== null;
 	          });
 	          var _length = tracks.length;
-	          context.setState({ length: _length });
 	          var cover = response.tracks.items[0].album.images[1].url;
 	          var song = response.tracks.items[0].name;
 	          var artist = response.tracks.items[0].album.artists[0].name;
 	          var urls = tracks.map(function (item) {
 	            return item.preview_url;
 	          });
-	          context.state.preResults = true;
 	          context.setState({ cover: cover,
 	            tracklist: tracks,
 	            urls: urls,
@@ -22691,13 +22693,11 @@
 	    key: 'changeCover',
 	    value: function changeCover(index) {
 	      var context = this;
-	      this.setState({ cover: this.state.tracklist[index].album.images[1].url }, function () {
-	        context.changeSongandArtist(index);
-	      });
+	      this.setState({ cover: this.state.tracklist[index].album.images[1].url }, function () {});
 	    }
 	  }, {
-	    key: 'changeSongandArtist',
-	    value: function changeSongandArtist(index) {
+	    key: 'changeSongAndArtist',
+	    value: function changeSongAndArtist(index) {
 	      var song = this.state.tracklist[index].name;
 	      var artist = this.state.tracklist[index].album.artists[0].name;
 	      this.setState({ songAndArtist: { artist: artist, song: song } });
@@ -22718,6 +22718,7 @@
 	          getpreResults: this.getpreResults.bind(this),
 	          numofTracks: this.state.numTracks,
 	          length: this.state.length,
+	          changeSongAndArtist: this.changeSongAndArtist.bind(this),
 	          fiveResults: this.state.fiveResults,
 	          partialStatus: this.state.preResults,
 	          userMessage: this.state.userMessage,
@@ -23472,6 +23473,10 @@
 	      playNext: '',
 	      toggle: '',
 	      clickEvent: '',
+	      progress: '17:17',
+	      duration: '17:17',
+	      artist: 'Container',
+	      song: 'Container',
 	      partials: [{ song: 'song', artist: 'artist' }, { song: 'song', artist: 'artist' }, { song: 'song', artist: 'artist' }, { song: 'song', artist: 'artist' }, { song: 'song', artist: 'artist' }] };
 	
 	    return _this;
@@ -23480,6 +23485,7 @@
 	  _createClass(Container, [{
 	    key: 'componentWillReceiveProps',
 	    value: function componentWillReceiveProps(nextProps) {
+	      var context = this;
 	      var infoFiltered = nextProps.fiveResults.map(function (info) {
 	        if (info['song'].length > 20) {
 	          var song = info['song'].substring(0, 17) + '...';
@@ -23491,11 +23497,43 @@
 	        }
 	        return info;
 	      });
+	      var displaySA = this.props.songAndArtist;
+	      if (displaySA.song.length > 15) {
+	        displaySA['song'] = displaySA.song.substring(0, 15) + '...';
+	      }
+	      if (displaySA.song.artist > 15) {
+	        displaySA['artist'] = displaySA.artist.substring(0, 15) + '...';
+	      }
+	      this.setState({ song: displaySA.song, artist: displaySA.artist });
 	      this.setState({ partials: infoFiltered });
 	    }
 	  }, {
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {}
+	  }, {
+	    key: 'shouldComponentUpdate',
+	    value: function shouldComponentUpdate() {
+	      var displaySA = this.props.songAndArtist;
+	      if (displaySA.song.length > 15) {
+	        displaySA['song'] = displaySA.song.substring(0, 15) + '...';
+	      }
+	      if (displaySA.song.artist > 15) {
+	        displaySA['artist'] = displaySA.artist.substring(0, 15) + '...';
+	      }
+	      this.setState({ song: displaySA.song, artist: displaySA.artist });
+	      return true;
+	    }
+	  }, {
+	    key: 'updateProgress',
+	    value: function updateProgress(progress) {
+	      // this.state.progress = progress;
+	      this.setState({ progress: progress });
+	    }
+	  }, {
+	    key: 'updateDuration',
+	    value: function updateDuration(duration) {
+	      this.state.duration = duration;
+	    }
 	  }, {
 	    key: 'render',
 	    value: function render() {
@@ -23577,7 +23615,7 @@
 	                'h4',
 	                null,
 	                ' ',
-	                this.props.songAndArtist.song,
+	                this.state.song,
 	                ' '
 	              )
 	            ),
@@ -23588,7 +23626,7 @@
 	                'h4',
 	                null,
 	                ' ',
-	                this.props.songAndArtist.artist,
+	                this.state.artist,
 	                ' '
 	              )
 	            )
@@ -23599,7 +23637,9 @@
 	            _react2.default.createElement(
 	              'div',
 	              { className: _styles2.default.running },
-	              ' 0:00 '
+	              ' ',
+	              '0:' + this.state.progress,
+	              ' '
 	            ),
 	            _react2.default.createElement(
 	              'div',
@@ -23607,13 +23647,17 @@
 	              _react2.default.createElement(_ProgressBar2.default, { urls: this.props.urls,
 	                container: this,
 	                changeCover: this.props.changeCover,
-	                partialStatus: this.props.partialStatus }),
-	              '               '
+	                updateDuration: this.updateDuration.bind(this),
+	                updateProgress: this.updateProgress.bind(this),
+	                partialStatus: this.props.partialStatus,
+	                changeSongAndArtist: this.props.changeSongAndArtist })
 	            ),
 	            _react2.default.createElement(
 	              'div',
 	              { className: _styles2.default.endTime },
-	              ' 0:00 '
+	              ' ',
+	              '0:10',
+	              ' '
 	            )
 	          )
 	        )
@@ -52608,8 +52652,6 @@
 	
 	var url = 'http://static.kevvv.in/sounds/callmemaybe.mp3';
 	
-	console.log(_lodash2.default, 'lodash!!!!!!!!!!');
-	
 	var ProgressBar = function (_React$Component) {
 	  _inherits(ProgressBar, _React$Component);
 	
@@ -52660,7 +52702,6 @@
 	        if (urlTr[1]) {
 	          this.state.urls = urlTr[1];
 	          this.state.urlsTracker = [];
-	          return;
 	        } else {
 	          this.state.urls = urlTr[0];
 	        }
@@ -52788,6 +52829,7 @@
 	      this.hitNext = true;
 	      this.fetch();
 	      this.props.changeCover(this.state.trackNumber);
+	      this.props.changeSongAndArtist(this.state.trackNumber);
 	      return;
 	    }
 	  }, {
@@ -52799,6 +52841,7 @@
 	      this.position = 0;
 	      this.fetch();
 	      this.props.changeCover(this.state.trackNumber);
+	      this.props.changeSongAndArtist(this.state.trackNumber);
 	      return;
 	    }
 	  }, {
@@ -52821,14 +52864,27 @@
 	        this.position = 0;
 	        this.fetch();
 	        this.props.changeCover(this.state.trackNumber);
+	        this.props.changeSongAndArtist(this.state.trackNumber);
 	        return;
 	      }
 	      var context = this;
 	      var progress = this.updatePosition() / context.buffer.duration;
 	      this.state.progress = progress;
+	      this.passProgress(progress);
 	      var width = 300;
 	      context.setState({ progressStyle: { width: this.state.progress * width + 'px' } }, function () {});
 	      requestAnimationFrame(context.draw.bind(context));
+	    }
+	  }, {
+	    key: 'passProgress',
+	    value: function passProgress(progress) {
+	      progress = progress * 10;
+	      progress = Math.round(progress, 1);
+	      progress = JSON.stringify(progress);
+	      if (progress.length < 2) {
+	        progress = '0' + progress;
+	      }
+	      this.props.updateProgress(progress);
 	    }
 	  }, {
 	    key: 'render',

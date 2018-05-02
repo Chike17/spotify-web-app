@@ -11,7 +11,11 @@ class Container extends React.Component {
     this.state = {playPrev: '', 
                   playNext: '', 
                   toggle: '', 
-                  clickEvent: '',
+                  clickEvent: '', 
+                  progress: '17:17',
+                  duration: '17:17',
+                  artist: 'Container',
+                  song: 'Container',
                   partials: [{song: 'song', artist: 'artist'},
                              {song: 'song', artist: 'artist'},
                              {song: 'song', artist: 'artist'},
@@ -20,6 +24,7 @@ class Container extends React.Component {
    
   }
   componentWillReceiveProps (nextProps) {
+    let context = this;
     let infoFiltered = nextProps.fiveResults.map((info) => {
       if (info['song'].length > 20) {
         let song = info['song'].substring(0, 17) + '...';
@@ -31,9 +36,35 @@ class Container extends React.Component {
       }
       return info;
     });
+    let displaySA = this.props.songAndArtist;
+    if (displaySA.song.length > 15) {
+      displaySA['song'] = displaySA.song.substring(0, 15) + '...';
+    }
+    if (displaySA.song.artist > 15) {
+      displaySA['artist'] = displaySA.artist.substring(0, 15) + '...';
+    }
+    this.setState({song: displaySA.song, artist: displaySA.artist});
     this.setState({partials: infoFiltered});
   }
   componentDidMount() {
+  }
+  shouldComponentUpdate() {
+    let displaySA = this.props.songAndArtist;
+    if (displaySA.song.length > 15) {
+      displaySA['song'] = displaySA.song.substring(0, 15) + '...';
+    }
+    if (displaySA.song.artist > 15) {
+      displaySA['artist'] = displaySA.artist.substring(0, 15) + '...';
+    }
+    this.setState({song: displaySA.song, artist: displaySA.artist});
+    return true;
+  }
+  updateProgress(progress) {
+    // this.state.progress = progress;
+    this.setState({progress: progress});
+  }
+  updateDuration(duration) {
+    this.state.duration = duration;
   }
   render() {
     let context = this;
@@ -72,17 +103,21 @@ class Container extends React.Component {
                 toggle = {this.state.toggle}
           />
               <div className = {styles.songArtistContainer} >  
-                <div className = {styles.song} ><h4> {this.props.songAndArtist.song} </h4></div>
-                <div className = {styles.artist} ><h4> {this.props.songAndArtist.artist} </h4></div>
+                <div className = {styles.song} ><h4> {this.state.song} </h4></div>
+                <div className = {styles.artist} ><h4> {this.state.artist} </h4></div>
               </div>
               <div className = {styles.progresscontainer}> 
-              <div className = {styles.running}> 0:00 </div>
+              <div className = {styles.running}> {'0:' + this.state.progress} </div>
                <div>
                   <ProgressBar urls = {this.props.urls} 
                                container = {this} 
                                changeCover = {this.props.changeCover}
-                               partialStatus = {this.props.partialStatus}/>               </div>
-              <div className = {styles.endTime}> 0:00 </div>
+                               updateDuration = {this.updateDuration.bind(this)}
+                               updateProgress = {this.updateProgress.bind(this)}
+                               partialStatus = {this.props.partialStatus}
+                               changeSongAndArtist = {this.props.changeSongAndArtist}/> 
+               </div>
+              <div className = {styles.endTime}> {'0:10'} </div>
               </div>
        </div> 
      

@@ -3,7 +3,6 @@ import styles from './styles.css';
 import Controls from './Controls.js';
 let url = 'http://static.kevvv.in/sounds/callmemaybe.mp3';
 import _ from 'lodash';
-console.log(_, 'lodash!!!!!!!!!!');
 
 
 class ProgressBar extends React.Component {
@@ -27,7 +26,7 @@ class ProgressBar extends React.Component {
     this.props.container.state.playPrev = this.playPreviousSong.bind(this);
     this.props.container.state.playNext = this.playNextSong.bind(this);
     this.props.container.state.toggle = this.toggle.bind(this);
-    this.props.container.state.clickEvent = this.playOnClick.bind(this);
+    this.props.container.state.clickEvent = this.playOnClick.bind(this); 
     if (this.hitNext) {
       this.hitNext = false;
       return;
@@ -45,7 +44,6 @@ class ProgressBar extends React.Component {
       if (urlTr[1]) {
         this.state.urls = urlTr[1];
         this.state.urlsTracker = [];
-        return;
       } else {
         this.state.urls = urlTr[0]; 
       }
@@ -152,6 +150,7 @@ class ProgressBar extends React.Component {
     this.hitNext = true;
     this.fetch();
     this.props.changeCover(this.state.trackNumber);
+    this.props.changeSongAndArtist(this.state.trackNumber);
     return;
   }
   playPreviousSong() {
@@ -161,6 +160,7 @@ class ProgressBar extends React.Component {
     this.position = 0;
     this.fetch();
     this.props.changeCover(this.state.trackNumber);
+    this.props.changeSongAndArtist(this.state.trackNumber);
     return;
   }
   playOnClick(index) {
@@ -179,15 +179,26 @@ class ProgressBar extends React.Component {
       this.position = 0;
       this.fetch();
       this.props.changeCover(this.state.trackNumber);
+      this.props.changeSongAndArtist(this.state.trackNumber);
       return;
     }
     let context = this;
     let progress = ( this.updatePosition() / context.buffer.duration );
     this.state.progress = progress;
+    this.passProgress(progress);
     let width = 300;
     context.setState({progressStyle: {width: this.state.progress * width + 'px'} }, () => {
     });
     requestAnimationFrame(context.draw.bind(context));
+  }
+  passProgress(progress) {
+    progress = progress * 10;
+    progress = Math.round(progress, 1);
+    progress = JSON.stringify(progress);
+    if (progress.length < 2) {
+      progress = '0' + progress;
+    }
+    this.props.updateProgress(progress);
   }
   render () {
     return (
