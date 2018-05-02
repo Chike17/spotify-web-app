@@ -22552,10 +22552,8 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	var stock = 'https://upload.wikimedia.org/wikipedia/commons/e/ea/Spotify_logo_vertical_black.jpg';
-	
+	var stock = 'https://static1.squarespace.com/static/585e12abe4fcb5ea1248900e/t/5aab1c5b03ce6430365833ac/1521163366180/Spotify+Square.png?format=300w';
 	var spotifyWebApi = new _spotifyWebApiJs2.default();
-	var audioCtx = void 0;
 	
 	var App = function (_React$Component) {
 	  _inherits(App, _React$Component);
@@ -22582,8 +22580,8 @@
 	      numTracks: 0,
 	      length: 0,
 	      fiveResults: [],
-	      'userMessage': 'Top 6 Results | Ready to Submit',
-	      songAndArtist: { song: 'App', artist: 'App' }
+	      'userMessage': 'SEARCH TRACKS BY ARTIST, SONG, OR ALBUM',
+	      songAndArtist: { song: 'No Songs in Queue', artist: 'Please Go Into Search Mode' }
 	    };
 	    if (params.access_token) {
 	      spotifyWebApi.setAccessToken(params.access_token);
@@ -22617,6 +22615,7 @@
 	    key: 'spotifyCall',
 	    value: function spotifyCall(input) {
 	      if (!input.length) {
+	        this.setState({ userMessage: 'SEARCH TRACKS BY ARTIST, SONG, OR ALBUM' });
 	        return;
 	      }
 	      var context = this;
@@ -22632,11 +22631,6 @@
 	          }).map(function (track) {
 	            return { song: track.name, artist: track.album.artists[0].name };
 	          });
-	          // let info = [];
-	          // for (let i = 0; i < fiveTracks.length; i++) {
-	          //   info.push({song: fiveTracks[i].name, 
-	          //             artist: fiveTracks[i].album.artists[0].name});
-	          // }
 	          context.setState({ fiveResults: sixTracks }, function () {
 	            if (length === 5) {
 	              context.state.fiveResults = [];
@@ -22674,11 +22668,7 @@
 	    }
 	  }, {
 	    key: 'componentDidMount',
-	    value: function componentDidMount() {
-	      // this.setState({actx: audioCtx}, () => {
-	      //   context.spotifyCall('Timberlake');
-	      // });
-	    }
+	    value: function componentDidMount() {}
 	  }, {
 	    key: 'getHashParams',
 	    value: function getHashParams() {
@@ -23487,10 +23477,12 @@
 	      clickEvent: '',
 	      progress: '00',
 	      duration: '17:17',
-	      artist: 'Container',
-	      song: 'Container',
+	      appStarted: false,
+	      song: 'No Songs in Queue',
+	      artist: 'Please Go Into Search Mode',
+	      by: '',
 	      trackNumber: '1',
-	      partials: [{ song: 'song', artist: 'artist' }, { song: 'song', artist: 'artist' }, { song: 'song', artist: 'artist' }, { song: 'song', artist: 'artist' }, { song: 'song', artist: 'artist' }] };
+	      partials: [{ song: '', artist: '' }, { song: '', artist: '' }, { song: '', artist: '' }, { song: '', artist: '' }, { song: '', artist: '' }] };
 	
 	    return _this;
 	  }
@@ -23534,27 +23526,30 @@
 	          artist: displaySA.artist,
 	          trackNumber: displaySA.trackNumber });
 	      }
+	      this.setState({ by: 'by' });
 	      return true;
 	    }
 	  }, {
 	    key: 'updateProgress',
 	    value: function updateProgress(progress) {
-	      // this.state.progress = progress;
 	      this.setState({ progress: progress });
 	    }
 	  }, {
 	    key: 'render',
 	    value: function render() {
+	      var _this2 = this;
+	
 	      var context = this;
+	      var screenHeight = { height: this.props.length * 49.439 + 432 + 'px' };
 	      var divStyle = {
 	        'background': 'url(' + '"' + this.props.cover + '"' + ')',
 	        'backgroundSize': 'cover'
 	      };
-	      var screenHeight = { height: this.props.length * 49.439 + 432 + 'px' };
 	      var inputStyle = {
 	        left: '100px',
 	        'background-color': 'black'
 	      };
+	      this.state.appStarted = true;
 	      return _react2.default.createElement(
 	        'div',
 	        null,
@@ -23593,9 +23588,11 @@
 	                  'div',
 	                  null,
 	                  ' ',
-	                  item.song,
-	                  ' by ',
-	                  item.artist,
+	                  item.song + ' ',
+	                  ' ',
+	                  _this2.state.by,
+	                  ' ',
+	                  ' ' + item.artist,
 	                  ' '
 	                );
 	              })
@@ -23767,7 +23764,7 @@
 	        { className: _styles2.default.list },
 	        _react2.default.createElement(
 	          'div',
-	          { style: { 'height': '135px', 'overflow': 'auto', 'display': 'block', 'overflow-x': 'hidden' } },
+	          { style: { 'height': '135px', 'overflow': 'auto', 'display': 'block', 'overflowX': 'hidden' } },
 	          _react2.default.createElement(
 	            'div',
 	            null,

@@ -1,4 +1,3 @@
-let stock = 'https://upload.wikimedia.org/wikipedia/commons/e/ea/Spotify_logo_vertical_black.jpg';
 import React from 'react';
 import styles from './styles.css';
 import init from './init.js';
@@ -9,8 +8,8 @@ import store from './store.js';
 import Spotify from 'spotify-web-api-js';
 import fetchBuffer from './fetchBuffer.js';
 import _ from 'lodash';
+let stock = 'https://static1.squarespace.com/static/585e12abe4fcb5ea1248900e/t/5aab1c5b03ce6430365833ac/1521163366180/Spotify+Square.png?format=300w';
 const spotifyWebApi = new Spotify();
-let audioCtx;
 
 
 class App extends React.Component {
@@ -33,8 +32,8 @@ class App extends React.Component {
       numTracks: 0,
       length: 0,
       fiveResults: [],
-      'userMessage': 'Top 6 Results | Ready to Submit',
-      songAndArtist: {song: 'App', artist: 'App'}
+      'userMessage': 'SEARCH TRACKS BY ARTIST, SONG, OR ALBUM',
+      songAndArtist: {song: 'No Songs in Queue', artist: 'Please Go Into Search Mode'}
     };
     if (params.access_token) {
       spotifyWebApi.setAccessToken(params.access_token);
@@ -58,6 +57,7 @@ class App extends React.Component {
   }
   spotifyCall (input) {
     if (!input.length) {
+      this.setState({userMessage: 'SEARCH TRACKS BY ARTIST, SONG, OR ALBUM'});
       return;
     }
     let context = this;
@@ -74,11 +74,6 @@ class App extends React.Component {
             }).map((track) => {
                 return {song: track.name, artist: track.album.artists[0].name }
             });
-            // let info = [];
-            // for (let i = 0; i < fiveTracks.length; i++) {
-            //   info.push({song: fiveTracks[i].name, 
-            //             artist: fiveTracks[i].album.artists[0].name});
-            // }
             context.setState({fiveResults: sixTracks}, () => {
               if (length === 5) {
                 context.state.fiveResults = [];
@@ -113,9 +108,6 @@ class App extends React.Component {
     this.spotifyCall(input);
   }
   componentDidMount() {
-    // this.setState({actx: audioCtx}, () => {
-    //   context.spotifyCall('Timberlake');
-    // });
   }
   getHashParams() {
     let hashParams = {};
@@ -179,7 +171,6 @@ const mapDispatchToProps = (dispatch) => {
   };
 
 };
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
 

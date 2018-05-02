@@ -21,7 +21,7 @@ let Table = (props) => {
       </table>
       <div className = {styles.listcontainer} style = {divStyle}>
           <div className= {styles.list}>
-           <div style = {{'height': '135px', 'overflow': 'auto', 'display': 'block', 'overflow-x': 'hidden'}}>
+           <div style = {{'height': '135px', 'overflow': 'auto', 'display': 'block', 'overflowX': 'hidden'}}>
               <div>
                {props.tracklist.map((track, i) => <TableEntry title = {track.name} artist = {track.album.artists[0].name} clicked = {props.clickE} index = {i + 1} onClick = {() => { props.clickE(i); }}/> )}
               </div>

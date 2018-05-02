@@ -14,14 +14,16 @@ class Container extends React.Component {
                   clickEvent: '', 
                   progress: '00',
                   duration: '17:17',
-                  artist: 'Container',
-                  song: 'Container',
+                  appStarted: false,
+                  song: 'No Songs in Queue',
+                  artist: 'Please Go Into Search Mode',
+                  by: '',
                   trackNumber: '1',
-                  partials: [{song: 'song', artist: 'artist'},
-                             {song: 'song', artist: 'artist'},
-                             {song: 'song', artist: 'artist'},
-                             {song: 'song', artist: 'artist'},
-                             {song: 'song', artist: 'artist'}]};
+                  partials: [{song: '', artist: ''},
+                             {song: '', artist: ''},
+                             {song: '', artist: ''},
+                             {song: '', artist: ''},
+                             {song: '', artist: ''}]};
    
   }
   componentWillReceiveProps (nextProps) {
@@ -58,23 +60,24 @@ class Container extends React.Component {
                     artist: displaySA.artist, 
                     trackNumber:displaySA.trackNumber})
     }
+    this.setState({by: 'by'});
     return true;
   }
   updateProgress(progress) {
-    // this.state.progress = progress;
     this.setState({progress: progress});
   }
   render() {
     let context = this;
+    let screenHeight = {height: (this.props.length * 49.439) + 432 + 'px'}
     let divStyle = {
       'background': 'url(' + '"' + this.props.cover + '"' + ')',
       'backgroundSize': 'cover',
     }; 
-    let screenHeight = {height: (this.props.length * 49.439) + 432 + 'px'}
     let inputStyle = {
       left: '100px',
       'background-color': 'black'
     };
+    this.state.appStarted = true;
     return (
       <div >
          <div className = {styles.screen} styles = {screenHeight} >
@@ -89,7 +92,7 @@ class Container extends React.Component {
          <div className = {styles.testing}>  
            <div className = {styles.threeResultsContainer}> 
               {this.state.partials.map((item) => 
-                <div> {item.song} by {item.artist} </div>)}
+                <div> {item.song + ' '} {this.state.by} {' ' +item.artist} </div>)}
            </div>
          <div className = {styles.bodyPlayer}> </div>
          </div>
