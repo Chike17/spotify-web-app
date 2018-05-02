@@ -13,22 +13,16 @@ class App extends React.Component {
     super(props);
     const params = this.getHashParams();
     this.state = {
-      something: '',
       loggedIn: params.access_token ? true : false,
       tracklist: [],
       cover: stock,
       accessToken: '',
       urls: [],
       trackNumber: '0',
-      source: undefined,
-      actx: undefined,
-      pureStop: true,
-      buffer: '',
       preResults: false,
       numTracks: 0,
-      length: 0,
       fiveResults: [],
-      'userMessage': 'SEARCH TRACKS BY ARTIST, SONG, OR ALBUM',
+      userMessage: 'SEARCH TRACKS BY ARTIST, SONG, OR ALBUM',
       songAndArtist: {song: 'No Songs in Queue', artist: 'Please Go Into Search Mode'}
     };
     if (params.access_token) {
@@ -147,7 +141,6 @@ class App extends React.Component {
                    changeCover = {this.changeCover.bind(this)}
                    getpreResults = {this.getpreResults.bind(this)}
                    numofTracks = {this.state.numTracks}
-                   length = {this.state.length}
                    changeSongAndArtist = {this.changeSongAndArtist.bind(this)}
                    fiveResults = {this.state.fiveResults}
                    partialStatus = {this.state.preResults}

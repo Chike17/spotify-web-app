@@ -68,7 +68,6 @@ class Container extends React.Component {
   }
   render() {
     let context = this;
-    let screenHeight = {height: (this.props.length * 49.439) + 432 + 'px'}
     let divStyle = {
       'background': 'url(' + '"' + this.props.cover + '"' + ')',
       'backgroundSize': 'cover',
@@ -80,7 +79,7 @@ class Container extends React.Component {
     this.state.appStarted = true;
     return (
       <div >
-         <div className = {styles.screen} styles = {screenHeight} >
+         <div className = {styles.screen} >
          <div className = {styles.searchMode}> Search Mode </div>
          <input type = "checkbox" value = "Node" className = {styles.magicButton} name="check" />
          <div className = {styles.coverImage} style = {divStyle}> </div>
@@ -89,7 +88,7 @@ class Container extends React.Component {
                 getpreResults = {this.props.getpreResults}
            />
          <p className={styles.userMessageContainer}> {this.props.userMessage}</p>
-         <div className = {styles.testing}>  
+         <div className = {styles.containPre}>  
            <div className = {styles.threeResultsContainer}> 
               {this.state.partials.map((item) => 
                 <div> {item.song + ' '} {this.state.by} {' ' +item.artist} </div>)}

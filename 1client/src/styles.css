@@ -28,50 +28,6 @@ body {
     background: #555; 
 }
 
-@keyframes harlem {
-  0% {
-    transform: scale(1);
-    -webkit-transform: scale(1);
-    -moz-transform: scale(1);
-    -o-transform: scale(1);
-    -ms-transform: scale(1);
-  }
-  20% {
-    transform: scale(1.03, 1);
-    -webkit-transform: scale(1.03, 1);
-    -moz-transform: scale(1.03, 1);
-    -o-transform: scale(1.03, 1);
-    -ms-transform: scale(1.03, 1);
-  }
-  40% {
-    transform: scale(0.97, 1);
-    -webkit-transform: scale(0.97, 1);
-    -moz-transform: scale(0.97, 1);
-    -o-transform: scale(0.97, 1);
-    -ms-transform: scale(0.97, 1);
-  }
-  60% {
-    transform: scale(1.01, 1);
-    -webkit-transform: scale(1.01, 1);
-    -moz-transform: scale(1.01, 1);
-    -o-transform: scale(1.01, 1);
-    -ms-transform: scale(1.01, 1);
-  }
-  80% {
-    transform: scale(0.99, 1);
-    -webkit-transform: scale(0.99, 1);
-    -moz-transform: scale(0.99, 1);
-    -o-transform: scale(0.99, 1);
-    -ms-transform: scale(0.99, 1);
-  }
-  100% {
-    transform: scale(1);
-    -webkit-transform: scale(1);
-    -moz-transform: scale(1);
-    -o-transform: scale(1);
-    -ms-transform: scale(1);
-  }
-}
 
 h2 {
   margin: 0;
@@ -125,41 +81,6 @@ h6 {
   cursor: pointer;
 }
 
-label.title {
-  cursor:pointer;
-}
-
-
-label.main:before {
-  position: absolute;
-  top: 23px;
-  left: 23px;
-  font-family: FontAwesome;
-  content: '\f0c9';
-  color: #959595;
-  font-size: 16px;
-  line-height: 16px;
-  cursor: pointer;
-  z-index: 10;
-  transition: all 0.3s ease-in;
-}
-
-label.main:hover:before {
-  color: #bbb;
-}
-
-label.zmr:before {
-  font-family: FontAwesome;
-  content: "\f08a";
-  color: #777;
-  font-size: 15px;
-  line-height: 15px;
-  cursor: pointer;
-  z-index: 10;
-  transition: all 0.15s linear;
-}
-
-
 .screen {
   background: rgb(6, 6, 9);
   padding: 0;
@@ -201,19 +122,6 @@ label.zmr:before {
   transition: all 0.3s ease-in;
 }
 
-/*.screen > .magicButton:unchecked ~ .threeResultsContainer {
-  color: #111;
-  opacity: 30;
-}
-
-.screen > .magicButton:checked ~ .threeResultsContainer {
-  color:#111;
-  opacity:30;
-  left: 0;
-  top: 70px;
-  transition: all 0.3s ease-in;
-}
-*/
 .screen > .magicButton:checked ~ .bodyPlayer {
   height: 470px;
   left: 0;
@@ -274,16 +182,9 @@ label.zmr:before {
   padding: 0;
   height: 350px; 
   width: 100%;
-  /*background: #111;*/
-  /*background: #282828;*/
   background: rgb(6, 6, 9);
   transition: all 0.3s ease-in;
 }
-
-/*height: 470px;
-  left: 0;
-  top: 180px;
-  transition: all 0.3s ease-in;*/
 
 .search:before {
   position: absolute;
@@ -382,82 +283,6 @@ label.zmr:before {
   color: #888;
 }
 
-td > .heart:checked ~ label.zmr:before {
-  content: "\f004";
-  color: #42f492;
-  transition: all 0.15s linear;
-}
-
-td > .heart1:checked ~ label.zmr:before {
-  content: "\f004";
-  color: #42f492;
-  transition: all 0.15s linear;
-}
-
-td > .heart2:checked ~ label.zmr:before {
-  content: "\f004";
-  color: #42f492;
-  transition: all 0.15s linear;
-}
-
-td > .heart3:checked ~ label.zmr:before {
-  content: "\f004";
-  color: #42f492;
-  transition: all 0.15s linear;
-}
-
-td > .heart4:checked ~ label.zmr:before {
-  content: "\f004";
-  color: #42f492;
-  transition: all 0.15s linear;
-}
-
-td > .heart5:checked ~ label.zmr:before {
-  content: "\f004";
-  color: #42f492;
-  transition: all 0.15s linear;
-}
-
-td > .heart6:checked ~ label.zmr:before {
-  content: "\f004";
-  color: #42f492;
-  transition: all 0.15s linear;
-}
-
-td > .heart7:checked ~ label.zmr:before {
-  content: "\f004";
-  color: #42f492;
-  transition: all 0.15s linear;
-}
-
-td > .heart8:checked ~ label.zmr:before {
-  content: "\f004";
-  color: #42f492;
-  transition: all 0.15s linear;
-}
-
-td > .play:checked ~ label.play:before {
-  content: "\f04c";
-  transition: all 0.15s linear;
-}
-
-td > .love:checked ~ label.love:before {
-  content: "\f004";
-  color: #42f492;
-  transition: all 0.15s linear;
-}
-
-td > .shuffle:checked ~ label.shuffle:before {
-  color: #42f492;
-  transition: all 0.15s linear;
-}
-
-td > .repeat:checked ~ label.repeat:before {
-  color: #42f492;
-  transition: all 0.15s linear;
-}
-
-
 .shadow {
   background: rgba(17, 17, 17, 0.8);
   width: 366px;
@@ -467,7 +292,6 @@ td > .repeat:checked ~ label.repeat:before {
   left: 0;
   box-shadow: 0px -15px 40px rgba(17, 17, 17, 0.8);
 }
-
 
 .bar {
   background: url('http://imgh.us/bar_3.svg') no-repeat;
@@ -488,7 +312,6 @@ td > .repeat:checked ~ label.repeat:before {
   top: 440px;
   transition: all 0.3s ease-in;
 }
-
 
 .player {
   background: none;
@@ -511,10 +334,6 @@ td > .repeat:checked ~ label.repeat:before {
 
 .player td {
   width: 72px;
-}
-
-audio {
-  visibility: hidden;
 }
 
 .back:before {
@@ -567,57 +386,6 @@ audio {
   transition: bottom 0.3s linear;
 }
 
-.love:before {
-  content: "\f08a";
-  cursor: pointer;
-  transition: all 0.15s linear;
-}
-
-.love:hover:before {
-  color: #bbb;
-  transition: all 0.15s linear;
-}
-
-
-.shuffle:before {
-  content: "\f074";
-  cursor: pointer;
-  transition: all 0.15s linear;
-}
-
-.shuffle:hover:before {
-  color: #bbb;
-  transition: all 0.15s linear;
-}
-
-.repeat:before {
-  content: "\f01e";
-  cursor: pointer;
-  transition: all 0.15s linear;
-}
-
-.repeat:hover:before {
-  color: #bbb;
-  transition: all 0.15s linear;
-}
-
-.options:before {
-  content: "\f141";
-  cursor: pointer;
-  transition: all 0.15s linear;
-}
-
-.options:hover:before {
-  color: #bbb;
-  transition: all 0.15s linear;
-}
-
-.current {
-  position: absolute;
-  right: 23px;
-  bottom: -60px;
-  transition: all 0.3s ease-in;
-}
 .searchInputBox {
   width:80%;
   position: absolute;
@@ -631,7 +399,7 @@ audio {
   color:#ddd;
 }
 
-.testing {
+.containPre {
   position: relative;
   opacity:0;
   text-align: center;
@@ -707,18 +475,6 @@ audio {
   background: #42f492;
 }
 
-.scrubber {
-  position: absolute;
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  margin: -4px 0 0 -9px;
-  background: #42f492;
-  border: solid 3px #ddd;
-  cursor: pointer;
-  box-shadow: 0 0 5px #000, inset 0 0 4px #400;
-}
-
 .running{
   position: absolute;
   font-size:12px;
@@ -748,7 +504,6 @@ audio {
   color:white;
 }
 
-
 .songArtistContainer {
   text-align: center;
   color: white;
@@ -763,6 +518,7 @@ audio {
   padding: 8px 0px 2px 0px;
   color: #fff;
 }
+
 .song h4 {
   position: relative;
   left: 50%;
@@ -771,9 +527,11 @@ audio {
   width: 50%;
   font-weight: 300;
 }
+
 .artist {
   text-align: center;
 }
+
 .artist h4{
   text-align: center;
   position: relative;
@@ -819,11 +577,4 @@ audio {
 .tableEntryDiv {
   width: 100%;
   height:100%;
-}
-
-label {
-    cursor: default;
-}
-.scrolling{
-  z-index: -1;
 }
