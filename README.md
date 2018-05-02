@@ -3,7 +3,8 @@ STARTING THE APP
 2. Issue the command npm start from the root of the project.
 3. Open your Chrome Browser and to go http://localhost:8888/startapp
 4. Sign in with Facebook or Spotify
-5. Once in the App go to Search Mode by checking on the box in the top left corner of the App. Give the App an entry and begin using it.
+5. The song queue will be empty when the app first appears.
+5. Once in the app go to Search Mode by checking on the box in the top left corner of the app. Give the app an entry and begin using it.
 6. Uncheck search Mode to see the cover of the song that is currently playing.
 7. Songs that are next in the queue automatically get played.
 
