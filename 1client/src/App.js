@@ -8,6 +8,7 @@ import $ from 'jquery';
 import store from './store.js';
 import Spotify from 'spotify-web-api-js';
 import fetchBuffer from './fetchBuffer.js';
+import _ from 'lodash';
 const spotifyWebApi = new Spotify();
 let audioCtx;
 
@@ -23,7 +24,7 @@ class App extends React.Component {
       cover: stock,
       accessToken: '',
       urls: [],
-      trackNumber: 0,
+      trackNumber: '0',
       source: undefined,
       actx: undefined,
       pureStop: true,
@@ -64,17 +65,21 @@ class App extends React.Component {
         .then(function(response) {
           context.setState({userMessage: 'Top 6 Results | Ready to Submit'});
           if (context.state.preResults) {
-            console.log('PRERESULTS!!!!!!!!!!!!!!!!!!!!!!!!!!!');
             context.preResults = false;
             let items = response.tracks.items;
             let length = items.length;
-            let fiveTracks = items.splice(0, 5);
-            let info = [];
-            for (let i = 0; i < fiveTracks.length; i++) {
-              info.push({song: fiveTracks[i].name, 
-                        artist: fiveTracks[i].album.artists[0].name});
-            }
-            context.setState({fiveResults: info}, () => {
+            let sixTracks = items.splice(0, 5);
+            sixTracks = sixTracks.filter((track) => {
+              return track.preview_url !== null;
+            }).map((track) => {
+                return {song: track.name, artist: track.album.artists[0].name }
+            });
+            // let info = [];
+            // for (let i = 0; i < fiveTracks.length; i++) {
+            //   info.push({song: fiveTracks[i].name, 
+            //             artist: fiveTracks[i].album.artists[0].name});
+            // }
+            context.setState({fiveResults: sixTracks}, () => {
               if (length === 5) {
                 context.state.fiveResults = [];
               } 
@@ -123,7 +128,7 @@ class App extends React.Component {
   }
   setTrackList (input) {
     this.state.preResults = false;
-    this.spotifyCall(input);
+    _.debounce(this.spotifyCall(input), 500)();
   }
   changeCover(index) {
     let context = this;
@@ -133,7 +138,9 @@ class App extends React.Component {
   changeSongAndArtist (index) {
     let song = this.state.tracklist[index].name;
     let artist = this.state.tracklist[index].album.artists[0].name;
-    this.setState({songAndArtist: {artist: artist, song: song}});
+    this.setState({songAndArtist: {artist: artist, 
+                                    song: song, 
+                                    trackNumber: index + 1}});
   }
   render() {
     return (
@@ -153,6 +160,7 @@ class App extends React.Component {
                    partialStatus = {this.state.preResults}
                    userMessage = {this.state.userMessage}
                    songAndArtist = {this.state.songAndArtist}
+                   trackNumber = {this.state.trackNumber}
                    />
       </div>
     );
@@ -174,5 +182,21 @@ const mapDispatchToProps = (dispatch) => {
 
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

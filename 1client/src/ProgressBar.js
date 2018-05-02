@@ -49,7 +49,7 @@ class ProgressBar extends React.Component {
       }
       this.setState({url: this.state.urls[context.state.trackNumber], urls: nextProps.urls}, () => {
         context.fetch();
-      }); 
+      });
     }
   }
   fetch () {
@@ -145,12 +145,16 @@ class ProgressBar extends React.Component {
   }
   playNextSong () {
     this.pause();
-    this.state.trackNumber++;
-    this.position = 0;
     this.hitNext = true;
-    this.fetch();
+    this.state.trackNumber++;
+    if (this.state.trackNumber === this.state.urls.length - 1) {
+      this.pause();
+      this.state.trackNumber = 0;
+    }
+    this.position = 0;
     this.props.changeCover(this.state.trackNumber);
     this.props.changeSongAndArtist(this.state.trackNumber);
+    this.fetch();
     return;
   }
   playPreviousSong() {
@@ -158,9 +162,14 @@ class ProgressBar extends React.Component {
     this.hitPrevious = true;
     this.state.trackNumber--;
     this.position = 0;
-    this.fetch();
+    if (this.state.trackNumber < 0) {
+      this.pause();
+      this.state.trackNumber = 0;
+      return;
+    }
     this.props.changeCover(this.state.trackNumber);
     this.props.changeSongAndArtist(this.state.trackNumber);
+    this.fetch();
     return;
   }
   playOnClick(index) {
@@ -192,7 +201,7 @@ class ProgressBar extends React.Component {
     requestAnimationFrame(context.draw.bind(context));
   }
   passProgress(progress) {
-    progress = progress * 10;
+    progress = progress * 30;
     progress = Math.round(progress, 1);
     progress = JSON.stringify(progress);
     if (progress.length < 2) {

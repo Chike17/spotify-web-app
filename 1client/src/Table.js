@@ -14,16 +14,16 @@ let Table = (props) => {
    <div >
       <table className={styles.player} >
         <tbody>
-          <td> <i className={[styles.back,'fas','fa-step-backward'].join(' ')} htmlFor={styles.backward} onClick = {() => { props.playPrev(); }} ></i></td>
-          <td> <i className={[styles.play,'fas','fa-play'].join(' ')} htmlFor={styles.play} onClick = {() => { props.toggle(); }} ></i></td>
-          <td> <i className={[styles.fore,'fas','fa-step-forward'].join(' ')} htmlFor={styles.forward} onClick = {() => { props.playNext(); } } ></i></td>
+          <td> <i className={[styles.back,'fas fa-step-backward'].join(' ')} htmlFor={styles.backward} onClick = {() => { props.playPrev(); }} ></i></td>
+          <td> <i className={[styles.play,'fas fa-pause'].join(' ')} htmlFor={styles.play} onClick = {() => { props.toggle(); }} ></i></td>
+          <td> <i className={[styles.fore,'fas fa-step-forward'].join(' ')} htmlFor={styles.forward} onClick = {() => { props.playNext(); } } ></i></td>
         </tbody>
       </table>
       <div className = {styles.listcontainer} style = {divStyle}>
           <div className= {styles.list}>
            <div style = {{'height': '135px', 'overflow': 'auto', 'display': 'block', 'overflow-x': 'hidden'}}>
               <div>
-               {props.tracklist.map((track, i) => <TableEntry title = {track.name} clicked = {props.clickE} index = {i + 1} onClick = {() => { props.clickE(i); }}/> )}
+               {props.tracklist.map((track, i) => <TableEntry title = {track.name} artist = {track.album.artists[0].name} clicked = {props.clickE} index = {i + 1} onClick = {() => { props.clickE(i); }}/> )}
               </div>
            </div>
          </div>
@@ -33,6 +33,12 @@ let Table = (props) => {
 };
 
 module.exports = Table;
+
+
+
+
+
+
 
 
 
