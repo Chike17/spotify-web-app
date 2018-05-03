@@ -10,7 +10,7 @@ let Table = (props) => {
       <table className={styles.player} >
         <tbody>
           <td> <i className={[styles.back,'fas fa-step-backward'].join(' ')} htmlFor={styles.backward} onClick = {() => { props.playPrev(); }} ></i></td>
-          <td> <i className={[styles.play,'fas fa-pause'].join(' ')} htmlFor={styles.play} onClick = {() => { props.toggle(); }} ></i></td>
+          <td> <i className={[styles.play,'fas fa-play'].join(' ')} htmlFor={styles.play} onClick = {() => { props.toggle(); }} ></i></td>
           <td> <i className={[styles.fore,'fas fa-step-forward'].join(' ')} htmlFor={styles.forward} onClick = {() => { props.playNext(); } } ></i></td>
         </tbody>
       </table>

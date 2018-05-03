@@ -7,7 +7,6 @@ import Spotify from 'spotify-web-api-js';
 let stock = 'https://static1.squarespace.com/static/585e12abe4fcb5ea1248900e/t/5aab1c5b03ce6430365833ac/1521163366180/Spotify+Square.png?format=300w';
 const spotifyWebApi = new Spotify();
 
-
 class App extends React.Component {
   constructor (props) {
     super(props);
