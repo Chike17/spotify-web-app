@@ -1,6 +1,5 @@
 import React from 'react';
 import styles from './styles.css';
-import Controls from './Controls.js';
 let url = 'http://static.kevvv.in/sounds/callmemaybe.mp3';
 
 

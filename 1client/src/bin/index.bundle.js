@@ -61,9 +61,9 @@
 	
 	var _App2 = _interopRequireDefault(_App);
 	
-	var _reactRedux = __webpack_require__(/*! react-redux */ 277);
+	var _reactRedux = __webpack_require__(/*! react-redux */ 276);
 	
-	var _store = __webpack_require__(/*! ./store.js */ 314);
+	var _store = __webpack_require__(/*! ./store.js */ 313);
 	
 	var _store2 = _interopRequireDefault(_store);
 	
@@ -22518,13 +22518,13 @@
 	
 	var _Container2 = _interopRequireDefault(_Container);
 	
-	var _reactRedux = __webpack_require__(/*! react-redux */ 277);
+	var _reactRedux = __webpack_require__(/*! react-redux */ 276);
 	
-	var _store = __webpack_require__(/*! ./store.js */ 314);
+	var _store = __webpack_require__(/*! ./store.js */ 313);
 	
 	var _store2 = _interopRequireDefault(_store);
 	
-	var _spotifyWebApiJs = __webpack_require__(/*! spotify-web-api-js */ 316);
+	var _spotifyWebApiJs = __webpack_require__(/*! spotify-web-api-js */ 315);
 	
 	var _spotifyWebApiJs2 = _interopRequireDefault(_spotifyWebApiJs);
 	
@@ -22558,7 +22558,7 @@
 	      preResults: false,
 	      validINput: false,
 	      numTracks: 0,
-	      fiveResults: [],
+	      topResults: [],
 	      userMessage: 'SEARCH TRACKS BY ARTIST, SONG, OR ALBUM',
 	      songAndArtist: { song: 'No Songs in Queue', artist: 'Please Go Into Search Mode' }
 	    };
@@ -22617,7 +22617,7 @@
 	    value: function spotifyCall(input) {
 	      var context = this;
 	      if (!input.length) {
-	        context.setState({ userMessage: 'SEARCH TRACKS BY ARTIST, SONG, OR ALBUM', fiveResults: [] });
+	        context.setState({ userMessage: 'SEARCH TRACKS BY ARTIST, SONG, OR ALBUM', topResults: [] });
 	        return;
 	      }
 	      spotifyWebApi.searchTracks(input).then(function (response) {
@@ -22626,20 +22626,20 @@
 	          context.preResults = false;
 	          var items = response.tracks.items;
 	          var length = items.length;
-	          var sixTracks = items.splice(0, 5);
-	          sixTracks = sixTracks.filter(function (track) {
+	          var topResults = items.splice(0, 5);
+	          topResults = topResults.filter(function (track) {
 	            return track.preview_url !== null;
 	          }).map(function (track) {
 	            return { song: track.name, artist: track.album.artists[0].name };
 	          });
-	          if (!sixTracks.length) {
+	          if (!topResults.length) {
 	            context.setErrorMessage();
 	            return;
 	          }
 	          context.state.validInput = true;
-	          context.setState({ fiveResults: sixTracks }, function () {
+	          context.setState({ topResults: topResults }, function () {
 	            if (length === 5) {
-	              context.state.fiveResults = [];
+	              context.state.topResults = [];
 	            }
 	          });
 	        } else if (!context.state.preResults) {
@@ -22663,7 +22663,7 @@
 	            tracklist: tracks,
 	            urls: urls,
 	            songAndArtist: { song: song, artist: artist } }, function () {
-	            context.state.fiveResults = [];
+	            context.state.topResults = [];
 	          });
 	        }
 	      }, function (err) {
@@ -22674,7 +22674,8 @@
 	    key: 'setErrorMessage',
 	    value: function setErrorMessage() {
 	      this.state.validInput = false;
-	      this.setState({ userMessage: "INVALID ENTRY!! CAN'T SUBMIT!! TRY AGAIN!!" });
+	      this.setState({ userMessage: "INVALID ENTRY!! CAN'T SUBMIT!! TRY AGAIN!!",
+	        topResults: [] });
 	      return;
 	    }
 	  }, {
@@ -22728,7 +22729,7 @@
 	          getpreResults: this.getpreResults,
 	          numofTracks: this.state.numTracks,
 	          changeSongAndArtist: this.changeSongAndArtist,
-	          fiveResults: this.state.fiveResults,
+	          topResults: this.state.topResults,
 	          partialStatus: this.state.preResults,
 	          userMessage: this.state.userMessage,
 	          songAndArtist: this.state.songAndArtist,
@@ -23464,7 +23465,7 @@
 	    key: 'componentWillReceiveProps',
 	    value: function componentWillReceiveProps(nextProps) {
 	      var context = this;
-	      var infoFiltered = nextProps.fiveResults.map(function (info) {
+	      var infoFiltered = nextProps.topResults.map(function (info) {
 	        if (info['song'].length > 20) {
 	          var song = info['song'].substring(0, 17) + '...';
 	          info['song'] = song;
@@ -31522,10 +31523,6 @@
 	
 	var _styles2 = _interopRequireDefault(_styles);
 	
-	var _Controls = __webpack_require__(/*! ./Controls.js */ 276);
-	
-	var _Controls2 = _interopRequireDefault(_Controls);
-	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -31817,15 +31814,6 @@
 
 /***/ }),
 /* 276 */
-/*!*********************************!*\
-  !*** ./1client/src/Controls.js ***!
-  \*********************************/
-/***/ (function(module, exports) {
-
-	"use strict";
-
-/***/ }),
-/* 277 */
 /*!************************************!*\
   !*** ./~/react-redux/lib/index.js ***!
   \************************************/
@@ -31836,15 +31824,15 @@
 	exports.__esModule = true;
 	exports.connect = exports.connectAdvanced = exports.createProvider = exports.Provider = undefined;
 	
-	var _Provider = __webpack_require__(/*! ./components/Provider */ 278);
+	var _Provider = __webpack_require__(/*! ./components/Provider */ 277);
 	
 	var _Provider2 = _interopRequireDefault(_Provider);
 	
-	var _connectAdvanced = __webpack_require__(/*! ./components/connectAdvanced */ 281);
+	var _connectAdvanced = __webpack_require__(/*! ./components/connectAdvanced */ 280);
 	
 	var _connectAdvanced2 = _interopRequireDefault(_connectAdvanced);
 	
-	var _connect = __webpack_require__(/*! ./connect/connect */ 285);
+	var _connect = __webpack_require__(/*! ./connect/connect */ 284);
 	
 	var _connect2 = _interopRequireDefault(_connect);
 	
@@ -31856,7 +31844,7 @@
 	exports.connect = _connect2.default;
 
 /***/ }),
-/* 278 */
+/* 277 */
 /*!**************************************************!*\
   !*** ./~/react-redux/lib/components/Provider.js ***!
   \**************************************************/
@@ -31873,9 +31861,9 @@
 	
 	var _propTypes2 = _interopRequireDefault(_propTypes);
 	
-	var _PropTypes = __webpack_require__(/*! ../utils/PropTypes */ 279);
+	var _PropTypes = __webpack_require__(/*! ../utils/PropTypes */ 278);
 	
-	var _warning = __webpack_require__(/*! ../utils/warning */ 280);
+	var _warning = __webpack_require__(/*! ../utils/warning */ 279);
 	
 	var _warning2 = _interopRequireDefault(_warning);
 	
@@ -31951,7 +31939,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! ./../../../process/browser.js */ 3)))
 
 /***/ }),
-/* 279 */
+/* 278 */
 /*!**********************************************!*\
   !*** ./~/react-redux/lib/utils/PropTypes.js ***!
   \**********************************************/
@@ -31982,7 +31970,7 @@
 	});
 
 /***/ }),
-/* 280 */
+/* 279 */
 /*!********************************************!*\
   !*** ./~/react-redux/lib/utils/warning.js ***!
   \********************************************/
@@ -32015,7 +32003,7 @@
 	}
 
 /***/ }),
-/* 281 */
+/* 280 */
 /*!*********************************************************!*\
   !*** ./~/react-redux/lib/components/connectAdvanced.js ***!
   \*********************************************************/
@@ -32029,21 +32017,21 @@
 	
 	exports.default = connectAdvanced;
 	
-	var _hoistNonReactStatics = __webpack_require__(/*! hoist-non-react-statics */ 282);
+	var _hoistNonReactStatics = __webpack_require__(/*! hoist-non-react-statics */ 281);
 	
 	var _hoistNonReactStatics2 = _interopRequireDefault(_hoistNonReactStatics);
 	
-	var _invariant = __webpack_require__(/*! invariant */ 283);
+	var _invariant = __webpack_require__(/*! invariant */ 282);
 	
 	var _invariant2 = _interopRequireDefault(_invariant);
 	
 	var _react = __webpack_require__(/*! react */ 1);
 	
-	var _Subscription = __webpack_require__(/*! ../utils/Subscription */ 284);
+	var _Subscription = __webpack_require__(/*! ../utils/Subscription */ 283);
 	
 	var _Subscription2 = _interopRequireDefault(_Subscription);
 	
-	var _PropTypes = __webpack_require__(/*! ../utils/PropTypes */ 279);
+	var _PropTypes = __webpack_require__(/*! ../utils/PropTypes */ 278);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -32330,7 +32318,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! ./../../../process/browser.js */ 3)))
 
 /***/ }),
-/* 282 */
+/* 281 */
 /*!********************************************!*\
   !*** ./~/hoist-non-react-statics/index.js ***!
   \********************************************/
@@ -32411,7 +32399,7 @@
 
 
 /***/ }),
-/* 283 */
+/* 282 */
 /*!********************************!*\
   !*** ./~/invariant/browser.js ***!
   \********************************/
@@ -32470,7 +32458,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! ./../process/browser.js */ 3)))
 
 /***/ }),
-/* 284 */
+/* 283 */
 /*!*************************************************!*\
   !*** ./~/react-redux/lib/utils/Subscription.js ***!
   \*************************************************/
@@ -32574,7 +32562,7 @@
 	exports.default = Subscription;
 
 /***/ }),
-/* 285 */
+/* 284 */
 /*!**********************************************!*\
   !*** ./~/react-redux/lib/connect/connect.js ***!
   \**********************************************/
@@ -32588,27 +32576,27 @@
 	
 	exports.createConnect = createConnect;
 	
-	var _connectAdvanced = __webpack_require__(/*! ../components/connectAdvanced */ 281);
+	var _connectAdvanced = __webpack_require__(/*! ../components/connectAdvanced */ 280);
 	
 	var _connectAdvanced2 = _interopRequireDefault(_connectAdvanced);
 	
-	var _shallowEqual = __webpack_require__(/*! ../utils/shallowEqual */ 286);
+	var _shallowEqual = __webpack_require__(/*! ../utils/shallowEqual */ 285);
 	
 	var _shallowEqual2 = _interopRequireDefault(_shallowEqual);
 	
-	var _mapDispatchToProps = __webpack_require__(/*! ./mapDispatchToProps */ 287);
+	var _mapDispatchToProps = __webpack_require__(/*! ./mapDispatchToProps */ 286);
 	
 	var _mapDispatchToProps2 = _interopRequireDefault(_mapDispatchToProps);
 	
-	var _mapStateToProps = __webpack_require__(/*! ./mapStateToProps */ 310);
+	var _mapStateToProps = __webpack_require__(/*! ./mapStateToProps */ 309);
 	
 	var _mapStateToProps2 = _interopRequireDefault(_mapStateToProps);
 	
-	var _mergeProps = __webpack_require__(/*! ./mergeProps */ 311);
+	var _mergeProps = __webpack_require__(/*! ./mergeProps */ 310);
 	
 	var _mergeProps2 = _interopRequireDefault(_mergeProps);
 	
-	var _selectorFactory = __webpack_require__(/*! ./selectorFactory */ 312);
+	var _selectorFactory = __webpack_require__(/*! ./selectorFactory */ 311);
 	
 	var _selectorFactory2 = _interopRequireDefault(_selectorFactory);
 	
@@ -32710,7 +32698,7 @@
 	exports.default = createConnect();
 
 /***/ }),
-/* 286 */
+/* 285 */
 /*!*************************************************!*\
   !*** ./~/react-redux/lib/utils/shallowEqual.js ***!
   \*************************************************/
@@ -32752,7 +32740,7 @@
 	}
 
 /***/ }),
-/* 287 */
+/* 286 */
 /*!*********************************************************!*\
   !*** ./~/react-redux/lib/connect/mapDispatchToProps.js ***!
   \*********************************************************/
@@ -32765,9 +32753,9 @@
 	exports.whenMapDispatchToPropsIsMissing = whenMapDispatchToPropsIsMissing;
 	exports.whenMapDispatchToPropsIsObject = whenMapDispatchToPropsIsObject;
 	
-	var _redux = __webpack_require__(/*! redux */ 288);
+	var _redux = __webpack_require__(/*! redux */ 287);
 	
-	var _wrapMapToProps = __webpack_require__(/*! ./wrapMapToProps */ 308);
+	var _wrapMapToProps = __webpack_require__(/*! ./wrapMapToProps */ 307);
 	
 	function whenMapDispatchToPropsIsFunction(mapDispatchToProps) {
 	  return typeof mapDispatchToProps === 'function' ? (0, _wrapMapToProps.wrapMapToPropsFunc)(mapDispatchToProps, 'mapDispatchToProps') : undefined;
@@ -32788,7 +32776,7 @@
 	exports.default = [whenMapDispatchToPropsIsFunction, whenMapDispatchToPropsIsMissing, whenMapDispatchToPropsIsObject];
 
 /***/ }),
-/* 288 */
+/* 287 */
 /*!******************************!*\
   !*** ./~/redux/lib/index.js ***!
   \******************************/
@@ -32799,27 +32787,27 @@
 	exports.__esModule = true;
 	exports.compose = exports.applyMiddleware = exports.bindActionCreators = exports.combineReducers = exports.createStore = undefined;
 	
-	var _createStore = __webpack_require__(/*! ./createStore */ 289);
+	var _createStore = __webpack_require__(/*! ./createStore */ 288);
 	
 	var _createStore2 = _interopRequireDefault(_createStore);
 	
-	var _combineReducers = __webpack_require__(/*! ./combineReducers */ 303);
+	var _combineReducers = __webpack_require__(/*! ./combineReducers */ 302);
 	
 	var _combineReducers2 = _interopRequireDefault(_combineReducers);
 	
-	var _bindActionCreators = __webpack_require__(/*! ./bindActionCreators */ 305);
+	var _bindActionCreators = __webpack_require__(/*! ./bindActionCreators */ 304);
 	
 	var _bindActionCreators2 = _interopRequireDefault(_bindActionCreators);
 	
-	var _applyMiddleware = __webpack_require__(/*! ./applyMiddleware */ 306);
+	var _applyMiddleware = __webpack_require__(/*! ./applyMiddleware */ 305);
 	
 	var _applyMiddleware2 = _interopRequireDefault(_applyMiddleware);
 	
-	var _compose = __webpack_require__(/*! ./compose */ 307);
+	var _compose = __webpack_require__(/*! ./compose */ 306);
 	
 	var _compose2 = _interopRequireDefault(_compose);
 	
-	var _warning = __webpack_require__(/*! ./utils/warning */ 304);
+	var _warning = __webpack_require__(/*! ./utils/warning */ 303);
 	
 	var _warning2 = _interopRequireDefault(_warning);
 	
@@ -32843,7 +32831,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! ./../../process/browser.js */ 3)))
 
 /***/ }),
-/* 289 */
+/* 288 */
 /*!************************************!*\
   !*** ./~/redux/lib/createStore.js ***!
   \************************************/
@@ -32855,11 +32843,11 @@
 	exports.ActionTypes = undefined;
 	exports['default'] = createStore;
 	
-	var _isPlainObject = __webpack_require__(/*! lodash/isPlainObject */ 290);
+	var _isPlainObject = __webpack_require__(/*! lodash/isPlainObject */ 289);
 	
 	var _isPlainObject2 = _interopRequireDefault(_isPlainObject);
 	
-	var _symbolObservable = __webpack_require__(/*! symbol-observable */ 300);
+	var _symbolObservable = __webpack_require__(/*! symbol-observable */ 299);
 	
 	var _symbolObservable2 = _interopRequireDefault(_symbolObservable);
 	
@@ -33112,15 +33100,15 @@
 	}
 
 /***/ }),
-/* 290 */
+/* 289 */
 /*!***********************************!*\
   !*** ./~/lodash/isPlainObject.js ***!
   \***********************************/
 /***/ (function(module, exports, __webpack_require__) {
 
-	var baseGetTag = __webpack_require__(/*! ./_baseGetTag */ 291),
-	    getPrototype = __webpack_require__(/*! ./_getPrototype */ 297),
-	    isObjectLike = __webpack_require__(/*! ./isObjectLike */ 299);
+	var baseGetTag = __webpack_require__(/*! ./_baseGetTag */ 290),
+	    getPrototype = __webpack_require__(/*! ./_getPrototype */ 296),
+	    isObjectLike = __webpack_require__(/*! ./isObjectLike */ 298);
 	
 	/** `Object#toString` result references. */
 	var objectTag = '[object Object]';
@@ -33183,15 +33171,15 @@
 
 
 /***/ }),
-/* 291 */
+/* 290 */
 /*!*********************************!*\
   !*** ./~/lodash/_baseGetTag.js ***!
   \*********************************/
 /***/ (function(module, exports, __webpack_require__) {
 
-	var Symbol = __webpack_require__(/*! ./_Symbol */ 292),
-	    getRawTag = __webpack_require__(/*! ./_getRawTag */ 295),
-	    objectToString = __webpack_require__(/*! ./_objectToString */ 296);
+	var Symbol = __webpack_require__(/*! ./_Symbol */ 291),
+	    getRawTag = __webpack_require__(/*! ./_getRawTag */ 294),
+	    objectToString = __webpack_require__(/*! ./_objectToString */ 295);
 	
 	/** `Object#toString` result references. */
 	var nullTag = '[object Null]',
@@ -33220,13 +33208,13 @@
 
 
 /***/ }),
-/* 292 */
+/* 291 */
 /*!*****************************!*\
   !*** ./~/lodash/_Symbol.js ***!
   \*****************************/
 /***/ (function(module, exports, __webpack_require__) {
 
-	var root = __webpack_require__(/*! ./_root */ 293);
+	var root = __webpack_require__(/*! ./_root */ 292);
 	
 	/** Built-in value references. */
 	var Symbol = root.Symbol;
@@ -33235,13 +33223,13 @@
 
 
 /***/ }),
-/* 293 */
+/* 292 */
 /*!***************************!*\
   !*** ./~/lodash/_root.js ***!
   \***************************/
 /***/ (function(module, exports, __webpack_require__) {
 
-	var freeGlobal = __webpack_require__(/*! ./_freeGlobal */ 294);
+	var freeGlobal = __webpack_require__(/*! ./_freeGlobal */ 293);
 	
 	/** Detect free variable `self`. */
 	var freeSelf = typeof self == 'object' && self && self.Object === Object && self;
@@ -33253,7 +33241,7 @@
 
 
 /***/ }),
-/* 294 */
+/* 293 */
 /*!*********************************!*\
   !*** ./~/lodash/_freeGlobal.js ***!
   \*********************************/
@@ -33267,13 +33255,13 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ }),
-/* 295 */
+/* 294 */
 /*!********************************!*\
   !*** ./~/lodash/_getRawTag.js ***!
   \********************************/
 /***/ (function(module, exports, __webpack_require__) {
 
-	var Symbol = __webpack_require__(/*! ./_Symbol */ 292);
+	var Symbol = __webpack_require__(/*! ./_Symbol */ 291);
 	
 	/** Used for built-in method references. */
 	var objectProto = Object.prototype;
@@ -33322,7 +33310,7 @@
 
 
 /***/ }),
-/* 296 */
+/* 295 */
 /*!*************************************!*\
   !*** ./~/lodash/_objectToString.js ***!
   \*************************************/
@@ -33353,13 +33341,13 @@
 
 
 /***/ }),
-/* 297 */
+/* 296 */
 /*!***********************************!*\
   !*** ./~/lodash/_getPrototype.js ***!
   \***********************************/
 /***/ (function(module, exports, __webpack_require__) {
 
-	var overArg = __webpack_require__(/*! ./_overArg */ 298);
+	var overArg = __webpack_require__(/*! ./_overArg */ 297);
 	
 	/** Built-in value references. */
 	var getPrototype = overArg(Object.getPrototypeOf, Object);
@@ -33368,7 +33356,7 @@
 
 
 /***/ }),
-/* 298 */
+/* 297 */
 /*!******************************!*\
   !*** ./~/lodash/_overArg.js ***!
   \******************************/
@@ -33392,7 +33380,7 @@
 
 
 /***/ }),
-/* 299 */
+/* 298 */
 /*!**********************************!*\
   !*** ./~/lodash/isObjectLike.js ***!
   \**********************************/
@@ -33430,7 +33418,7 @@
 
 
 /***/ }),
-/* 300 */
+/* 299 */
 /*!******************************************!*\
   !*** ./~/symbol-observable/lib/index.js ***!
   \******************************************/
@@ -33442,7 +33430,7 @@
 	  value: true
 	});
 	
-	var _ponyfill = __webpack_require__(/*! ./ponyfill.js */ 302);
+	var _ponyfill = __webpack_require__(/*! ./ponyfill.js */ 301);
 	
 	var _ponyfill2 = _interopRequireDefault(_ponyfill);
 	
@@ -33465,10 +33453,10 @@
 	
 	var result = (0, _ponyfill2['default'])(root);
 	exports['default'] = result;
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(/*! ./../../webpack/buildin/module.js */ 301)(module)))
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(/*! ./../../webpack/buildin/module.js */ 300)(module)))
 
 /***/ }),
-/* 301 */
+/* 300 */
 /*!***********************************!*\
   !*** (webpack)/buildin/module.js ***!
   \***********************************/
@@ -33487,7 +33475,7 @@
 
 
 /***/ }),
-/* 302 */
+/* 301 */
 /*!*********************************************!*\
   !*** ./~/symbol-observable/lib/ponyfill.js ***!
   \*********************************************/
@@ -33518,7 +33506,7 @@
 	};
 
 /***/ }),
-/* 303 */
+/* 302 */
 /*!****************************************!*\
   !*** ./~/redux/lib/combineReducers.js ***!
   \****************************************/
@@ -33529,13 +33517,13 @@
 	exports.__esModule = true;
 	exports['default'] = combineReducers;
 	
-	var _createStore = __webpack_require__(/*! ./createStore */ 289);
+	var _createStore = __webpack_require__(/*! ./createStore */ 288);
 	
-	var _isPlainObject = __webpack_require__(/*! lodash/isPlainObject */ 290);
+	var _isPlainObject = __webpack_require__(/*! lodash/isPlainObject */ 289);
 	
 	var _isPlainObject2 = _interopRequireDefault(_isPlainObject);
 	
-	var _warning = __webpack_require__(/*! ./utils/warning */ 304);
+	var _warning = __webpack_require__(/*! ./utils/warning */ 303);
 	
 	var _warning2 = _interopRequireDefault(_warning);
 	
@@ -33670,7 +33658,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! ./../../process/browser.js */ 3)))
 
 /***/ }),
-/* 304 */
+/* 303 */
 /*!**************************************!*\
   !*** ./~/redux/lib/utils/warning.js ***!
   \**************************************/
@@ -33703,7 +33691,7 @@
 	}
 
 /***/ }),
-/* 305 */
+/* 304 */
 /*!*******************************************!*\
   !*** ./~/redux/lib/bindActionCreators.js ***!
   \*******************************************/
@@ -33762,7 +33750,7 @@
 	}
 
 /***/ }),
-/* 306 */
+/* 305 */
 /*!****************************************!*\
   !*** ./~/redux/lib/applyMiddleware.js ***!
   \****************************************/
@@ -33776,7 +33764,7 @@
 	
 	exports['default'] = applyMiddleware;
 	
-	var _compose = __webpack_require__(/*! ./compose */ 307);
+	var _compose = __webpack_require__(/*! ./compose */ 306);
 	
 	var _compose2 = _interopRequireDefault(_compose);
 	
@@ -33828,7 +33816,7 @@
 	}
 
 /***/ }),
-/* 307 */
+/* 306 */
 /*!********************************!*\
   !*** ./~/redux/lib/compose.js ***!
   \********************************/
@@ -33872,7 +33860,7 @@
 	}
 
 /***/ }),
-/* 308 */
+/* 307 */
 /*!*****************************************************!*\
   !*** ./~/react-redux/lib/connect/wrapMapToProps.js ***!
   \*****************************************************/
@@ -33885,7 +33873,7 @@
 	exports.getDependsOnOwnProps = getDependsOnOwnProps;
 	exports.wrapMapToPropsFunc = wrapMapToPropsFunc;
 	
-	var _verifyPlainObject = __webpack_require__(/*! ../utils/verifyPlainObject */ 309);
+	var _verifyPlainObject = __webpack_require__(/*! ../utils/verifyPlainObject */ 308);
 	
 	var _verifyPlainObject2 = _interopRequireDefault(_verifyPlainObject);
 	
@@ -33959,7 +33947,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! ./../../../process/browser.js */ 3)))
 
 /***/ }),
-/* 309 */
+/* 308 */
 /*!******************************************************!*\
   !*** ./~/react-redux/lib/utils/verifyPlainObject.js ***!
   \******************************************************/
@@ -33970,11 +33958,11 @@
 	exports.__esModule = true;
 	exports.default = verifyPlainObject;
 	
-	var _isPlainObject = __webpack_require__(/*! lodash/isPlainObject */ 290);
+	var _isPlainObject = __webpack_require__(/*! lodash/isPlainObject */ 289);
 	
 	var _isPlainObject2 = _interopRequireDefault(_isPlainObject);
 	
-	var _warning = __webpack_require__(/*! ./warning */ 280);
+	var _warning = __webpack_require__(/*! ./warning */ 279);
 	
 	var _warning2 = _interopRequireDefault(_warning);
 	
@@ -33987,7 +33975,7 @@
 	}
 
 /***/ }),
-/* 310 */
+/* 309 */
 /*!******************************************************!*\
   !*** ./~/react-redux/lib/connect/mapStateToProps.js ***!
   \******************************************************/
@@ -33999,7 +33987,7 @@
 	exports.whenMapStateToPropsIsFunction = whenMapStateToPropsIsFunction;
 	exports.whenMapStateToPropsIsMissing = whenMapStateToPropsIsMissing;
 	
-	var _wrapMapToProps = __webpack_require__(/*! ./wrapMapToProps */ 308);
+	var _wrapMapToProps = __webpack_require__(/*! ./wrapMapToProps */ 307);
 	
 	function whenMapStateToPropsIsFunction(mapStateToProps) {
 	  return typeof mapStateToProps === 'function' ? (0, _wrapMapToProps.wrapMapToPropsFunc)(mapStateToProps, 'mapStateToProps') : undefined;
@@ -34014,7 +34002,7 @@
 	exports.default = [whenMapStateToPropsIsFunction, whenMapStateToPropsIsMissing];
 
 /***/ }),
-/* 311 */
+/* 310 */
 /*!*************************************************!*\
   !*** ./~/react-redux/lib/connect/mergeProps.js ***!
   \*************************************************/
@@ -34031,7 +34019,7 @@
 	exports.whenMergePropsIsFunction = whenMergePropsIsFunction;
 	exports.whenMergePropsIsOmitted = whenMergePropsIsOmitted;
 	
-	var _verifyPlainObject = __webpack_require__(/*! ../utils/verifyPlainObject */ 309);
+	var _verifyPlainObject = __webpack_require__(/*! ../utils/verifyPlainObject */ 308);
 	
 	var _verifyPlainObject2 = _interopRequireDefault(_verifyPlainObject);
 	
@@ -34081,7 +34069,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! ./../../../process/browser.js */ 3)))
 
 /***/ }),
-/* 312 */
+/* 311 */
 /*!******************************************************!*\
   !*** ./~/react-redux/lib/connect/selectorFactory.js ***!
   \******************************************************/
@@ -34094,7 +34082,7 @@
 	exports.pureFinalPropsSelectorFactory = pureFinalPropsSelectorFactory;
 	exports.default = finalPropsSelectorFactory;
 	
-	var _verifySubselectors = __webpack_require__(/*! ./verifySubselectors */ 313);
+	var _verifySubselectors = __webpack_require__(/*! ./verifySubselectors */ 312);
 	
 	var _verifySubselectors2 = _interopRequireDefault(_verifySubselectors);
 	
@@ -34203,7 +34191,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! ./../../../process/browser.js */ 3)))
 
 /***/ }),
-/* 313 */
+/* 312 */
 /*!*********************************************************!*\
   !*** ./~/react-redux/lib/connect/verifySubselectors.js ***!
   \*********************************************************/
@@ -34214,7 +34202,7 @@
 	exports.__esModule = true;
 	exports.default = verifySubselectors;
 	
-	var _warning = __webpack_require__(/*! ../utils/warning */ 280);
+	var _warning = __webpack_require__(/*! ../utils/warning */ 279);
 	
 	var _warning2 = _interopRequireDefault(_warning);
 	
@@ -34237,7 +34225,7 @@
 	}
 
 /***/ }),
-/* 314 */
+/* 313 */
 /*!******************************!*\
   !*** ./1client/src/store.js ***!
   \******************************/
@@ -34249,13 +34237,13 @@
 	  value: true
 	});
 	
-	var _redux = __webpack_require__(/*! redux */ 288);
+	var _redux = __webpack_require__(/*! redux */ 287);
 	
-	var _reduxLogger = __webpack_require__(/*! redux-logger */ 315);
+	var _reduxLogger = __webpack_require__(/*! redux-logger */ 314);
 	
 	var _reduxLogger2 = _interopRequireDefault(_reduxLogger);
 	
-	var _reactRedux = __webpack_require__(/*! react-redux */ 277);
+	var _reactRedux = __webpack_require__(/*! react-redux */ 276);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -34285,7 +34273,7 @@
 	exports.default = store;
 
 /***/ }),
-/* 315 */
+/* 314 */
 /*!*********************************************!*\
   !*** ./~/redux-logger/dist/redux-logger.js ***!
   \*********************************************/
@@ -34296,7 +34284,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ }),
-/* 316 */
+/* 315 */
 /*!*****************************************************!*\
   !*** ./~/spotify-web-api-js/src/spotify-web-api.js ***!
   \*****************************************************/

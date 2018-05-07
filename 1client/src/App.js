@@ -21,7 +21,7 @@ class App extends React.Component {
       preResults: false,
       validINput: false,
       numTracks: 0,
-      fiveResults: [],
+      topResults: [],
       userMessage: 'SEARCH TRACKS BY ARTIST, SONG, OR ALBUM',
       songAndArtist: {song: 'No Songs in Queue', artist: 'Please Go Into Search Mode'}
     };
@@ -67,7 +67,7 @@ class App extends React.Component {
   spotifyCall (input) {
     let context = this;
     if (!input.length) {
-      context.setState({userMessage: 'SEARCH TRACKS BY ARTIST, SONG, OR ALBUM', fiveResults: []});
+      context.setState({userMessage: 'SEARCH TRACKS BY ARTIST, SONG, OR ALBUM', topResults: []});
       return;
     }
     spotifyWebApi.searchTracks(input)
@@ -77,20 +77,20 @@ class App extends React.Component {
             context.preResults = false;
             let items = response.tracks.items;
             let length = items.length;
-            let sixTracks = items.splice(0, 5);
-            sixTracks = sixTracks.filter((track) => {
+            let topResults = items.splice(0, 5);
+            topResults = topResults.filter((track) => {
               return track.preview_url !== null;
             }).map((track) => {
               return {song: track.name, artist: track.album.artists[0].name };
             });
-            if (!sixTracks.length) {
+            if (!topResults.length) {
               context.setErrorMessage();
               return;
             }
             context.state.validInput = true;
-            context.setState({fiveResults: sixTracks}, () => {
+            context.setState({topResults: topResults}, () => {
               if (length === 5) {
-                context.state.fiveResults = [];
+                context.state.topResults = [];
               } 
             });
           } else if (!context.state.preResults) {
@@ -114,7 +114,7 @@ class App extends React.Component {
                               tracklist: tracks, 
                               urls: urls,
                               songAndArtist: {song: song, artist: artist}}, () => {
-              context.state.fiveResults = [];
+              context.state.topResults = [];
             });
           }
         }, function(err) {
@@ -123,7 +123,8 @@ class App extends React.Component {
   }
   setErrorMessage() {
     this.state.validInput = false;
-    this.setState({userMessage: "INVALID ENTRY!! CAN'T SUBMIT!! TRY AGAIN!!"});
+    this.setState({userMessage: "INVALID ENTRY!! CAN'T SUBMIT!! TRY AGAIN!!",
+                                topResults: []});
     return;
   }
   setValidInput(status) {
@@ -166,7 +167,7 @@ class App extends React.Component {
                    getpreResults = {this.getpreResults}
                    numofTracks = {this.state.numTracks}
                    changeSongAndArtist = {this.changeSongAndArtist}
-                   fiveResults = {this.state.fiveResults}
+                   topResults = {this.state.topResults}
                    partialStatus = {this.state.preResults}
                    userMessage = {this.state.userMessage}
                    songAndArtist = {this.state.songAndArtist}

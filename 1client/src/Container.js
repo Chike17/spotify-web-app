@@ -31,7 +31,7 @@ class Container extends React.Component {
   }
   componentWillReceiveProps (nextProps) {
     let context = this;
-    let infoFiltered = nextProps.fiveResults.map((info) => {
+    let infoFiltered = nextProps.topResults.map((info) => {
       if (info['song'].length > 20) {
         let song = info['song'].substring(0, 17) + '...';
         info['song'] = song;
