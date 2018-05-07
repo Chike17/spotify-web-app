@@ -150,9 +150,7 @@ class App extends React.Component {
   changeSongAndArtist (index) {
     let song = this.state.tracklist[index].name;
     let artist = this.state.tracklist[index].album.artists[0].name;
-    this.setState({songAndArtist: {artist: artist, 
-                                   song: song, 
-                                   trackNumber: index + 1}});
+    this.setState({songAndArtist: {artist: artist, song: song, trackNumber: index + 1}});
   }
   render() {
     return (
