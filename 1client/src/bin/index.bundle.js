@@ -31583,14 +31583,7 @@
 	        this.position = 0;
 	        this.state.trackNumber = 0;
 	        this.state.urlsTracker.push(nextProps.urls);
-	        var urlTr = this.state.urlsTracker;
-	        if (urlTr[1]) {
-	          this.state.urls = urlTr[1];
-	          this.state.urlsTracker = [];
-	        } else {
-	          this.state.urls = urlTr[0];
-	        }
-	        this.setState({ url: this.state.urls[context.state.trackNumber], urls: nextProps.urls }, function () {
+	        this.setState({ url: nextProps.urls[context.state.trackNumber], urls: nextProps.urls }, function () {
 	          context.fetch();
 	        });
 	      }
