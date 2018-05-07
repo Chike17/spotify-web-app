@@ -26,18 +26,23 @@
     "webpack": "^1.14.0"
   },
   "dependencies": {
+    "@fortawesome/fontawesome": "^1.1.7",
+    "@fortawesome/react-fontawesome": "0.0.19",
     "babel-polyfill": "^6.22.0",
     "babel-preset-react": "^6.22.0",
     "body-parser": "^1.18.2",
     "cookie-parser": "^1.4.3",
     "cors": "^2.8.4",
     "express": "^4.14.0",
+    "radium": "^0.24.0",
     "react": "^15.6.2",
     "react-dom": "^15.6.2",
+    "react-fontawesome": "^1.6.1",
     "react-redux": "^5.0.6",
     "redux": "^3.7.2",
     "redux-logger": "^3.0.6",
     "request": "^2.85.0",
+    "smooth-scrollbar-react": "^1.0.0",
     "spotify-web-api-js": "^0.23.0",
     "style-loader": "^0.18.2",
     "webpack": "^1.14.0"

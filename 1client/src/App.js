@@ -19,6 +19,7 @@ class App extends React.Component {
       urls: [],
       trackNumber: '0',
       preResults: false,
+      validINput: false,
       numTracks: 0,
       fiveResults: [],
       userMessage: 'SEARCH TRACKS BY ARTIST, SONG, OR ALBUM',
@@ -29,6 +30,25 @@ class App extends React.Component {
       this.state.accessToken = params.access_token;
     }
     this.setTrackList = this.setTrackList.bind(this);
+    this.getCurrentTime = this.getCurrentTime.bind(this);
+    this.stopSong = this.stopSong.bind(this);
+    this.changeCover = this.changeCover.bind(this);
+    this.getpreResults = this.getpreResults.bind(this);
+    this.changeSongAndArtist = this.changeSongAndArtist.bind(this);
+    this.setValidInput = this.setValidInput.bind(this);
+    this.setErrorMessage = this.setErrorMessage.bind(this);             
+  }
+  componentDidMount() {
+  }
+  getHashParams() {
+    let hashParams = {};
+    let e;
+    let r = /([^&;=]+)=?([^&;]*)/g;
+    let q = window.location.hash.substring(1);
+    while ( e = r.exec(q)) {
+      hashParams[e[1]] = decodeURIComponent(e[2]);
+    }
+    return hashParams;
   }
   stopSong() {
     if (this.state.pureStop) {
@@ -45,14 +65,14 @@ class App extends React.Component {
     console.log(this.state.actx.currentTime);
   }
   spotifyCall (input) {
+    let context = this;
     if (!input.length) {
-      this.setState({userMessage: 'SEARCH TRACKS BY ARTIST, SONG, OR ALBUM'});
+      context.setState({userMessage: 'SEARCH TRACKS BY ARTIST, SONG, OR ALBUM', fiveResults: []});
       return;
     }
-    let context = this;
     spotifyWebApi.searchTracks(input)
         .then(function(response) {
-          context.setState({userMessage: 'FIRST 6 RESULTS | READY TO SUBMIT'});
+          context.setState({userMessage: 'TOP RESULTS | READY TO SUBMIT'});
           if (context.state.preResults) {
             context.preResults = false;
             let items = response.tracks.items;
@@ -61,12 +81,13 @@ class App extends React.Component {
             sixTracks = sixTracks.filter((track) => {
               return track.preview_url !== null;
             }).map((track) => {
-                return {song: track.name, artist: track.album.artists[0].name }
+              return {song: track.name, artist: track.album.artists[0].name };
             });
             if (!sixTracks.length) {
-              context.setState({userMessage: "NOT FOUND. CAN'T SUBMIT. TRY AGAIN"});
+              context.setErrorMessage();
               return;
             }
+            context.state.validInput = true;
             context.setState({fiveResults: sixTracks}, () => {
               if (length === 5) {
                 context.state.fiveResults = [];
@@ -75,6 +96,10 @@ class App extends React.Component {
           } else if (!context.state.preResults) {
             context.state.preResults = true;
             let tracks = response.tracks.items;
+            if (!tracks.length) {
+              context.setErrorMessage();
+              return;
+            }
             tracks = tracks.filter((track) => {
               return track.preview_url !== null;
             });
@@ -93,28 +118,28 @@ class App extends React.Component {
             });
           }
         }, function(err) {
-          context.setState({userMessage: 'INVALID ENTRY!!! TRY AGAIN!!!'});
+          context.setErrorMessage();
         });
+  }
+  setErrorMessage() {
+    this.state.validInput = false;
+    this.setState({userMessage: "INVALID ENTRY!! CAN'T SUBMIT!! TRY AGAIN!!"});
+    return;
+  }
+  setValidInput(status) {
+    this.state.validInput = status;
   }
   getpreResults(input) {
     this.state.preResults = true;
     this.spotifyCall(input);
 
   }
-  componentDidMount() {
-  }
-  getHashParams() {
-    let hashParams = {};
-    let e, r = /([^&;=]+)=?([^&;]*)/g,
-    q = window.location.hash.substring(1);
-    while ( e = r.exec(q)) {
-       hashParams[e[1]] = decodeURIComponent(e[2]);
-    }
-    return hashParams;
-  }
   setTrackList (input) {
+    if (!this.state.validInput) {
+      return;
+    }
     this.state.preResults = false;
-    this.spotifyCall(input)
+    this.spotifyCall(input);
   }
   changeCover(index) {
     let context = this;
@@ -125,27 +150,29 @@ class App extends React.Component {
     let song = this.state.tracklist[index].name;
     let artist = this.state.tracklist[index].album.artists[0].name;
     this.setState({songAndArtist: {artist: artist, 
-                                    song: song, 
-                                    trackNumber: index + 1}});
+                                   song: song, 
+                                   trackNumber: index + 1}});
   }
   render() {
     return (
       <div> 
-        <Container getCurrentTime = {this.getCurrentTime.bind(this)} 
+        <Container getCurrentTime = {this.getCurrentTime} 
                    tracklist = {this.state.tracklist} 
                    urls = {this.state.urls}
                    setTrackList = {this.setTrackList}
                    cover = {this.state.cover}
-                   stopSong = {this.stopSong.bind(this)}
-                   changeCover = {this.changeCover.bind(this)}
-                   getpreResults = {this.getpreResults.bind(this)}
+                   stopSong = {this.stopSong}
+                   changeCover = {this.changeCover}
+                   getpreResults = {this.getpreResults}
                    numofTracks = {this.state.numTracks}
-                   changeSongAndArtist = {this.changeSongAndArtist.bind(this)}
+                   changeSongAndArtist = {this.changeSongAndArtist}
                    fiveResults = {this.state.fiveResults}
                    partialStatus = {this.state.preResults}
                    userMessage = {this.state.userMessage}
                    songAndArtist = {this.state.songAndArtist}
                    trackNumber = {this.state.trackNumber}
+                   setErrorMessage = {this.setErrorMessage}
+                   setInputStatus = {this.setValidInput}
                    />
       </div>
     );

@@ -1,5 +1,8 @@
 @import url(https://fonts.googleapis.com/css?family=Open+Sans:300,400,700);
 
+
+
+
 body {
   /*background: #42f492;*/
   background: #111;
@@ -104,7 +107,7 @@ h6 {
   transition: all 0.3s ease-in;
 }
 
-.screen > .magicButton:unchecked ~ .testing {
+.screen > .magicButton:unchecked ~ .containPre {
   color: #111;
   opacity: 30;
   left: 50%;
@@ -113,7 +116,7 @@ h6 {
 
 
 
-.screen > .magicButton:checked ~ .testing {
+.screen > .magicButton:checked ~ .containPre {
   color:white;
   opacity:30;
   left: 50%;
@@ -545,14 +548,17 @@ h6 {
 }
 
 .threeResultsContainer {
-  color: #ddd;
   position:relative;
   text-align:center;
   bottom: 5px;
   font-size: 12px;
   padding:20px;
   margin: 0 auto;
+  width:100%;
+  height:100%;
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  padding: 10px 0px;
+
 }
 .threeResultsContainer div{
   padding: 10px 0px;
@@ -578,3 +584,21 @@ h6 {
   width: 100%;
   height:100%;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

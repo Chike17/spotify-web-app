@@ -5,13 +5,16 @@ import Input from './Input.js';
 import ProgressBar from './ProgressBar.js'; 
 
 
+
 class Container extends React.Component {
   constructor(props) {
     super(props);
     this.state = {playPrev: '', 
                   playNext: '', 
                   toggle: '', 
-                  clickEvent: '', 
+                  clickEvent: '',
+                  onStartPlay: null, 
+                  onStartPause: null, 
                   progress: '00',
                   duration: '17:17',
                   appStarted: false,
@@ -43,7 +46,7 @@ class Container extends React.Component {
   }
   componentDidMount() {
   }
-  shouldComponentUpdate() {
+  shouldComponentUpdate(nextProps) {
     let displaySA = this.props.songAndArtist;
     if (displaySA.song.length > 12) {
       displaySA['song'] = displaySA.song.substring(0, 12) + '...';
@@ -51,14 +54,14 @@ class Container extends React.Component {
     if (displaySA.song.artist > 12) {
       displaySA['artist'] = displaySA.artist.substring(0, 12) + '...';
     }
-   if (!displaySA.trackNumber) {
+    if (!displaySA.trackNumber) {
       this.setState({song: displaySA.song, 
-          artist: displaySA.artist, 
-          trackNumber:'1'})
+        artist: displaySA.artist, 
+        trackNumber: '1'});
     } else {
       this.setState({song: displaySA.song, 
-                    artist: displaySA.artist, 
-                    trackNumber:displaySA.trackNumber})
+        artist: displaySA.artist, 
+        trackNumber: displaySA.trackNumber}); 
     }
     this.setState({by: 'by'});
     return true;
@@ -89,9 +92,9 @@ class Container extends React.Component {
            />
          <p className={styles.userMessageContainer}> {this.props.userMessage}</p>
          <div className = {styles.containPre}>  
-           <div className = {styles.threeResultsContainer}> 
+           <div className = {styles.threeResultsContainer}>
               {this.state.partials.map((item) => 
-                <div> {item.song + ' '} {this.state.by} {' ' +item.artist} </div>)}
+                 <div> {item.song + ' '} {this.state.by} {' ' + item.artist} </div> ) }
            </div>
          <div className = {styles.bodyPlayer}> </div>
          </div>
@@ -101,6 +104,7 @@ class Container extends React.Component {
                 playNext = {this.state.playNext}
                 clickE = {this.state.clickEvent}
                 toggle = {this.state.toggle}
+                container = {this}
           />
               <div className = {styles.songArtistContainer} >  
                 <div className = {styles.song} ><h4> {this.state.trackNumber + '. '} {this.state.song} </h4></div>
@@ -114,7 +118,11 @@ class Container extends React.Component {
                                changeCover = {this.props.changeCover}
                                updateProgress = {this.updateProgress.bind(this)}
                                partialStatus = {this.props.partialStatus}
-                               changeSongAndArtist = {this.props.changeSongAndArtist}/> 
+                               changeSongAndArtist = {this.props.changeSongAndArtist}
+                               onStartPlay = {this.state.onStartPlay}
+                               onStartPause = {this.state.onStartPause}
+                               setInputStatus = {this.props.setInputStatus}
+                               setErrorMessage = {this.props.setErrorMessage} /> 
                </div>
               <div className = {styles.endTime}> {'0:30'} </div>
               </div>

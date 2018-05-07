@@ -13,8 +13,13 @@ class ProgressBar extends React.Component {
       url: '',
       trackNumber: 0,
       progress: 0,
-      'urlsTracker': []
+      urlsTracker: [],
     };
+    let container = this.props.container;
+    container.state.playPrev = this.playPreviousSong.bind(this);
+    container.state.playNext = this.playNextSong.bind(this);
+    container.state.toggle = this.toggle.bind(this);
+    container.state.clickEvent = this.playOnClick.bind(this); 
   }
   componentDidMount() {
     window.addEventListener('mousemove', this.onDrag.bind(this));
@@ -22,10 +27,6 @@ class ProgressBar extends React.Component {
   }
   componentWillReceiveProps(nextProps) {
     let context = this;
-    this.props.container.state.playPrev = this.playPreviousSong.bind(this);
-    this.props.container.state.playNext = this.playNextSong.bind(this);
-    this.props.container.state.toggle = this.toggle.bind(this);
-    this.props.container.state.clickEvent = this.playOnClick.bind(this); 
     if (this.hitNext) {
       this.hitNext = false;
       return;
@@ -66,7 +67,10 @@ class ProgressBar extends React.Component {
       this.buffer = audioBuffer;
       this.draw();
       this.play();
-    }.bind(this));
+    }.bind(this)).catch((err) => {
+      console.log(err, 'decode error!!!');
+      this.props.setErrorMessage();
+    });
   }
   connect () {
     if ( this.playing ) {
@@ -133,7 +137,9 @@ class ProgressBar extends React.Component {
     this.startLeft = parseInt(this.state.scrubberStyle.left || 0, 10);
   }
   onMouseUp () {
-    var width, left, time;
+    let width;
+    let left;
+    let time;
     if ( this.dragging ) {
       let width = 300;
       let left = parseInt(this.state.scrubberStyle.left || 0, 10);
@@ -153,6 +159,7 @@ class ProgressBar extends React.Component {
     this.position = 0;
     this.props.changeCover(this.state.trackNumber);
     this.props.changeSongAndArtist(this.state.trackNumber);
+    this.props.onStartPause();
     this.fetch();
     return;
   }
@@ -163,11 +170,13 @@ class ProgressBar extends React.Component {
     this.position = 0;
     if (this.state.trackNumber < 0) {
       this.pause();
+      this.props.onStartPlay();
       this.state.trackNumber = 0;
       return;
     }
     this.props.changeCover(this.state.trackNumber);
     this.props.changeSongAndArtist(this.state.trackNumber);
+    this.props.onStartPause();
     this.fetch();
     return;
   }
@@ -187,6 +196,7 @@ class ProgressBar extends React.Component {
       this.fetch();
       this.props.changeCover(this.state.trackNumber);
       this.props.changeSongAndArtist(this.state.trackNumber);
+      this.props.onStartPause();
       return;
     }
     if (this.state.trackNumber === this.state.urls.length) {
@@ -195,6 +205,7 @@ class ProgressBar extends React.Component {
       this.fetch();
       this.props.changeCover(this.state.trackNumber);
       this.props.changeSongAndArtist(this.state.trackNumber);
+      this.props.onStartPause();
     }
     let context = this;
     let progress = ( this.updatePosition() / context.buffer.duration );
