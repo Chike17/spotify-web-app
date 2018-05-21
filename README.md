@@ -1,5 +1,3 @@
-*** Currently not functional on the latest version of chrome. Working on the update. ***
-
 STARTING THE APP
 1. Make sure that your computer has node installed.
 2. Issue the command npm install from the root of the project directory.
