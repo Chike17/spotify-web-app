@@ -6,23 +6,27 @@ let url = 'http://static.kevvv.in/sounds/callmemaybe.mp3';
 class ProgressBar extends React.Component {
   constructor (props) {
     super(props);
-    this.ac = new ( window.AudioContext || webkitAudioContext )();
     this.url = url;
     this.state = {
       url: '',
       trackNumber: 0,
       progress: 0,
       urlsTracker: [],
+      realSubmit: false
     };
     let container = this.props.container;
     container.state.playPrev = this.playPreviousSong.bind(this);
     container.state.playNext = this.playNextSong.bind(this);
     container.state.toggle = this.toggle.bind(this);
-    container.state.clickEvent = this.playOnClick.bind(this); 
+    container.state.clickEvent = this.playOnClick.bind(this);
+    container.state.makeContext = this.makeContext.bind(this);
   }
   componentDidMount() {
     window.addEventListener('mousemove', this.onDrag.bind(this));
     window.addEventListener('mouseup', this.onMouseUp.bind(this));
+  }
+  makeContext() {
+    this.ac = new ( window.AudioContext || webkitAudioContext )();
   }
   componentWillReceiveProps(nextProps) {
     let context = this;
@@ -35,6 +39,8 @@ class ProgressBar extends React.Component {
       return;
     }
     if (!this.props.partialStatus) {
+      this.makeContext();
+      this.state.realSubmit = true; 
       this.pause();
       this.position = 0;
       this.state.trackNumber = 0;
@@ -46,6 +52,9 @@ class ProgressBar extends React.Component {
   }
   fetch () {
     let context = this;
+    if (!this.state.realSubmit) {
+      return;
+    }
     var xhr = new XMLHttpRequest();
     xhr.open('GET', context.state.urls[context.state.trackNumber], true);
     xhr.responseType = 'arraybuffer';

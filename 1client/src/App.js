@@ -26,9 +26,12 @@ class App extends React.Component {
       songAndArtist: {song: 'No Songs in Queue', artist: 'Please Go Into Search Mode'}
     };
     if (params.access_token) {
-      spotifyWebApi.setAccessToken(params.access_token);
       this.state.accessToken = params.access_token;
+      // spotifyWebApi.setAccessToken(params.access_token);
     }
+    // spotifyWebApi.setAccessToken(params.access_token);
+    spotifyWebApi.setAccessToken(this.state.accessToken);
+    this.state.accessToken = params.access_token;
     this.setTrackList = this.setTrackList.bind(this);
     this.getCurrentTime = this.getCurrentTime.bind(this);
     this.stopSong = this.stopSong.bind(this);

@@ -21,6 +21,7 @@ class Container extends React.Component {
                   song: 'No Songs in Queue',
                   artist: 'Please Go Into Search Mode',
                   by: '',
+                  makeContext: null,
                   trackNumber: '1',
                   partials: [{song: '', artist: ''},
                              {song: '', artist: ''},
@@ -89,6 +90,7 @@ class Container extends React.Component {
          <div className = {styles.newTracks}></div>
          <Input setTrackList = {this.props.setTrackList}
                 getpreResults = {this.props.getpreResults}
+                makeContext = {this.state.makeContext}
            />
          <p className={styles.userMessageContainer}> {this.props.userMessage}</p>
          <div className = {styles.containPre}>  
@@ -121,6 +123,7 @@ class Container extends React.Component {
                                changeSongAndArtist = {this.props.changeSongAndArtist}
                                onStartPlay = {this.state.onStartPlay}
                                onStartPause = {this.state.onStartPause}
+                               makeContext = {this.state.makeContext}
                                setInputStatus = {this.props.setInputStatus}
                                setErrorMessage = {this.props.setErrorMessage} /> 
                </div>

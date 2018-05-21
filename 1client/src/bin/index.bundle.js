@@ -22563,9 +22563,12 @@
 	      songAndArtist: { song: 'No Songs in Queue', artist: 'Please Go Into Search Mode' }
 	    };
 	    if (params.access_token) {
-	      spotifyWebApi.setAccessToken(params.access_token);
 	      _this.state.accessToken = params.access_token;
+	      // spotifyWebApi.setAccessToken(params.access_token);
 	    }
+	    // spotifyWebApi.setAccessToken(params.access_token);
+	    spotifyWebApi.setAccessToken(_this.state.accessToken);
+	    _this.state.accessToken = params.access_token;
 	    _this.setTrackList = _this.setTrackList.bind(_this);
 	    _this.getCurrentTime = _this.getCurrentTime.bind(_this);
 	    _this.stopSong = _this.stopSong.bind(_this);
@@ -22806,47 +22809,47 @@
 	
 	// exports
 	exports.locals = {
+		"screen": "styles__screen___1r3tJ",
+		"magicButton": "styles__magicButton___2LMsN",
+		"coverImage": "styles__coverImage___1Ya5a",
+		"containPre": "styles__containPre___36DeU",
 		"bodyPlayer": "styles__bodyPlayer___26WbB",
-		"track": "styles__track___2t1FT",
-		"artistName": "styles__artistName___1HIxT",
+		"bar": "styles__bar___1zYif",
+		"info": "styles__info___1WdOt",
 		"player": "styles__player___2LRVd",
-		"newTracks": "styles__newTracks___3bTH5",
-		"threeResultsContainer": "styles__threeResultsContainer___2hpRo",
 		"search": "styles__search___3LoIJ",
-		"coverContainer": "styles__coverContainer___4UJPK",
-		"shadow": "styles__shadow___cd6Tc",
-		"progresscontainer": "styles__progresscontainer___2QPd_",
+		"scrollcontainer": "styles__scrollcontainer___350sT",
 		"listcontainer": "styles__listcontainer___2g0Ru",
+		"list": "styles__list___3kW0k",
 		"songEntry": "styles__songEntry___2zUWF",
-		"inputBox": "styles__inputBox___1PNRM",
+		"num": "styles__num___3OX4e",
+		"title": "styles__title___1eZD5",
 		"length": "styles__length___2er9r",
+		"artistName": "styles__artistName___1HIxT",
+		"shadow": "styles__shadow___cd6Tc",
+		"back": "styles__back___28F1Z",
+		"play": "styles__play___31_-M",
+		"fore": "styles__fore___vEEM4",
+		"footer": "styles__footer___t-V25",
+		"searchInputBox": "styles__searchInputBox___1J7R_",
+		"userMessageContainer": "styles__userMessageContainer___7cwos",
+		"progresscontainer": "styles__progresscontainer___2QPd_",
+		"message": "styles__message___2SlmP",
+		"controls": "styles__controls___jvg_W",
+		"button": "styles__button___1UJG4",
+		"track": "styles__track___2t1FT",
+		"progress": "styles__progress___1uS5g",
+		"running": "styles__running___2gmTn",
+		"endTime": "styles__endTime___1aOB-",
+		"inputBox": "styles__inputBox___1PNRM",
+		"newTracks": "styles__newTracks___3bTH5",
 		"songArtistContainer": "styles__songArtistContainer___rQdSH",
 		"song": "styles__song___1eBTm",
-		"title": "styles__title___1eZD5",
-		"bar": "styles__bar___1zYif",
-		"play": "styles__play___31_-M",
-		"back": "styles__back___28F1Z",
-		"controls": "styles__controls___jvg_W",
-		"searchInputBox": "styles__searchInputBox___1J7R_",
-		"containPre": "styles__containPre___36DeU",
-		"tableEntryDiv": "styles__tableEntryDiv___8lGO4",
-		"num": "styles__num___3OX4e",
-		"message": "styles__message___2SlmP",
-		"progress": "styles__progress___1uS5g",
-		"screen": "styles__screen___1r3tJ",
-		"coverImage": "styles__coverImage___1Ya5a",
-		"running": "styles__running___2gmTn",
-		"fore": "styles__fore___vEEM4",
-		"magicButton": "styles__magicButton___2LMsN",
-		"footer": "styles__footer___t-V25",
-		"userMessageContainer": "styles__userMessageContainer___7cwos",
-		"endTime": "styles__endTime___1aOB-",
-		"button": "styles__button___1UJG4",
 		"artist": "styles__artist___3GDXQ",
-		"list": "styles__list___3kW0k",
+		"threeResultsContainer": "styles__threeResultsContainer___2hpRo",
 		"searchMode": "styles__searchMode___JmmCE",
-		"info": "styles__info___1WdOt",
-		"scrollcontainer": "styles__scrollcontainer___350sT"
+		"coverContainer": "styles__coverContainer___4UJPK",
+		"tableEntryDiv": "styles__tableEntryDiv___8lGO4"
 	};
 
 /***/ }),
@@ -23453,6 +23456,7 @@
 	      song: 'No Songs in Queue',
 	      artist: 'Please Go Into Search Mode',
 	      by: '',
+	      makeContext: null,
 	      trackNumber: '1',
 	      partials: [{ song: '', artist: '' }, { song: '', artist: '' }, { song: '', artist: '' }, { song: '', artist: '' }, { song: '', artist: '' }] };
 	
@@ -23540,7 +23544,8 @@
 	          ),
 	          _react2.default.createElement('div', { className: _styles2.default.newTracks }),
 	          _react2.default.createElement(_Input2.default, { setTrackList: this.props.setTrackList,
-	            getpreResults: this.props.getpreResults
+	            getpreResults: this.props.getpreResults,
+	            makeContext: this.state.makeContext
 	          }),
 	          _react2.default.createElement(
 	            'p',
@@ -23631,6 +23636,7 @@
 	                changeSongAndArtist: this.props.changeSongAndArtist,
 	                onStartPlay: this.state.onStartPlay,
 	                onStartPause: this.state.onStartPause,
+	                makeContext: this.state.makeContext,
 	                setInputStatus: this.props.setInputStatus,
 	                setErrorMessage: this.props.setErrorMessage })
 	            ),
@@ -27012,7 +27018,7 @@
   \**********************************************************/
 /***/ (function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -27080,7 +27086,7 @@
 	
 	  return prefixAll;
 	}
-	module.exports = exports["default"];
+	module.exports = exports['default'];
 
 /***/ }),
 /* 213 */
@@ -27089,7 +27095,7 @@
   \*********************************************************/
 /***/ (function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -27121,7 +27127,7 @@
 	  }
 	  return style;
 	}
-	module.exports = exports["default"];
+	module.exports = exports['default'];
 
 /***/ }),
 /* 214 */
@@ -27222,7 +27228,7 @@
   \***********************************************************/
 /***/ (function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -27269,16 +27275,16 @@
 	
 	  return function () {
 	    /**
-	    * Instantiante a new prefixer
-	    * @param {string} userAgent - userAgent to gather prefix information according to caniuse.com
-	    * @param {string} keepUnprefixed - keeps unprefixed properties and values
-	    */
+	     * Instantiante a new prefixer
+	     * @param {string} userAgent - userAgent to gather prefix information according to caniuse.com
+	     * @param {string} keepUnprefixed - keeps unprefixed properties and values
+	     */
 	    function Prefixer() {
 	      var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 	
 	      _classCallCheck(this, Prefixer);
 	
-	      var defaultUserAgent = typeof navigator !== "undefined" ? navigator.userAgent : undefined;
+	      var defaultUserAgent = typeof navigator !== 'undefined' ? navigator.userAgent : undefined;
 	
 	      this._userAgent = options.userAgent || defaultUserAgent;
 	      this._keepUnprefixed = options.keepUnprefixed || false;
@@ -27321,7 +27327,7 @@
 	    }
 	
 	    _createClass(Prefixer, [{
-	      key: "prefix",
+	      key: 'prefix',
 	      value: function prefix(style) {
 	        // use static prefixer as fallback if userAgent can not be resolved
 	        if (this._useFallback) {
@@ -27336,7 +27342,7 @@
 	        return this._prefixStyle(style);
 	      }
 	    }, {
-	      key: "_prefixStyle",
+	      key: '_prefixStyle',
 	      value: function _prefixStyle(style) {
 	        for (var property in style) {
 	          var value = style[property];
@@ -27381,13 +27387,13 @@
 	      }
 	
 	      /**
-	      * Returns a prefixed version of the style object using all vendor prefixes
-	      * @param {Object} styles - Style object that gets prefixed properties added
-	      * @returns {Object} - Style object with prefixed properties and values
-	      */
+	       * Returns a prefixed version of the style object using all vendor prefixes
+	       * @param {Object} styles - Style object that gets prefixed properties added
+	       * @returns {Object} - Style object with prefixed properties and values
+	       */
 	
 	    }], [{
-	      key: "prefixAll",
+	      key: 'prefixAll',
 	      value: function prefixAll(styles) {
 	        return fallback(styles);
 	      }
@@ -27396,7 +27402,7 @@
 	    return Prefixer;
 	  }();
 	}
-	module.exports = exports["default"];
+	module.exports = exports['default'];
 
 /***/ }),
 /* 219 */
@@ -27405,7 +27411,7 @@
   \****************************************************************/
 /***/ (function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -27419,49 +27425,49 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var prefixByBrowser = {
-	  chrome: "Webkit",
-	  safari: "Webkit",
-	  ios: "Webkit",
-	  android: "Webkit",
-	  phantom: "Webkit",
-	  opera: "Webkit",
-	  webos: "Webkit",
-	  blackberry: "Webkit",
-	  bada: "Webkit",
-	  tizen: "Webkit",
-	  chromium: "Webkit",
-	  vivaldi: "Webkit",
-	  firefox: "Moz",
-	  seamoney: "Moz",
-	  sailfish: "Moz",
-	  msie: "ms",
-	  msedge: "ms"
+	  chrome: 'Webkit',
+	  safari: 'Webkit',
+	  ios: 'Webkit',
+	  android: 'Webkit',
+	  phantom: 'Webkit',
+	  opera: 'Webkit',
+	  webos: 'Webkit',
+	  blackberry: 'Webkit',
+	  bada: 'Webkit',
+	  tizen: 'Webkit',
+	  chromium: 'Webkit',
+	  vivaldi: 'Webkit',
+	  firefox: 'Moz',
+	  seamoney: 'Moz',
+	  sailfish: 'Moz',
+	  msie: 'ms',
+	  msedge: 'ms'
 	};
 	
 	
 	var browserByCanIuseAlias = {
-	  chrome: "chrome",
-	  chromium: "chrome",
-	  safari: "safari",
-	  firfox: "firefox",
-	  msedge: "edge",
-	  opera: "opera",
-	  vivaldi: "opera",
-	  msie: "ie"
+	  chrome: 'chrome',
+	  chromium: 'chrome',
+	  safari: 'safari',
+	  firfox: 'firefox',
+	  msedge: 'edge',
+	  opera: 'opera',
+	  vivaldi: 'opera',
+	  msie: 'ie'
 	};
 	
 	function getBrowserName(browserInfo) {
 	  if (browserInfo.firefox) {
-	    return "firefox";
+	    return 'firefox';
 	  }
 	
 	  if (browserInfo.mobile || browserInfo.tablet) {
 	    if (browserInfo.ios) {
-	      return "ios_saf";
+	      return 'ios_saf';
 	    } else if (browserInfo.android) {
-	      return "android";
+	      return 'android';
 	    } else if (browserInfo.opera) {
-	      return "op_mini";
+	      return 'op_mini';
 	    }
 	  }
 	
@@ -27481,7 +27487,7 @@
 	  var browserInfo = _bowser2.default._detect(userAgent);
 	
 	  if (browserInfo.yandexbrowser) {
-	    browserInfo = _bowser2.default._detect(userAgent.replace(/YaBrowser\/[0-9.]*/, ""));
+	    browserInfo = _bowser2.default._detect(userAgent.replace(/YaBrowser\/[0-9.]*/, ''));
 	  }
 	
 	  for (var browser in prefixByBrowser) {
@@ -27489,7 +27495,7 @@
 	      var prefix = prefixByBrowser[browser];
 	
 	      browserInfo.jsPrefix = prefix;
-	      browserInfo.cssPrefix = "-" + prefix.toLowerCase() + "-";
+	      browserInfo.cssPrefix = '-' + prefix.toLowerCase() + '-';
 	      break;
 	    }
 	  }
@@ -27509,33 +27515,33 @@
 	  // as the Safari version seems to match the iOS version
 	  // we just explicitely use the osversion instead
 	  // https://github.com/rofrischmann/inline-style-prefixer/issues/72
-	  if (browserInfo.browserName === "ios_saf" && browserInfo.browserVersion > browserInfo.osVersion) {
+	  if (browserInfo.browserName === 'ios_saf' && browserInfo.browserVersion > browserInfo.osVersion) {
 	    browserInfo.browserVersion = browserInfo.osVersion;
 	  }
 	
 	  // seperate native android chrome
 	  // https://github.com/rofrischmann/inline-style-prefixer/issues/45
-	  if (browserInfo.browserName === "android" && browserInfo.chrome && browserInfo.browserVersion > 37) {
-	    browserInfo.browserName = "and_chr";
+	  if (browserInfo.browserName === 'android' && browserInfo.chrome && browserInfo.browserVersion > 37) {
+	    browserInfo.browserName = 'and_chr';
 	  }
 	
 	  // For android < 4.4 we want to check the osversion
 	  // not the chrome version, see issue #26
 	  // https://github.com/rofrischmann/inline-style-prefixer/issues/26
-	  if (browserInfo.browserName === "android" && browserInfo.osVersion < 5) {
+	  if (browserInfo.browserName === 'android' && browserInfo.osVersion < 5) {
 	    browserInfo.browserVersion = browserInfo.osVersion;
 	  }
 	
 	  // Samsung browser are basically build on Chrome > 44
 	  // https://github.com/rofrischmann/inline-style-prefixer/issues/102
-	  if (browserInfo.browserName === "android" && browserInfo.samsungBrowser) {
-	    browserInfo.browserName = "and_chr";
+	  if (browserInfo.browserName === 'android' && browserInfo.samsungBrowser) {
+	    browserInfo.browserName = 'and_chr';
 	    browserInfo.browserVersion = 44;
 	  }
 	
 	  return browserInfo;
 	}
-	module.exports = exports["default"];
+	module.exports = exports['default'];
 
 /***/ }),
 /* 220 */
@@ -28183,21 +28189,21 @@
   \***************************************************************/
 /***/ (function(module, exports) {
 
-	"use strict";
+	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
 	exports.default = getPrefixedKeyframes;
 	function getPrefixedKeyframes(browserName, browserVersion, cssPrefix) {
-	  var prefixedKeyframes = "keyframes";
+	  var prefixedKeyframes = 'keyframes';
 	
-	  if (browserName === "chrome" && browserVersion < 43 || (browserName === "safari" || browserName === "ios_saf") && browserVersion < 9 || browserName === "opera" && browserVersion < 30 || browserName === "android" && browserVersion <= 4.4 || browserName === "and_uc") {
+	  if (browserName === 'chrome' && browserVersion < 43 || (browserName === 'safari' || browserName === 'ios_saf') && browserVersion < 9 || browserName === 'opera' && browserVersion < 30 || browserName === 'android' && browserVersion <= 4.4 || browserName === 'and_uc') {
 	    return cssPrefix + prefixedKeyframes;
 	  }
 	  return prefixedKeyframes;
 	}
-	module.exports = exports["default"];
+	module.exports = exports['default'];
 
 /***/ }),
 /* 223 */
@@ -28456,7 +28462,7 @@
   \********************************************************/
 /***/ (function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -28469,15 +28475,15 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	var prefixes = ["-webkit-", "-moz-", ""];
+	var prefixes = ['-webkit-', '-moz-', ''];
 	function calc(property, value) {
-	  if (typeof value === "string" && !(0, _isPrefixedValue2.default)(value) && value.indexOf("calc(") > -1) {
+	  if (typeof value === 'string' && !(0, _isPrefixedValue2.default)(value) && value.indexOf('calc(') > -1) {
 	    return prefixes.map(function (prefix) {
-	      return value.replace(/calc\(/g, prefix + "calc(");
+	      return value.replace(/calc\(/g, prefix + 'calc(');
 	    });
 	  }
 	}
-	module.exports = exports["default"];
+	module.exports = exports['default'];
 
 /***/ }),
 /* 226 */
@@ -28506,7 +28512,7 @@
   \*************************************************************/
 /***/ (function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -28520,15 +28526,15 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	// http://caniuse.com/#search=cross-fade
-	var prefixes = ["-webkit-", ""];
+	var prefixes = ['-webkit-', ''];
 	function crossFade(property, value) {
-	  if (typeof value === "string" && !(0, _isPrefixedValue2.default)(value) && value.indexOf("cross-fade(") > -1) {
+	  if (typeof value === 'string' && !(0, _isPrefixedValue2.default)(value) && value.indexOf('cross-fade(') > -1) {
 	    return prefixes.map(function (prefix) {
-	      return value.replace(/cross-fade\(/g, prefix + "cross-fade(");
+	      return value.replace(/cross-fade\(/g, prefix + 'cross-fade(');
 	    });
 	  }
 	}
-	module.exports = exports["default"];
+	module.exports = exports['default'];
 
 /***/ }),
 /* 228 */
@@ -28537,29 +28543,29 @@
   \**********************************************************/
 /***/ (function(module, exports) {
 
-	"use strict";
+	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
 	exports.default = cursor;
-	var prefixes = ["-webkit-", "-moz-", ""];
+	var prefixes = ['-webkit-', '-moz-', ''];
 	
 	var values = {
-	  "zoom-in": true,
-	  "zoom-out": true,
+	  'zoom-in': true,
+	  'zoom-out': true,
 	  grab: true,
 	  grabbing: true
 	};
 	
 	function cursor(property, value) {
-	  if (property === "cursor" && values.hasOwnProperty(value)) {
+	  if (property === 'cursor' && values.hasOwnProperty(value)) {
 	    return prefixes.map(function (prefix) {
 	      return prefix + value;
 	    });
 	  }
 	}
-	module.exports = exports["default"];
+	module.exports = exports['default'];
 
 /***/ }),
 /* 229 */
@@ -28568,7 +28574,7 @@
   \**********************************************************/
 /***/ (function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -28582,15 +28588,15 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	// http://caniuse.com/#feat=css-filter-function
-	var prefixes = ["-webkit-", ""];
+	var prefixes = ['-webkit-', ''];
 	function filter(property, value) {
-	  if (typeof value === "string" && !(0, _isPrefixedValue2.default)(value) && value.indexOf("filter(") > -1) {
+	  if (typeof value === 'string' && !(0, _isPrefixedValue2.default)(value) && value.indexOf('filter(') > -1) {
 	    return prefixes.map(function (prefix) {
-	      return value.replace(/filter\(/g, prefix + "filter(");
+	      return value.replace(/filter\(/g, prefix + 'filter(');
 	    });
 	  }
 	}
-	module.exports = exports["default"];
+	module.exports = exports['default'];
 
 /***/ }),
 /* 230 */
@@ -28599,23 +28605,23 @@
   \********************************************************/
 /***/ (function(module, exports) {
 
-	"use strict";
+	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
 	exports.default = flex;
 	var values = {
-	  flex: ["-webkit-box", "-moz-box", "-ms-flexbox", "-webkit-flex", "flex"],
-	  "inline-flex": ["-webkit-inline-box", "-moz-inline-box", "-ms-inline-flexbox", "-webkit-inline-flex", "inline-flex"]
+	  flex: ['-webkit-box', '-moz-box', '-ms-flexbox', '-webkit-flex', 'flex'],
+	  'inline-flex': ['-webkit-inline-box', '-moz-inline-box', '-ms-inline-flexbox', '-webkit-inline-flex', 'inline-flex']
 	};
 	
 	function flex(property, value) {
-	  if (property === "display" && values.hasOwnProperty(value)) {
+	  if (property === 'display' && values.hasOwnProperty(value)) {
 	    return values[value];
 	  }
 	}
-	module.exports = exports["default"];
+	module.exports = exports['default'];
 
 /***/ }),
 /* 231 */
@@ -28624,27 +28630,27 @@
   \*************************************************************/
 /***/ (function(module, exports) {
 
-	"use strict";
+	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
 	exports.default = flexboxIE;
 	var alternativeValues = {
-	  "space-around": "distribute",
-	  "space-between": "justify",
-	  "flex-start": "start",
-	  "flex-end": "end"
+	  'space-around': 'distribute',
+	  'space-between': 'justify',
+	  'flex-start': 'start',
+	  'flex-end': 'end'
 	};
 	var alternativeProps = {
-	  alignContent: "msFlexLinePack",
-	  alignSelf: "msFlexItemAlign",
-	  alignItems: "msFlexAlign",
-	  justifyContent: "msFlexPack",
-	  order: "msFlexOrder",
-	  flexGrow: "msFlexPositive",
-	  flexShrink: "msFlexNegative",
-	  flexBasis: "msFlexPreferredSize"
+	  alignContent: 'msFlexLinePack',
+	  alignSelf: 'msFlexItemAlign',
+	  alignItems: 'msFlexAlign',
+	  justifyContent: 'msFlexPack',
+	  order: 'msFlexOrder',
+	  flexGrow: 'msFlexPositive',
+	  flexShrink: 'msFlexNegative',
+	  flexBasis: 'msFlexPreferredSize'
 	};
 	
 	function flexboxIE(property, value, style) {
@@ -28652,7 +28658,7 @@
 	    style[alternativeProps[property]] = alternativeValues[value] || value;
 	  }
 	}
-	module.exports = exports["default"];
+	module.exports = exports['default'];
 
 /***/ }),
 /* 232 */
@@ -28661,45 +28667,48 @@
   \**************************************************************/
 /***/ (function(module, exports) {
 
-	"use strict";
+	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
 	exports.default = flexboxOld;
 	var alternativeValues = {
-	  "space-around": "justify",
-	  "space-between": "justify",
-	  "flex-start": "start",
-	  "flex-end": "end",
-	  "wrap-reverse": "multiple",
-	  wrap: "multiple"
+	  'space-around': 'justify',
+	  'space-between': 'justify',
+	  'flex-start': 'start',
+	  'flex-end': 'end',
+	  'wrap-reverse': 'multiple',
+	  wrap: 'multiple',
+	  flex: 'box',
+	  'inline-flex': 'inline-box'
 	};
 	
 	var alternativeProps = {
-	  alignItems: "WebkitBoxAlign",
-	  justifyContent: "WebkitBoxPack",
-	  flexWrap: "WebkitBoxLines"
+	  alignItems: 'WebkitBoxAlign',
+	  justifyContent: 'WebkitBoxPack',
+	  flexWrap: 'WebkitBoxLines',
+	  flexGrow: 'WebkitBoxFlex'
 	};
 	
 	function flexboxOld(property, value, style) {
-	  if (property === "flexDirection" && typeof value === "string") {
-	    if (value.indexOf("column") > -1) {
-	      style.WebkitBoxOrient = "vertical";
+	  if (property === 'flexDirection' && typeof value === 'string') {
+	    if (value.indexOf('column') > -1) {
+	      style.WebkitBoxOrient = 'vertical';
 	    } else {
-	      style.WebkitBoxOrient = "horizontal";
+	      style.WebkitBoxOrient = 'horizontal';
 	    }
-	    if (value.indexOf("reverse") > -1) {
-	      style.WebkitBoxDirection = "reverse";
+	    if (value.indexOf('reverse') > -1) {
+	      style.WebkitBoxDirection = 'reverse';
 	    } else {
-	      style.WebkitBoxDirection = "normal";
+	      style.WebkitBoxDirection = 'normal';
 	    }
 	  }
 	  if (alternativeProps.hasOwnProperty(property)) {
 	    style[alternativeProps[property]] = alternativeValues[value] || value;
 	  }
 	}
-	module.exports = exports["default"];
+	module.exports = exports['default'];
 
 /***/ }),
 /* 233 */
@@ -28708,7 +28717,7 @@
   \************************************************************/
 /***/ (function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -28721,18 +28730,20 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	var prefixes = ["-webkit-", "-moz-", ""];
+	var prefixes = ['-webkit-', '-moz-', ''];
 	
-	var values = /linear-gradient|radial-gradient|repeating-linear-gradient|repeating-radial-gradient/;
+	var values = /linear-gradient|radial-gradient|repeating-linear-gradient|repeating-radial-gradient/gi;
 	
 	function gradient(property, value) {
-	  if (typeof value === "string" && !(0, _isPrefixedValue2.default)(value) && values.test(value)) {
+	  if (typeof value === 'string' && !(0, _isPrefixedValue2.default)(value) && values.test(value)) {
 	    return prefixes.map(function (prefix) {
-	      return prefix + value;
+	      return value.replace(values, function (grad) {
+	        return prefix + grad;
+	      });
 	    });
 	  }
 	}
-	module.exports = exports["default"];
+	module.exports = exports['default'];
 
 /***/ }),
 /* 234 */
@@ -28741,7 +28752,7 @@
   \************************************************************/
 /***/ (function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -28755,15 +28766,15 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	// http://caniuse.com/#feat=css-image-set
-	var prefixes = ["-webkit-", ""];
+	var prefixes = ['-webkit-', ''];
 	function imageSet(property, value) {
-	  if (typeof value === "string" && !(0, _isPrefixedValue2.default)(value) && value.indexOf("image-set(") > -1) {
+	  if (typeof value === 'string' && !(0, _isPrefixedValue2.default)(value) && value.indexOf('image-set(') > -1) {
 	    return prefixes.map(function (prefix) {
-	      return value.replace(/image-set\(/g, prefix + "image-set(");
+	      return value.replace(/image-set\(/g, prefix + 'image-set(');
 	    });
 	  }
 	}
-	module.exports = exports["default"];
+	module.exports = exports['default'];
 
 /***/ }),
 /* 235 */
@@ -28772,18 +28783,18 @@
   \************************************************************/
 /***/ (function(module, exports) {
 
-	"use strict";
+	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
 	exports.default = position;
 	function position(property, value) {
-	  if (property === "position" && value === "sticky") {
-	    return ["-webkit-sticky", "sticky"];
+	  if (property === 'position' && value === 'sticky') {
+	    return ['-webkit-sticky', 'sticky'];
 	  }
 	}
-	module.exports = exports["default"];
+	module.exports = exports['default'];
 
 /***/ }),
 /* 236 */
@@ -28792,13 +28803,13 @@
   \**********************************************************/
 /***/ (function(module, exports) {
 
-	"use strict";
+	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
 	exports.default = sizing;
-	var prefixes = ["-webkit-", "-moz-", ""];
+	var prefixes = ['-webkit-', '-moz-', ''];
 	
 	var properties = {
 	  maxHeight: true,
@@ -28810,11 +28821,11 @@
 	  minHeight: true
 	};
 	var values = {
-	  "min-content": true,
-	  "max-content": true,
-	  "fill-available": true,
-	  "fit-content": true,
-	  "contain-floats": true
+	  'min-content': true,
+	  'max-content': true,
+	  'fill-available': true,
+	  'fit-content': true,
+	  'contain-floats': true
 	};
 	
 	function sizing(property, value) {
@@ -28824,7 +28835,7 @@
 	    });
 	  }
 	}
-	module.exports = exports["default"];
+	module.exports = exports['default'];
 
 /***/ }),
 /* 237 */
@@ -28833,7 +28844,7 @@
   \**************************************************************/
 /***/ (function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -28865,9 +28876,9 @@
 	
 	
 	var prefixMapping = {
-	  Webkit: "-webkit-",
-	  Moz: "-moz-",
-	  ms: "-ms-"
+	  Webkit: '-webkit-',
+	  Moz: '-moz-',
+	  ms: '-ms-'
 	};
 	
 	function prefixValue(value, propertyPrefixMap) {
@@ -28884,7 +28895,7 @@
 	    for (var property in propertyPrefixMap) {
 	      var dashCaseProperty = (0, _hyphenateProperty2.default)(property);
 	
-	      if (singleValue.indexOf(dashCaseProperty) > -1 && dashCaseProperty !== "order") {
+	      if (singleValue.indexOf(dashCaseProperty) > -1 && dashCaseProperty !== 'order') {
 	        var prefixes = propertyPrefixMap[property];
 	        for (var j = 0, pLen = prefixes.length; j < pLen; ++j) {
 	          // join all prefixes and create a new value
@@ -28893,39 +28904,39 @@
 	      }
 	    }
 	
-	    multipleValues[i] = values.join(",");
+	    multipleValues[i] = values.join(',');
 	  }
 	
-	  return multipleValues.join(",");
+	  return multipleValues.join(',');
 	}
 	
 	function transition(property, value, style, propertyPrefixMap) {
 	  // also check for already prefixed transitions
-	  if (typeof value === "string" && properties.hasOwnProperty(property)) {
+	  if (typeof value === 'string' && properties.hasOwnProperty(property)) {
 	    var outputValue = prefixValue(value, propertyPrefixMap);
 	    // if the property is already prefixed
 	    var webkitOutput = outputValue.split(/,(?![^()]*(?:\([^()]*\))?\))/g).filter(function (val) {
 	      return !/-moz-|-ms-/.test(val);
-	    }).join(",");
+	    }).join(',');
 	
-	    if (property.indexOf("Webkit") > -1) {
+	    if (property.indexOf('Webkit') > -1) {
 	      return webkitOutput;
 	    }
 	
 	    var mozOutput = outputValue.split(/,(?![^()]*(?:\([^()]*\))?\))/g).filter(function (val) {
 	      return !/-webkit-|-ms-/.test(val);
-	    }).join(",");
+	    }).join(',');
 	
-	    if (property.indexOf("Moz") > -1) {
+	    if (property.indexOf('Moz') > -1) {
 	      return mozOutput;
 	    }
 	
-	    style["Webkit" + (0, _capitalizeString2.default)(property)] = webkitOutput;
-	    style["Moz" + (0, _capitalizeString2.default)(property)] = mozOutput;
+	    style['Webkit' + (0, _capitalizeString2.default)(property)] = webkitOutput;
+	    style['Moz' + (0, _capitalizeString2.default)(property)] = mozOutput;
 	    return outputValue;
 	  }
 	}
-	module.exports = exports["default"];
+	module.exports = exports['default'];
 
 /***/ }),
 /* 238 */
@@ -29678,7 +29689,7 @@
   \*********************************************************/
 /***/ (function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -29697,11 +29708,11 @@
 	      cssPrefix = _ref.cssPrefix,
 	      keepUnprefixed = _ref.keepUnprefixed;
 	
-	  if (typeof value === "string" && value.indexOf("calc(") > -1 && (browserName === "firefox" && browserVersion < 15 || browserName === "chrome" && browserVersion < 25 || browserName === "safari" && browserVersion < 6.1 || browserName === "ios_saf" && browserVersion < 7)) {
-	    return (0, _getPrefixedValue2.default)(value.replace(/calc\(/g, cssPrefix + "calc("), value, keepUnprefixed);
+	  if (typeof value === 'string' && value.indexOf('calc(') > -1 && (browserName === 'firefox' && browserVersion < 15 || browserName === 'chrome' && browserVersion < 25 || browserName === 'safari' && browserVersion < 6.1 || browserName === 'ios_saf' && browserVersion < 7)) {
+	    return (0, _getPrefixedValue2.default)(value.replace(/calc\(/g, cssPrefix + 'calc('), value, keepUnprefixed);
 	  }
 	}
-	module.exports = exports["default"];
+	module.exports = exports['default'];
 
 /***/ }),
 /* 242 */
@@ -29731,7 +29742,7 @@
   \**************************************************************/
 /***/ (function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -29750,11 +29761,11 @@
 	      cssPrefix = _ref.cssPrefix,
 	      keepUnprefixed = _ref.keepUnprefixed;
 	
-	  if (typeof value === "string" && value.indexOf("cross-fade(") > -1 && (browserName === "chrome" || browserName === "opera" || browserName === "and_chr" || (browserName === "ios_saf" || browserName === "safari") && browserVersion < 10)) {
-	    return (0, _getPrefixedValue2.default)(value.replace(/cross-fade\(/g, cssPrefix + "cross-fade("), value, keepUnprefixed);
+	  if (typeof value === 'string' && value.indexOf('cross-fade(') > -1 && (browserName === 'chrome' || browserName === 'opera' || browserName === 'and_chr' || (browserName === 'ios_saf' || browserName === 'safari') && browserVersion < 10)) {
+	    return (0, _getPrefixedValue2.default)(value.replace(/cross-fade\(/g, cssPrefix + 'cross-fade('), value, keepUnprefixed);
 	  }
 	}
-	module.exports = exports["default"];
+	module.exports = exports['default'];
 
 /***/ }),
 /* 244 */
@@ -29763,7 +29774,7 @@
   \***********************************************************/
 /***/ (function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -29783,8 +29794,8 @@
 	
 	
 	var zoomValues = {
-	  "zoom-in": true,
-	  "zoom-out": true
+	  'zoom-in': true,
+	  'zoom-out': true
 	};
 	
 	function cursor(property, value, style, _ref) {
@@ -29796,15 +29807,15 @@
 	  // adds prefixes for firefox, chrome, safari, and opera regardless of
 	  // version until a reliable browser support info can be found
 	  // see: https://github.com/rofrischmann/inline-style-prefixer/issues/79
-	  if (property === "cursor" && grabValues[value] && (browserName === "firefox" || browserName === "chrome" || browserName === "safari" || browserName === "opera")) {
+	  if (property === 'cursor' && grabValues[value] && (browserName === 'firefox' || browserName === 'chrome' || browserName === 'safari' || browserName === 'opera')) {
 	    return (0, _getPrefixedValue2.default)(cssPrefix + value, value, keepUnprefixed);
 	  }
 	
-	  if (property === "cursor" && zoomValues[value] && (browserName === "firefox" && browserVersion < 24 || browserName === "chrome" && browserVersion < 37 || browserName === "safari" && browserVersion < 9 || browserName === "opera" && browserVersion < 24)) {
+	  if (property === 'cursor' && zoomValues[value] && (browserName === 'firefox' && browserVersion < 24 || browserName === 'chrome' && browserVersion < 37 || browserName === 'safari' && browserVersion < 9 || browserName === 'opera' && browserVersion < 24)) {
 	    return (0, _getPrefixedValue2.default)(cssPrefix + value, value, keepUnprefixed);
 	  }
 	}
-	module.exports = exports["default"];
+	module.exports = exports['default'];
 
 /***/ }),
 /* 245 */
@@ -29813,7 +29824,7 @@
   \***********************************************************/
 /***/ (function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -29832,11 +29843,11 @@
 	      cssPrefix = _ref.cssPrefix,
 	      keepUnprefixed = _ref.keepUnprefixed;
 	
-	  if (typeof value === "string" && value.indexOf("filter(") > -1 && (browserName === "ios_saf" || browserName === "safari" && browserVersion < 9.1)) {
-	    return (0, _getPrefixedValue2.default)(value.replace(/filter\(/g, cssPrefix + "filter("), value, keepUnprefixed);
+	  if (typeof value === 'string' && value.indexOf('filter(') > -1 && (browserName === 'ios_saf' || browserName === 'safari' && browserVersion < 9.1)) {
+	    return (0, _getPrefixedValue2.default)(value.replace(/filter\(/g, cssPrefix + 'filter('), value, keepUnprefixed);
 	  }
 	}
-	module.exports = exports["default"];
+	module.exports = exports['default'];
 
 /***/ }),
 /* 246 */
@@ -29845,7 +29856,7 @@
   \*********************************************************/
 /***/ (function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -29860,7 +29871,7 @@
 	
 	var values = {
 	  flex: true,
-	  "inline-flex": true
+	  'inline-flex': true
 	};
 	function flex(property, value, style, _ref) {
 	  var browserName = _ref.browserName,
@@ -29868,11 +29879,11 @@
 	      cssPrefix = _ref.cssPrefix,
 	      keepUnprefixed = _ref.keepUnprefixed;
 	
-	  if (property === "display" && values[value] && (browserName === "chrome" && browserVersion < 29 && browserVersion > 20 || (browserName === "safari" || browserName === "ios_saf") && browserVersion < 9 && browserVersion > 6 || browserName === "opera" && (browserVersion === 15 || browserVersion === 16))) {
+	  if (property === 'display' && values[value] && (browserName === 'chrome' && browserVersion < 29 && browserVersion > 20 || (browserName === 'safari' || browserName === 'ios_saf') && browserVersion < 9 && browserVersion > 6 || browserName === 'opera' && (browserVersion === 15 || browserVersion === 16))) {
 	    return (0, _getPrefixedValue2.default)(cssPrefix + value, value, keepUnprefixed);
 	  }
 	}
-	module.exports = exports["default"];
+	module.exports = exports['default'];
 
 /***/ }),
 /* 247 */
@@ -29881,7 +29892,7 @@
   \**************************************************************/
 /***/ (function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -29895,23 +29906,23 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var alternativeValues = {
-	  "space-around": "distribute",
-	  "space-between": "justify",
-	  "flex-start": "start",
-	  "flex-end": "end",
-	  flex: "flexbox",
-	  "inline-flex": "inline-flexbox"
+	  'space-around': 'distribute',
+	  'space-between': 'justify',
+	  'flex-start': 'start',
+	  'flex-end': 'end',
+	  flex: 'flexbox',
+	  'inline-flex': 'inline-flexbox'
 	};
 	
 	var alternativeProps = {
-	  alignContent: "msFlexLinePack",
-	  alignSelf: "msFlexItemAlign",
-	  alignItems: "msFlexAlign",
-	  justifyContent: "msFlexPack",
-	  order: "msFlexOrder",
-	  flexGrow: "msFlexPositive",
-	  flexShrink: "msFlexNegative",
-	  flexBasis: "msFlexPreferredSize"
+	  alignContent: 'msFlexLinePack',
+	  alignSelf: 'msFlexItemAlign',
+	  alignItems: 'msFlexAlign',
+	  justifyContent: 'msFlexPack',
+	  order: 'msFlexOrder',
+	  flexGrow: 'msFlexPositive',
+	  flexShrink: 'msFlexNegative',
+	  flexBasis: 'msFlexPreferredSize'
 	};
 	
 	function flexboxIE(property, value, style, _ref) {
@@ -29921,13 +29932,13 @@
 	      keepUnprefixed = _ref.keepUnprefixed,
 	      requiresPrefix = _ref.requiresPrefix;
 	
-	  if ((alternativeProps.hasOwnProperty(property) || property === "display" && typeof value === "string" && value.indexOf("flex") > -1) && (browserName === "ie_mob" || browserName === "ie") && browserVersion === 10) {
+	  if ((alternativeProps.hasOwnProperty(property) || property === 'display' && typeof value === 'string' && value.indexOf('flex') > -1) && (browserName === 'ie_mob' || browserName === 'ie') && browserVersion === 10) {
 	    delete requiresPrefix[property];
 	
 	    if (!keepUnprefixed && !Array.isArray(style[property])) {
 	      delete style[property];
 	    }
-	    if (property === "display" && alternativeValues.hasOwnProperty(value)) {
+	    if (property === 'display' && alternativeValues.hasOwnProperty(value)) {
 	      return (0, _getPrefixedValue2.default)(cssPrefix + alternativeValues[value], value, keepUnprefixed);
 	    }
 	    if (alternativeProps.hasOwnProperty(property)) {
@@ -29935,7 +29946,7 @@
 	    }
 	  }
 	}
-	module.exports = exports["default"];
+	module.exports = exports['default'];
 
 /***/ }),
 /* 248 */
@@ -29944,7 +29955,7 @@
   \***************************************************************/
 /***/ (function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -29958,24 +29969,25 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var alternativeValues = {
-	  "space-around": "justify",
-	  "space-between": "justify",
-	  "flex-start": "start",
-	  "flex-end": "end",
-	  "wrap-reverse": "multiple",
-	  wrap: "multiple",
-	  flex: "box",
-	  "inline-flex": "inline-box"
+	  'space-around': 'justify',
+	  'space-between': 'justify',
+	  'flex-start': 'start',
+	  'flex-end': 'end',
+	  'wrap-reverse': 'multiple',
+	  wrap: 'multiple',
+	  flex: 'box',
+	  'inline-flex': 'inline-box'
 	};
 	
 	
 	var alternativeProps = {
-	  alignItems: "WebkitBoxAlign",
-	  justifyContent: "WebkitBoxPack",
-	  flexWrap: "WebkitBoxLines"
+	  alignItems: 'WebkitBoxAlign',
+	  justifyContent: 'WebkitBoxPack',
+	  flexWrap: 'WebkitBoxLines',
+	  flexGrow: 'WebkitBoxFlex'
 	};
 	
-	var otherProps = ["alignContent", "alignSelf", "order", "flexGrow", "flexShrink", "flexBasis", "flexDirection"];
+	var otherProps = ['alignContent', 'alignSelf', 'order', 'flexGrow', 'flexShrink', 'flexBasis', 'flexDirection'];
 	var properties = Object.keys(alternativeProps).concat(otherProps);
 	
 	function flexboxOld(property, value, style, _ref) {
@@ -29985,25 +29997,25 @@
 	      keepUnprefixed = _ref.keepUnprefixed,
 	      requiresPrefix = _ref.requiresPrefix;
 	
-	  if ((properties.indexOf(property) > -1 || property === "display" && typeof value === "string" && value.indexOf("flex") > -1) && (browserName === "firefox" && browserVersion < 22 || browserName === "chrome" && browserVersion < 21 || (browserName === "safari" || browserName === "ios_saf") && browserVersion <= 6.1 || browserName === "android" && browserVersion < 4.4 || browserName === "and_uc")) {
+	  if ((properties.indexOf(property) > -1 || property === 'display' && typeof value === 'string' && value.indexOf('flex') > -1) && (browserName === 'firefox' && browserVersion < 22 || browserName === 'chrome' && browserVersion < 21 || (browserName === 'safari' || browserName === 'ios_saf') && browserVersion <= 6.1 || browserName === 'android' && browserVersion < 4.4 || browserName === 'and_uc')) {
 	    delete requiresPrefix[property];
 	
 	    if (!keepUnprefixed && !Array.isArray(style[property])) {
 	      delete style[property];
 	    }
-	    if (property === "flexDirection" && typeof value === "string") {
-	      if (value.indexOf("column") > -1) {
-	        style.WebkitBoxOrient = "vertical";
+	    if (property === 'flexDirection' && typeof value === 'string') {
+	      if (value.indexOf('column') > -1) {
+	        style.WebkitBoxOrient = 'vertical';
 	      } else {
-	        style.WebkitBoxOrient = "horizontal";
+	        style.WebkitBoxOrient = 'horizontal';
 	      }
-	      if (value.indexOf("reverse") > -1) {
-	        style.WebkitBoxDirection = "reverse";
+	      if (value.indexOf('reverse') > -1) {
+	        style.WebkitBoxDirection = 'reverse';
 	      } else {
-	        style.WebkitBoxDirection = "normal";
+	        style.WebkitBoxDirection = 'normal';
 	      }
 	    }
-	    if (property === "display" && alternativeValues.hasOwnProperty(value)) {
+	    if (property === 'display' && alternativeValues.hasOwnProperty(value)) {
 	      return (0, _getPrefixedValue2.default)(cssPrefix + alternativeValues[value], value, keepUnprefixed);
 	    }
 	    if (alternativeProps.hasOwnProperty(property)) {
@@ -30011,7 +30023,7 @@
 	    }
 	  }
 	}
-	module.exports = exports["default"];
+	module.exports = exports['default'];
 
 /***/ }),
 /* 249 */
@@ -30020,7 +30032,7 @@
   \*************************************************************/
 /***/ (function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -30033,18 +30045,20 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	var values = /linear-gradient|radial-gradient|repeating-linear-gradient|repeating-radial-gradient/;
+	var values = /linear-gradient|radial-gradient|repeating-linear-gradient|repeating-radial-gradient/gi;
 	function gradient(property, value, style, _ref) {
 	  var browserName = _ref.browserName,
 	      browserVersion = _ref.browserVersion,
 	      cssPrefix = _ref.cssPrefix,
 	      keepUnprefixed = _ref.keepUnprefixed;
 	
-	  if (typeof value === "string" && values.test(value) && (browserName === "firefox" && browserVersion < 16 || browserName === "chrome" && browserVersion < 26 || (browserName === "safari" || browserName === "ios_saf") && browserVersion < 7 || (browserName === "opera" || browserName === "op_mini") && browserVersion < 12.1 || browserName === "android" && browserVersion < 4.4 || browserName === "and_uc")) {
-	    return (0, _getPrefixedValue2.default)(cssPrefix + value, value, keepUnprefixed);
+	  if (typeof value === 'string' && values.test(value) && (browserName === 'firefox' && browserVersion < 16 || browserName === 'chrome' && browserVersion < 26 || (browserName === 'safari' || browserName === 'ios_saf') && browserVersion < 7 || (browserName === 'opera' || browserName === 'op_mini') && browserVersion < 12.1 || browserName === 'android' && browserVersion < 4.4 || browserName === 'and_uc')) {
+	    return (0, _getPrefixedValue2.default)(value.replace(values, function (grad) {
+	      return cssPrefix + grad;
+	    }), value, keepUnprefixed);
 	  }
 	}
-	module.exports = exports["default"];
+	module.exports = exports['default'];
 
 /***/ }),
 /* 250 */
@@ -30053,7 +30067,7 @@
   \*************************************************************/
 /***/ (function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -30071,11 +30085,11 @@
 	      cssPrefix = _ref.cssPrefix,
 	      keepUnprefixed = _ref.keepUnprefixed;
 	
-	  if (typeof value === "string" && value.indexOf("image-set(") > -1 && (browserName === "chrome" || browserName === "opera" || browserName === "and_chr" || browserName === "and_uc" || browserName === "ios_saf" || browserName === "safari")) {
-	    return (0, _getPrefixedValue2.default)(value.replace(/image-set\(/g, cssPrefix + "image-set("), value, keepUnprefixed);
+	  if (typeof value === 'string' && value.indexOf('image-set(') > -1 && (browserName === 'chrome' || browserName === 'opera' || browserName === 'and_chr' || browserName === 'and_uc' || browserName === 'ios_saf' || browserName === 'safari')) {
+	    return (0, _getPrefixedValue2.default)(value.replace(/image-set\(/g, cssPrefix + 'image-set('), value, keepUnprefixed);
 	  }
 	}
-	module.exports = exports["default"];
+	module.exports = exports['default'];
 
 /***/ }),
 /* 251 */
@@ -30084,7 +30098,7 @@
   \*************************************************************/
 /***/ (function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -30102,11 +30116,11 @@
 	      cssPrefix = _ref.cssPrefix,
 	      keepUnprefixed = _ref.keepUnprefixed;
 	
-	  if (property === "position" && value === "sticky" && (browserName === "safari" || browserName === "ios_saf")) {
+	  if (property === 'position' && value === 'sticky' && (browserName === 'safari' || browserName === 'ios_saf')) {
 	    return (0, _getPrefixedValue2.default)(cssPrefix + value, value, keepUnprefixed);
 	  }
 	}
-	module.exports = exports["default"];
+	module.exports = exports['default'];
 
 /***/ }),
 /* 252 */
@@ -30115,7 +30129,7 @@
   \***********************************************************/
 /***/ (function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -30139,15 +30153,14 @@
 	};
 	
 	var values = {
-	  "min-content": true,
-	  "max-content": true,
-	  "fill-available": true,
-	  "fit-content": true,
-	  "contain-floats": true
-	};
+	  'min-content': true,
+	  'max-content': true,
+	  'fill-available': true,
+	  'fit-content': true,
+	  'contain-floats': true
 	
-	// TODO: chrome & opera support it
-	function sizing(property, value, style, _ref) {
+	  // TODO: chrome & opera support it
+	};function sizing(property, value, style, _ref) {
 	  var cssPrefix = _ref.cssPrefix,
 	      keepUnprefixed = _ref.keepUnprefixed;
 	
@@ -30157,7 +30170,7 @@
 	    return (0, _getPrefixedValue2.default)(cssPrefix + value, value, keepUnprefixed);
 	  }
 	}
-	module.exports = exports["default"];
+	module.exports = exports['default'];
 
 /***/ }),
 /* 253 */
@@ -30166,7 +30179,7 @@
   \***************************************************************/
 /***/ (function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -30196,7 +30209,7 @@
 	      keepUnprefixed = _ref.keepUnprefixed,
 	      requiresPrefix = _ref.requiresPrefix;
 	
-	  if (typeof value === "string" && properties.hasOwnProperty(property)) {
+	  if (typeof value === 'string' && properties.hasOwnProperty(property)) {
 	    // memoize the prefix array for later use
 	    if (!requiresPrefixDashCased) {
 	      requiresPrefixDashCased = Object.keys(requiresPrefix).map(function (prop) {
@@ -30209,16 +30222,16 @@
 	
 	    requiresPrefixDashCased.forEach(function (prop) {
 	      multipleValues.forEach(function (val, index) {
-	        if (val.indexOf(prop) > -1 && prop !== "order") {
-	          multipleValues[index] = val.replace(prop, cssPrefix + prop) + (keepUnprefixed ? "," + val : "");
+	        if (val.indexOf(prop) > -1 && prop !== 'order') {
+	          multipleValues[index] = val.replace(prop, cssPrefix + prop) + (keepUnprefixed ? ',' + val : '');
 	        }
 	      });
 	    });
 	
-	    return multipleValues.join(",");
+	    return multipleValues.join(',');
 	  }
 	}
-	module.exports = exports["default"];
+	module.exports = exports['default'];
 
 /***/ }),
 /* 254 */
@@ -31539,19 +31552,20 @@
 	
 	    var _this = _possibleConstructorReturn(this, (ProgressBar.__proto__ || Object.getPrototypeOf(ProgressBar)).call(this, props));
 	
-	    _this.ac = new (window.AudioContext || webkitAudioContext)();
 	    _this.url = url;
 	    _this.state = {
 	      url: '',
 	      trackNumber: 0,
 	      progress: 0,
-	      urlsTracker: []
+	      urlsTracker: [],
+	      realSubmit: false
 	    };
 	    var container = _this.props.container;
 	    container.state.playPrev = _this.playPreviousSong.bind(_this);
 	    container.state.playNext = _this.playNextSong.bind(_this);
 	    container.state.toggle = _this.toggle.bind(_this);
 	    container.state.clickEvent = _this.playOnClick.bind(_this);
+	    container.state.makeContext = _this.makeContext.bind(_this);
 	    return _this;
 	  }
 	
@@ -31560,6 +31574,11 @@
 	    value: function componentDidMount() {
 	      window.addEventListener('mousemove', this.onDrag.bind(this));
 	      window.addEventListener('mouseup', this.onMouseUp.bind(this));
+	    }
+	  }, {
+	    key: 'makeContext',
+	    value: function makeContext() {
+	      this.ac = new (window.AudioContext || webkitAudioContext)();
 	    }
 	  }, {
 	    key: 'componentWillReceiveProps',
@@ -31574,6 +31593,8 @@
 	        return;
 	      }
 	      if (!this.props.partialStatus) {
+	        this.makeContext();
+	        this.state.realSubmit = true;
 	        this.pause();
 	        this.position = 0;
 	        this.state.trackNumber = 0;
@@ -31587,6 +31608,9 @@
 	    key: 'fetch',
 	    value: function fetch() {
 	      var context = this;
+	      if (!this.state.realSubmit) {
+	        return;
+	      }
 	      var xhr = new XMLHttpRequest();
 	      xhr.open('GET', context.state.urls[context.state.trackNumber], true);
 	      xhr.responseType = 'arraybuffer';
