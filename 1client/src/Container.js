@@ -49,10 +49,10 @@ class Container extends React.Component {
   }
   shouldComponentUpdate(nextProps) {
     let displaySA = this.props.songAndArtist;
-    if (displaySA.song.length > 12) {
+    if (displaySA.song.length > 20) {
       displaySA['song'] = displaySA.song.substring(0, 12) + '...';
     }
-    if (displaySA.song.artist > 12) {
+    if (displaySA.song.artist > 20) {
       displaySA['artist'] = displaySA.artist.substring(0, 12) + '...';
     }
     if (!displaySA.trackNumber) {
@@ -90,7 +90,7 @@ class Container extends React.Component {
          <div className = {styles.newTracks}></div>
          <Input setTrackList = {this.props.setTrackList}
                 getpreResults = {this.props.getpreResults}
-                makeContext = {this.state.makeContext}
+                makeContext = {this.state.makeContext} 
            />
          <p className={styles.userMessageContainer}> {this.props.userMessage}</p>
          <div className = {styles.containPre}>  

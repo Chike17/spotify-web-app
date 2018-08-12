@@ -46,7 +46,6 @@ class Table extends React.Component {
     this.setState({toggle: 'play'});
   }
   render() {
-    let divStyle = {overflow: 'auto', height: '100% ', display: 'block'};
     const playerStyle = {
       color: 'white',
       content: '' + '\f04e',
@@ -60,20 +59,16 @@ class Table extends React.Component {
     return (
       <div >
         <table className={styles.player} >
-          <tbody>
+          <tbody >
             <td style = {playerStyle} key = 'key1'> <FontAwesome name = 'backward' onClick = {() => { this.playP(); }} /> </td>
             <td style = {playerStyle} key = 'key2'> <FontAwesome name = {this.state.toggle} onClick = {() => { this.toggleButton(); }} /> </td>
             <td style = {playerStyle} key = 'key3'> <FontAwesome name = 'forward' onClick = {() => { this.playN(); }} /> </td>
           </tbody>
         </table>
-        <div className = {styles.listcontainer} style = {divStyle}>
-          <div className= {styles.list}>
-            <div style = {{'height': '135px', 'overflow': 'auto', 'display': 'block', 'overflowX': 'hidden'}}>
-              <div>
+        <div className = {styles.listcontainer} style = {{'height': '135px', 'overflow': 'auto'}} >
+            <div >
               {this.props.tracklist.map((track, i) => <TableEntry title = {track.name} artist = {track.album.artists[0].name} clicked = {this.props.clickE} index = {i + 1} onClick = {() => {this.props.clickE(i); }}/> )}
-              </div>
             </div>
-          </div>
         </div> 
     </div>
     );
@@ -83,32 +78,3 @@ class Table extends React.Component {
 
 
 module.exports = Radium(Table);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -190,6 +190,15 @@ class ProgressBar extends React.Component {
     // this.props.changeCover(index);
     // return;
   }
+   passProgress(progress) {
+    progress = progress * 30;
+    progress = Math.round(progress, 1);
+    progress = JSON.stringify(progress);
+    if (progress.length < 2) {
+      progress = '0' + progress;
+    }
+    this.props.updateProgress(progress);
+  }
   draw () {
     if (this.buffer.duration === this.position) {
       this.state.trackNumber++;
@@ -216,15 +225,6 @@ class ProgressBar extends React.Component {
     context.setState({progressStyle: {width: this.state.progress * width + 'px'} }, () => {
     });
     requestAnimationFrame(context.draw.bind(context));
-  }
-  passProgress(progress) {
-    progress = progress * 30;
-    progress = Math.round(progress, 1);
-    progress = JSON.stringify(progress);
-    if (progress.length < 2) {
-      progress = '0' + progress;
-    }
-    this.props.updateProgress(progress);
   }
   render () {
     return (

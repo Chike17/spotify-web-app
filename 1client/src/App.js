@@ -27,9 +27,7 @@ class App extends React.Component {
     };
     if (params.access_token) {
       this.state.accessToken = params.access_token;
-      // spotifyWebApi.setAccessToken(params.access_token);
     }
-    // spotifyWebApi.setAccessToken(params.access_token);
     spotifyWebApi.setAccessToken(this.state.accessToken);
     this.state.accessToken = params.access_token;
     this.setTrackList = this.setTrackList.bind(this);
@@ -87,7 +85,7 @@ class App extends React.Component {
               return {song: track.name, artist: track.album.artists[0].name };
             });
             if (!topResults.length) {
-              context.setErrorMessage();
+              context.setErrorMessage(); 
               return;
             }
             context.state.validInput = true;
@@ -107,6 +105,7 @@ class App extends React.Component {
               return track.preview_url !== null;
             });
             let length = tracks.length;
+
             let cover = response.tracks.items[0].album.images[1].url;
             let song = response.tracks.items[0].name;
             let artist = response.tracks.items[0].album.artists[0].name;
