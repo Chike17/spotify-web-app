@@ -188,6 +188,7 @@ class ProgressBar extends React.Component {
     this.position = 0;
     this.props.changeCover(index);
     this.props.changeSongAndArtist(index);
+    this.props.onStartPause();
     this.fetch();
     return;
   }
