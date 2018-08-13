@@ -55,7 +55,7 @@ class Table extends React.Component {
         color: '#bbb',
         transition: 'all 0.15s linear'
       }
-    };
+    }
     return (
       <div >
         <table className={styles.player} >

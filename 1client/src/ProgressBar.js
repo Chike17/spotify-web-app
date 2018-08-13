@@ -182,13 +182,14 @@ class ProgressBar extends React.Component {
     return;
   }
   playOnClick(index) {
-    // index = index - 1;
-    // this.pause();
-    // this.state.trackNumber = index;
-    // this.position = 0;
-    // this.fetch();
-    // this.props.changeCover(index);
-    // return;
+    index = index - 1;
+    this.pause();
+    this.state.trackNumber = index;
+    this.position = 0;
+    this.props.changeCover(index);
+    this.props.changeSongAndArtist(index);
+    this.fetch();
+    return;
   }
    passProgress(progress) {
     progress = progress * 30;

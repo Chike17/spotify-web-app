@@ -5,7 +5,6 @@ import Input from './Input.js';
 import ProgressBar from './ProgressBar.js'; 
 
 
-
 class Container extends React.Component {
   constructor(props) {
     super(props);
@@ -23,6 +22,7 @@ class Container extends React.Component {
                   by: '',
                   makeContext: null,
                   trackNumber: '1',
+                  endTime: '0:00',
                   partials: [{song: '', artist: ''},
                              {song: '', artist: ''},
                              {song: '', artist: ''},
@@ -64,6 +64,9 @@ class Container extends React.Component {
         artist: displaySA.artist, 
         trackNumber: displaySA.trackNumber}); 
     }
+    if(this.props.urls.length > 1){
+      this.setState({endTime:'0:30'});
+    }
     this.setState({by: 'by'});
     return true;
   }
@@ -85,14 +88,14 @@ class Container extends React.Component {
       <div >
          <div className = {styles.screen} >
          <div className = {styles.searchMode}> Search Mode </div>
-         <input type = "checkbox" value = "Node" className = {styles.magicButton} name="check" />
+         <input type = "checkbox" className = {styles.magicButton}  />
          <div className = {styles.coverImage} style = {divStyle}> </div>
          <div className = {styles.newTracks}></div>
          <Input setTrackList = {this.props.setTrackList}
                 getpreResults = {this.props.getpreResults}
                 makeContext = {this.state.makeContext} 
            />
-         <p className={styles.userMessageContainer}> {this.props.userMessage}</p>
+         <p className = {styles.userMessageContainer}>{this.props.userMessage}  </p>
          <div className = {styles.containPre}>  
            <div className = {styles.threeResultsContainer}>
               {this.state.partials.map((item) => 
@@ -109,8 +112,8 @@ class Container extends React.Component {
                 container = {this}
           />
               <div className = {styles.songArtistContainer} >  
-                <div className = {styles.song} ><h4> {this.state.trackNumber + '. '} {this.state.song} </h4></div>
-                <div className = {styles.artist} ><h4> {this.state.artist} </h4></div>
+                <div className = {styles.song} ><h4> {this.state.trackNumber + '. '} {this.state.song} </h4> </div>
+                <div className = {styles.artist} ><h5> {this.state.artist} </h5></div>
               </div>
               <div className = {styles.progresscontainer}> 
               <div className = {styles.running}> {'0:' + this.state.progress} </div>
@@ -127,7 +130,7 @@ class Container extends React.Component {
                                setInputStatus = {this.props.setInputStatus}
                                setErrorMessage = {this.props.setErrorMessage} /> 
                </div>
-              <div className = {styles.endTime}> {'0:30'} </div>
+              <div className = {styles.endTime}> {this.state.endTime} </div>
               </div>
        </div> 
      

@@ -73,7 +73,7 @@ class App extends React.Component {
     }
     spotifyWebApi.searchTracks(input)
         .then(function(response) {
-          context.setState({userMessage: 'TOP RESULTS | READY TO SUBMIT'});
+          context.setState({userMessage: 'TOP RESULTS | PRESS ENTER TO SUBMIT'});
           if (context.state.preResults) {
             context.preResults = false;
             let items = response.tracks.items;
