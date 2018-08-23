@@ -2,9 +2,13 @@ import React from 'react';
 import styles from './styles.css';
 import Container from './Container.js';
 import { connect } from 'react-redux';
-import store from './store.js';
 import Spotify from 'spotify-web-api-js';
+import store from './store.js';
+import { setCurrentSong, setTrackList } from './Actions/TrackActions.js';
+import { setCover, setTopResults, setScreenSong, 
+         setScreenArtist, setTrackListUI } from './Actions/TrackUIActions.js';
 let stock = 'https://static1.squarespace.com/static/585e12abe4fcb5ea1248900e/t/5aab1c5b03ce6430365833ac/1521163366180/Spotify+Square.png?format=300w';
+
 const spotifyWebApi = new Spotify();
 
 class App extends React.Component {
@@ -68,11 +72,14 @@ class App extends React.Component {
   spotifyCall (input) {
     let context = this;
     if (!input.length) {
-      context.setState({userMessage: 'SEARCH TRACKS BY ARTIST, SONG, OR ALBUM', topResults: []});
+      context.setState({userMessage: 'SEARCH TRACKS BY ARTIST, SONG, OR ALBUM'}, () => {
+        context.props.setTopResults([]);
+      });
       return;
     }
     spotifyWebApi.searchTracks(input)
         .then(function(response) {
+          console.log('SUCCESS');
           context.setState({userMessage: 'TOP RESULTS | PRESS ENTER TO SUBMIT'});
           if (context.state.preResults) {
             context.preResults = false;
@@ -87,13 +94,17 @@ class App extends React.Component {
             if (!topResults.length) {
               context.setErrorMessage(); 
               return;
-            }
+            } 
             context.state.validInput = true;
-            context.setState({topResults: topResults}, () => {
-              if (length === 5) {
-                context.state.topResults = [];
-              } 
-            });
+            // context.setState({topResults: topResults}, () => {
+            //   if (length === 6) {
+            //     context.state.topResults = [];
+            //   } 
+            // });
+            context.props.setTopResults(topResults);
+            if (length === 6) {
+               context.props.setTopResults([]);
+            }
           } else if (!context.state.preResults) {
             context.state.preResults = true;
             let tracks = response.tracks.items;
@@ -105,10 +116,9 @@ class App extends React.Component {
               return track.preview_url !== null;
             });
             let length = tracks.length;
-
-            let cover = response.tracks.items[0].album.images[1].url;
-            let song = response.tracks.items[0].name;
-            let artist = response.tracks.items[0].album.artists[0].name;
+            let cover = tracks[0].album.images[1].url;
+            let song = tracks[0].name;
+            let artist = tracks[0].album.artists[0].name;
             let urls = tracks.map((item) => {
               return item.preview_url;
             });
@@ -125,8 +135,9 @@ class App extends React.Component {
   }
   setErrorMessage() {
     this.state.validInput = false;
-    this.setState({userMessage: "INVALID ENTRY!! CAN'T SUBMIT!! TRY AGAIN!!",
-                                topResults: []});
+    this.setState({userMessage: "INVALID ENTRY!! CAN'T SUBMIT!! TRY AGAIN!!"}, () => {
+      this.props.setTopResults([]);
+    });
     return;
   }
   setValidInput(status) {
@@ -145,7 +156,6 @@ class App extends React.Component {
     this.spotifyCall(input);
   }
   changeCover(index) {
-    let context = this;
     this.setState({cover: this.state.tracklist[index].album.images[1].url}, () => {
     });
   }
@@ -155,6 +165,7 @@ class App extends React.Component {
     this.setState({songAndArtist: {artist: artist, song: song, trackNumber: index + 1}});
   }
   render() {
+    console.log(store.getState(), '*************')
     return (
       <div> 
         <Container getCurrentTime = {this.getCurrentTime} 
@@ -167,7 +178,7 @@ class App extends React.Component {
                    getpreResults = {this.getpreResults}
                    numofTracks = {this.state.numTracks}
                    changeSongAndArtist = {this.changeSongAndArtist}
-                   topResults = {this.state.topResults}
+                   topResults = {store.getState().TrackUIReducer.topResults}
                    partialStatus = {this.state.preResults}
                    userMessage = {this.state.userMessage}
                    songAndArtist = {this.state.songAndArtist}
@@ -182,15 +193,41 @@ class App extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    // implement
+    trackList: state.TrackReducer,
+    currentSong: state.TrackReducer,
+    location: state.TrackUIReducer,
+    cover: state.TrackUIReducer,
+    topResults: state.TrackUIReducer, 
+    screenSong: state.TrackUIReducer,
+    screenArtist: state.TrackUIReducer,
+    trackList: state.TrackUIReducer
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    // implement
+    setCurrentSong: (currentSong) => {
+      dispatch(setCurrentSong(currentSong));
+    },
+    setTrackList: (trackList) => {
+      dispatch(setTrackList(trackList));
+    },
+    setCover: (cover) => {
+      dispatch(setCover(cover));
+    },
+    setTopResults: (topResults) => {
+      dispatch(setTopResults(topResults));
+    },
+    setScreenSong: (screenSong) => {
+      dispatch(setCategory(screenSong));
+    },
+    setScreenArtist: (screenArtist) => {
+      dispatch(setScreenArtist(screenArtist));
+    },
+    setTrackListUI: (trackListUI) => {
+      dispatch(setCategory(trackListUI));
+    }
   };
-
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

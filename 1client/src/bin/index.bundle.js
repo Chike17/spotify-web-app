@@ -22520,15 +22520,21 @@
 	
 	var _reactRedux = __webpack_require__(/*! react-redux */ 276);
 	
-	var _store = __webpack_require__(/*! ./store.js */ 313);
-	
-	var _store2 = _interopRequireDefault(_store);
-	
 	var _spotifyWebApiJs = __webpack_require__(/*! spotify-web-api-js */ 315);
 	
 	var _spotifyWebApiJs2 = _interopRequireDefault(_spotifyWebApiJs);
 	
+	var _store = __webpack_require__(/*! ./store.js */ 313);
+	
+	var _store2 = _interopRequireDefault(_store);
+	
+	var _TrackActions = __webpack_require__(/*! ./Actions/TrackActions.js */ 319);
+	
+	var _TrackUIActions = __webpack_require__(/*! ./Actions/TrackUIActions.js */ 320);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
@@ -22537,6 +22543,7 @@
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
 	var stock = 'https://static1.squarespace.com/static/585e12abe4fcb5ea1248900e/t/5aab1c5b03ce6430365833ac/1521163366180/Spotify+Square.png?format=300w';
+	
 	var spotifyWebApi = new _spotifyWebApiJs2.default();
 	
 	var App = function (_React$Component) {
@@ -22618,10 +22625,13 @@
 	    value: function spotifyCall(input) {
 	      var context = this;
 	      if (!input.length) {
-	        context.setState({ userMessage: 'SEARCH TRACKS BY ARTIST, SONG, OR ALBUM', topResults: [] });
+	        context.setState({ userMessage: 'SEARCH TRACKS BY ARTIST, SONG, OR ALBUM' }, function () {
+	          context.props.setTopResults([]);
+	        });
 	        return;
 	      }
 	      spotifyWebApi.searchTracks(input).then(function (response) {
+	        console.log('SUCCESS');
 	        context.setState({ userMessage: 'TOP RESULTS | PRESS ENTER TO SUBMIT' });
 	        if (context.state.preResults) {
 	          context.preResults = false;
@@ -22638,11 +22648,15 @@
 	            return;
 	          }
 	          context.state.validInput = true;
-	          context.setState({ topResults: topResults }, function () {
-	            if (length === 5) {
-	              context.state.topResults = [];
-	            }
-	          });
+	          // context.setState({topResults: topResults}, () => {
+	          //   if (length === 6) {
+	          //     context.state.topResults = [];
+	          //   } 
+	          // });
+	          context.props.setTopResults(topResults);
+	          if (length === 6) {
+	            context.props.setTopResults([]);
+	          }
 	        } else if (!context.state.preResults) {
 	          context.state.preResults = true;
 	          var tracks = response.tracks.items;
@@ -22654,10 +22668,9 @@
 	            return track.preview_url !== null;
 	          });
 	          var _length = tracks.length;
-	
-	          var cover = response.tracks.items[0].album.images[1].url;
-	          var song = response.tracks.items[0].name;
-	          var artist = response.tracks.items[0].album.artists[0].name;
+	          var cover = tracks[0].album.images[1].url;
+	          var song = tracks[0].name;
+	          var artist = tracks[0].album.artists[0].name;
 	          var urls = tracks.map(function (item) {
 	            return item.preview_url;
 	          });
@@ -22675,9 +22688,12 @@
 	  }, {
 	    key: 'setErrorMessage',
 	    value: function setErrorMessage() {
+	      var _this3 = this;
+	
 	      this.state.validInput = false;
-	      this.setState({ userMessage: "INVALID ENTRY!! CAN'T SUBMIT!! TRY AGAIN!!",
-	        topResults: [] });
+	      this.setState({ userMessage: "INVALID ENTRY!! CAN'T SUBMIT!! TRY AGAIN!!" }, function () {
+	        _this3.props.setTopResults([]);
+	      });
 	      return;
 	    }
 	  }, {
@@ -22703,7 +22719,6 @@
 	  }, {
 	    key: 'changeCover',
 	    value: function changeCover(index) {
-	      var context = this;
 	      this.setState({ cover: this.state.tracklist[index].album.images[1].url }, function () {});
 	    }
 	  }, {
@@ -22716,6 +22731,7 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
+	      console.log(_store2.default.getState(), '*************');
 	      return _react2.default.createElement(
 	        'div',
 	        null,
@@ -22729,7 +22745,7 @@
 	          getpreResults: this.getpreResults,
 	          numofTracks: this.state.numTracks,
 	          changeSongAndArtist: this.changeSongAndArtist,
-	          topResults: this.state.topResults,
+	          topResults: _store2.default.getState().TrackUIReducer.topResults,
 	          partialStatus: this.state.preResults,
 	          userMessage: this.state.userMessage,
 	          songAndArtist: this.state.songAndArtist,
@@ -22745,14 +22761,40 @@
 	}(_react2.default.Component);
 	
 	var mapStateToProps = function mapStateToProps(state) {
-	  return {
-	    // implement
-	  };
+	  return _defineProperty({
+	    trackList: state.TrackReducer,
+	    currentSong: state.TrackReducer,
+	    location: state.TrackUIReducer,
+	    cover: state.TrackUIReducer,
+	    topResults: state.TrackUIReducer,
+	    screenSong: state.TrackUIReducer,
+	    screenArtist: state.TrackUIReducer
+	  }, 'trackList', state.TrackUIReducer);
 	};
 	
 	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 	  return {
-	    // implement
+	    setCurrentSong: function setCurrentSong(currentSong) {
+	      dispatch((0, _TrackActions.setCurrentSong)(currentSong));
+	    },
+	    setTrackList: function setTrackList(trackList) {
+	      dispatch((0, _TrackActions.setTrackList)(trackList));
+	    },
+	    setCover: function setCover(cover) {
+	      dispatch((0, _TrackUIActions.setCover)(cover));
+	    },
+	    setTopResults: function setTopResults(topResults) {
+	      dispatch((0, _TrackUIActions.setTopResults)(topResults));
+	    },
+	    setScreenSong: function setScreenSong(screenSong) {
+	      dispatch(setCategory(screenSong));
+	    },
+	    setScreenArtist: function setScreenArtist(screenArtist) {
+	      dispatch((0, _TrackUIActions.setScreenArtist)(screenArtist));
+	    },
+	    setTrackListUI: function setTrackListUI(trackListUI) {
+	      dispatch(setCategory(trackListUI));
+	    }
 	  };
 	};
 	
@@ -22804,7 +22846,7 @@
 	exports.push([module.id, "@import url(https://fonts.googleapis.com/css?family=Open+Sans:300,400,700);", ""]);
 	
 	// module
-	exports.push([module.id, "body {\n  /*background: #42f492;*/\n  background: #111;\n  padding: 0;\n  margin: 0;\n}\n\n/* width */\n::-webkit-scrollbar {\n    width: 10px;\n}\n\n/* Handle */\n::-webkit-scrollbar-thumb {\n    background: #888; \n}\n\nh2 {\n  margin: 0;\n  padding: 0;\n  font-size: 10px;\n  line-height: 10px;\n  letter-spacing: 2.5px;\n  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;\n  font-weight: 700;\n  color: #fff;\n}\n\nh3 {\n  margin: 0;\n  padding: 0;\n  font-size: 11px;\n  line-height: 11px;\n  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;\n  font-weight: 400;\n  color: #777;\n}\n\nh4 {\n  margin: 0 0 0 0;\n  padding: 0;\n  font-size: 14px;\n  line-height: 14px;\n  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;\n  font-weight: 700;\n  color: #fff;\n}\n\nh5 {\n  margin: 0;\n  padding: 0;\n  font-size: 13px;\n  line-height: 13px;\n  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;\n  font-weight: 700;\n  color: #6d6d6d;\n}\n\nh6 {\n  margin: 0;\n  padding: 0;\n  font-size: 13px;\n  line-height: 13px;\n  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;\n  font-weight: 700;\n  color: #f0f0f0;\n}\n\n.styles__screen___1r3tJ {\n  background: rgb(6, 6, 9);\n  padding: 0;\n  min-height: 432px;\n  height: 615px;\n  /*each song is 49.439px*/\n  width: 299px;\n  position: relative;\n  left: 50%;\n  top: 0;\n  transform: translate(-50%, 0);\n  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.4);\n  overflow: hidden;\n  margin: 30px 0;\n}\n\n\ninput[type=\"checkbox\"]:checked:after {\n  background: green !important;\n  color: black !important;\n  box-shadow: none !important;\n}\n\n.styles__screen___1r3tJ > .styles__magicButton___2LMsN:checked ~ .styles__coverImage___1Ya5a {\n  transform: scale(0.0001, 0.0001);\n  left: 160px;\n  top: 80px;\n  transition: all 0.3s ease-in;\n}\n\n.styles__screen___1r3tJ > .styles__magicButton___2LMsN:unchecked ~ .styles__containPre___36DeU {\n  color: #111;\n  opacity: 30;\n  left: 50%;\n  transform: translate(-50%,0%);\n}\n\n\n\n.styles__screen___1r3tJ > .styles__magicButton___2LMsN:checked ~ .styles__containPre___36DeU {\n  color:white;\n  opacity:30;\n  left: 50%;\n  top: 10px;\n  transform: translate(-50%,0%);\n  transition: all 0.3s ease-in;\n}\n\n.styles__screen___1r3tJ > .styles__magicButton___2LMsN:checked ~ .styles__bodyPlayer___26WbB {\n  height: 470px;\n  left: 0;\n  top: 180px;\n  transition: all 0.3s ease-in;\n}\n\n\n.styles__screen___1r3tJ > .styles__magicButton___2LMsN:checked ~ .styles__bar___1zYif {\n  top: 119px;\n  left: 126px;\n  transform: scale(0.6875, 0.6875);\n  transition: all 0.3s ease-in;\n}\n\n.styles__screen___1r3tJ > .styles__magicButton___2LMsN:checked ~ .styles__info___1WdOt {\n  top: 66px;\n  left: 126px;\n  text-align: left;\n  transition: all 0.3s ease-in;\n}\n\n.styles__screen___1r3tJ > .styles__magicButton___2LMsN:checked ~ .styles__info___1WdOt h4 {\n  margin-left: 0;\n  font-size: 16px;\n  color: #111111;\n  transition: all 0.3s ease-in;\n}\n\n.styles__screen___1r3tJ > .styles__magicButton___2LMsN:checked ~ .styles__player___2LRVd {\n  bottom: 4px;\n  left: -44px;\n  transform: scale(0.45, 0.45);\n  transition: all 0.3s ease-in;\n}\n\n\n.styles__coverImage___1Ya5a {\n  width: 300px;\n  height: 300px;\n  padding: 0;\n  bottom: 20px;\n  margin-top: 20px;\n  position: absolute;\n  top: 0;\n  left: 50%;\n  transform:translate(-50%,0%);\n  z-index: 1000;\n  transform-origin: 0% 0%;\n  transition: all 0.3s ease-in;\n}\n\n.styles__bodyPlayer___26WbB {\n  position: absolute;\n  top: 300px;\n  left: 0;\n  margin: 0;\n  padding: 0;\n  height: 350px; \n  width: 100%;\n  background: rgb(6, 6, 9);\n  transition: all 0.3s ease-in;\n}\n\n.styles__search___3LoIJ:before {\n  position: absolute;\n  top: 23px;\n  right: 23px;\n  font-family: FontAwesome;\n  content: '\\F002';\n  color: #959595;\n  font-size: 16px;\n  line-height: 16px;\n  cursor: pointer;\n  z-index: 10;\n  transition: all 0.3s ease-in;\n}\n.styles__search___3LoIJ:hover:before {\n  color: #bbb;\n}\n.styles__scrollcontainer___350sT {\n  height: 100%;\n  width: 100%;\n  position: relative;\n  left: 50%;\n  transform: translate(-50%,0%);\n}\n\n.styles__listcontainer___2g0Ru {\n  position: absolute;\n  left: 50%;\n  top: 430px;\n  transform: translate(-50%,0%);\n  width: 100%;\n}\n.styles__list___3kW0k {\n  position:relative;\n  left: 50%;\n  transform: translate(-50%,0%);\n}\n\n.styles__songEntry___2zUWF {\n  display: flex;\n  align-items: center;\n  flex-direction: row;\n  flex-wrap: wrap;\n  padding: 6px 0px;\n  cursor: pointer;\n  width: 100%;\n  height:100%;\n}\n\n.styles__num___3OX4e {\n  width: 5%;\n  text-align: center;\n  padding: 5px 2.5px 5px 7.5px;\n  position: relative;\n  top: 10px;\n}\n\n.styles__num___3OX4e h5 {\n  font-size: 11px;\n  font-weight: 300;\n  color:#444;\n}\n\n.styles__length___2er9r {\n  width: 12%;\n  text-align: center;\n  padding: 5px 3px 5px 0px;\n  position: relative;\n  top: 0px;\n}\n\n.styles__length___2er9r h5 {\n  font-size: 11px;\n  font-weight: 300;\n  color:#444;\n}\n.styles__title___1eZD5 {\n  width: 75%;\n  padding: 5px 0px 5px 10px;\n  position: relative;\n}\n\n.styles__title___1eZD5 h6{\n  font-size: 13px;\n  font-weight: 300;\n  color: #eee;\n}\n\n.styles__title___1eZD5 h6:hover {\n  color: #42f492;\n  transition: 'all 0.15s linear'\n}\n\n.styles__artistName___1HIxT {\n  width: 75%;\n  padding-left: calc(5% + 20px);\n  position:relative;\n}\n\n.styles__artistName___1HIxT h6{\n  font-size: 11px;\n  font-weight: 300;\n  color: #888;\n}\n\n.styles__shadow___cd6Tc {\n  background: rgba(17, 17, 17, 0.8);\n  width: 366px;\n  height: 50px;\n  position: absolute;\n  bottom: -12px;\n  left: 0;\n  box-shadow: 0px -15px 40px rgba(17, 17, 17, 0.8);\n}\n\n.styles__bar___1zYif {\n  background: url('http://imgh.us/bar_3.svg') no-repeat;\n  background-size: 100%;\n  width: 320px;\n  height: 21px;\n  position: absolute;\n  top: 407px;\n  left: 23px;\n  transform-origin: 0% 0%;\n  transition: all 0.3s ease-in;\n}\n\n.styles__info___1WdOt {\n  width: 157px;\n  position: absolute;\n  left: 104px;\n  top: 440px;\n  transition: all 0.3s ease-in;\n}\n\n.styles__table___3udIv {\n  top: 500px;\n}\n\n.styles__player___2LRVd {\n  background: none;\n  text-align: center;\n  font-family: FontAwesome;\n  color: #fff;\n  font-size: 26px;\n  line-height: 26px;\n  width: 216px;\n  height: 35px;\n  top: 380px;\n  position: absolute;\n  left: 50%;\n  right: 40px;\n  transform: translate(-50%, 0);\n  z-index: 10;\n  transition: all 0.3s ease-in;\n  border-spacing: 0;\n}\n\n.styles__player___2LRVd td {\n  width: 72px;\n}\n\n.styles__playerBody___38skw {\n  top: 200px;\n}\n\n.styles__back___28F1Z:before {\n  content: \"\\F04A\";\n  cursor: pointer;\n  color: white;\n  transition: all 0.15s linear;\n}\n\n.styles__back___28F1Z:hover:before {\n  color: #bbb;\n  transition: all 0.15s linear;\n}\n\n.styles__play___31_-M:before {\n  content: \"\\F04B\";\n  cursor: pointer;\n  transition: all 0.15s linear;\n}\n\n.styles__play___31_-M:hover:before {\n  color: #bbb;\n  transition: all 0.15s linear;\n}\n\n.styles__fore___vEEM4:before {\n  content: \"\\F04E\";\n  cursor: pointer;\n  transition: all 0.15s linear;\n}\n\n.styles__fore___vEEM4:hover:before {\n  color: #bbb;\n  transition: all 0.15s linear;\n}\n\n.styles__footer___t-V25 {\n  background: none;\n  font-family: FontAwesome;\n  color: #6d6d6d;\n  font-size: 15px;\n  line-height: 15px;\n  height: 45px;\n  width: 360px;\n  position: absolute;\n  bottom: 10px;\n  left: 23px;\n  z-index: 20;\n  transition: all 0.15s linear;\n  transition: bottom 0.3s linear;\n}\n\n.styles__searchInputBox___1J7R_ {\n  width:80%;\n  position: absolute;\n  left: 50%;\n  top: 40px;\n  transform: translate(-50%,0%);\n  background: none;\n  border:none;\n  border-bottom:1px solid #444;\n  outline:none;\n  color:#ddd;\n}\n\n.styles__containPre___36DeU {\n  position: relative;\n  opacity:0;\n  text-align: center;\n  width:300;\n  top: 50px;\n  left: 50%;\n  transform:translate(-50%,0%);\n  margin: 0 auto;\n  bottom: 100px;\n}\n.styles__userMessageContainer___7cwos {\n  color: #42f492;\n  font-weight: 300;\n  font-size: 12px;\n  position: absolute;\n  top: 55px;\n  left: 50%;\n  transform: translate(-50%,0%);\n  width: 100%;\n  text-align: center;\n  z-index: 100;\n  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;\n}\n\n.styles__progresscontainer___2QPd_ {\n  position: absolute;\n  left: 50%;\n  top: 320px;\n  transform: translate(-50%,0%);\n  width:300px;\n  height:3px;\n  margin: 0 auto;\n}\n\n.styles__message___2SlmP {\n  height: 20px;\n  text-align: center;\n  font-family: Helvetica, Arial, sans-serif;\n}\n\n.styles__controls___jvg_W {\n  background: #333;\n  padding: 8px;\n}\n\n.styles__button___1UJG4 {\n  color: white;\n  width: 20px;\n  margin: 3px 0 0 0;\n  font-size: 16px;\n  text-align: center;\n  display: inline-block;\n  cursor: pointer;\n  background: transparent;\n  border: none;\n  outline: none;\n}\n\n.styles__track___2t1FT {\n  position: absolute;\n  width: 300px;\n  left: 0px;\n  margin: 0 auto;\n  height: 3px;\n  display: inline-block;\n  vertical-align: top;\n}\n\n.styles__progress___1uS5g {\n  position: absolute;\n  width: 0%;\n  height: 100%;\n  background: #42f492;\n}\n\n.styles__running___2gmTn{\n  position: absolute;\n  font-size:12px;\n  color: #888;\n  font-weight: 300;\n  left:10px;\n  top: 8px;\n}\n\n.styles__endTime___1aOB-{\n  position: absolute;\n  font-size: 12px;\n  color: #888;\n  left: 270px;\n  top: 8px;\n}\n\n.styles__inputBox___1PNRM{\n  text-align:center;\n  top: 500px;\n}\n\n.styles__newTracks___3bTH5 {\n  text-align:center;\n  margin-top: 50px;\n  margin-bottom: 15px;\n  color:white;\n}\n\n.styles__songArtistContainer___rQdSH {\n  text-align: center;\n  color: white;\n  position: absolute;\n  top: 325px;\n  left: 50%;\n  transform: translate(-50%,0%);\n  width: 300px;\n}\n.styles__song___1eBTm {\n  text-align: center;\n  padding: 8px 0px 2px 0px;\n  color: #fff;\n}\n\n.styles__song___1eBTm h4 {\n  position: relative;\n  left: 50%;\n  transform: translate(-50%,0%);\n  font-size: 15px;\n  width: 50%;\n  font-weight: 300;\n\n}\n\n.styles__artist___3GDXQ {\n  text-align: center;\n}\n\n.styles__artist___3GDXQ h5{\n  text-align: center;\n  position: relative;\n  left: 50%;\n  transform: translate(-50%,0%);\n  font-size: 12px;\n  color: #42f492;\n  padding-top: 4px;\n  width: 50%;\n  font-weight: 300;\n}\n\n.styles__threeResultsContainer___2hpRo {\n  position:relative;\n  text-align:center;\n  bottom: 5px;\n  font-size: 12px;\n  padding:20px;\n  margin: 0 auto;\n  width:100%;\n  height:100%;\n  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;\n  padding: 10px 0px;\n\n}\n.styles__threeResultsContainer___2hpRo div{\n  padding: 10px 0px;\n}\n\n.styles__searchMode___JmmCE {\n  font-size: 9.5px;\n  margin: 0 auto;\n  float:right;\n  position: absolute;\n  top: 3px;\n  left: 22px;\n  color: #ddd;\n  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;\n}\n\n.styles__coverContainer___4UJPK {\n  width:304px;\n  height: 150px;\n}\n\n.styles__tableEntryDiv___8lGO4 {\n  width: 100%;\n  height:100%;\n}\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+	exports.push([module.id, "body {\n  /*background: #42f492;*/\n  background: #2a2338;\n  padding: 0;\n  margin: 0;\n}\n\n/* width */\n::-webkit-scrollbar {\n    width: 10px;\n}\n\n/* Handle */\n::-webkit-scrollbar-thumb {\n    background: #888; \n}\n\nh2 {\n  margin: 0;\n  padding: 0;\n  font-size: 10px;\n  line-height: 10px;\n  letter-spacing: 2.5px;\n  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;\n  font-weight: 700;\n  color: #fff;\n}\n\nh3 {\n  margin: 0;\n  padding: 0;\n  font-size: 11px;\n  line-height: 11px;\n  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;\n  font-weight: 400;\n  color: #777;\n}\n\nh4 {\n  margin: 0 0 0 0;\n  padding: 0;\n  font-size: 14px;\n  line-height: 14px;\n  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;\n  font-weight: 700;\n  color: #fff;\n}\n\nh5 {\n  margin: 0;\n  padding: 0;\n  font-size: 13px;\n  line-height: 13px;\n  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;\n  font-weight: 700;\n  color: #6d6d6d;\n}\n\nh6 {\n  margin: 0;\n  padding: 0;\n  font-size: 13px;\n  line-height: 13px;\n  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;\n  font-weight: 700;\n  color: #f0f0f0;\n}\n\n.styles__screen___1r3tJ {\n  background: rgb(6, 6, 9);\n  padding: 0;\n  min-height: 432px;\n  height: 615px;\n  /*each song is 49.439px*/\n  width: 299px;\n  position: relative;\n  left: 50%;\n  top: 80px;\n  transform: translate(-50%, 0);\n  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.4);\n  overflow: hidden;\n  margin: 30px 0;\n}\n\n\ninput[type=\"checkbox\"]:checked:after {\n  background: green !important;\n  color: black !important;\n  box-shadow: none !important;\n}\n\n.styles__screen___1r3tJ > .styles__magicButton___2LMsN:checked ~ .styles__coverImage___1Ya5a {\n  transform: scale(0.0001, 0.0001);\n  left: 160px;\n  top: 80px;\n  transition: all 0.3s ease-in;\n}\n\n.styles__screen___1r3tJ > .styles__magicButton___2LMsN:unchecked ~ .styles__containPre___36DeU {\n  color: #111;\n  opacity: 30;\n  left: 50%;\n  transform: translate(-50%,0%);\n}\n\n\n\n.styles__screen___1r3tJ > .styles__magicButton___2LMsN:checked ~ .styles__containPre___36DeU {\n  color:white;\n  opacity:30;\n  left: 50%;\n  top: 10px;\n  transform: translate(-50%,0%);\n  transition: all 0.3s ease-in;\n}\n\n.styles__screen___1r3tJ > .styles__magicButton___2LMsN:checked ~ .styles__bodyPlayer___26WbB {\n  height: 470px;\n  left: 0;\n  top: 180px;\n  transition: all 0.3s ease-in;\n}\n\n\n.styles__screen___1r3tJ > .styles__magicButton___2LMsN:checked ~ .styles__bar___1zYif {\n  top: 119px;\n  left: 126px;\n  transform: scale(0.6875, 0.6875);\n  transition: all 0.3s ease-in;\n}\n\n.styles__screen___1r3tJ > .styles__magicButton___2LMsN:checked ~ .styles__info___1WdOt {\n  top: 66px;\n  left: 126px;\n  text-align: left;\n  transition: all 0.3s ease-in;\n}\n\n.styles__screen___1r3tJ > .styles__magicButton___2LMsN:checked ~ .styles__info___1WdOt h4 {\n  margin-left: 0;\n  font-size: 16px;\n  color: #111111;\n  transition: all 0.3s ease-in;\n}\n\n.styles__screen___1r3tJ > .styles__magicButton___2LMsN:checked ~ .styles__player___2LRVd {\n  bottom: 4px;\n  left: -44px;\n  transform: scale(0.45, 0.45);\n  transition: all 0.3s ease-in;\n}\n\n\n.styles__coverImage___1Ya5a {\n  width: 300px;\n  height: 300px;\n  padding: 0;\n  bottom: 20px;\n  margin-top: 20px;\n  position: absolute;\n  top: 0;\n  left: 50%;\n  transform:translate(-50%,0%);\n  z-index: 1000;\n  transform-origin: 0% 0%;\n  transition: all 0.3s ease-in;\n}\n\n.styles__bodyPlayer___26WbB {\n  position: absolute;\n  top: 300px;\n  left: 0;\n  margin: 0;\n  padding: 0;\n  height: 350px; \n  width: 100%;\n  background: rgb(6, 6, 9);\n  transition: all 0.3s ease-in;\n}\n\n.styles__search___3LoIJ:before {\n  position: absolute;\n  top: 23px;\n  right: 23px;\n  font-family: FontAwesome;\n  content: '\\F002';\n  color: #959595;\n  font-size: 16px;\n  line-height: 16px;\n  cursor: pointer;\n  z-index: 10;\n  transition: all 0.3s ease-in;\n}\n.styles__search___3LoIJ:hover:before {\n  color: #bbb;\n}\n.styles__scrollcontainer___350sT {\n  height: 100%;\n  width: 100%;\n  position: relative;\n  left: 50%;\n  transform: translate(-50%,0%);\n}\n\n.styles__listcontainer___2g0Ru {\n  position: absolute;\n  left: 50%;\n  top: 430px;\n  transform: translate(-50%,0%);\n  width: 100%;\n}\n.styles__list___3kW0k {\n  position:relative;\n  left: 50%;\n  transform: translate(-50%,0%);\n}\n\n.styles__songEntry___2zUWF {\n  display: flex;\n  align-items: center;\n  flex-direction: row;\n  flex-wrap: wrap;\n  padding: 6px 0px;\n  cursor: pointer;\n  width: 100%;\n  height:100%;\n}\n\n.styles__num___3OX4e {\n  width: 5%;\n  text-align: center;\n  padding: 5px 2.5px 5px 7.5px;\n  position: relative;\n  top: 10px;\n}\n\n.styles__num___3OX4e h5 {\n  font-size: 11px;\n  font-weight: 300;\n  color:#888;\n}\n\n.styles__length___2er9r {\n  width: 12%;\n  text-align: center;\n  padding: 5px 3px 5px 0px;\n  position: relative;\n  top: 0px;\n}\n\n.styles__length___2er9r h5 {\n  font-size: 11px;\n  font-weight: 300;\n  color: #888;\n}\n.styles__title___1eZD5 {\n  width: 60%;\n  padding: 5px 0px 5px 10px;\n  position: relative;\n\n}\n\n.styles__title___1eZD5 h6{\n  font-size: 13px;\n  font-weight: 300;\n  display: inline;\n}\n\n.styles__title___1eZD5 h6:hover {\n  color: #42f492;\n  transition: 'all 0.15s linear'\n}\n\n.styles__artistName___1HIxT {\n  width: 75%;\n  padding-left: calc(5% + 20px);\n  position:relative;\n}\n\n.styles__artistName___1HIxT h6{\n  font-size: 11px;\n  font-weight: 300;\n  color: #888;\n}\n\n.styles__shadow___cd6Tc {\n  background: rgba(17, 17, 17, 0.8);\n  width: 366px;\n  height: 50px;\n  position: absolute;\n  bottom: -12px;\n  left: 0;\n  box-shadow: 0px -15px 40px rgba(17, 17, 17, 0.8);\n}\n\n.styles__bar___1zYif {\n  background: url('http://imgh.us/bar_3.svg') no-repeat;\n  background-size: 100%;\n  width: 320px;\n  height: 21px;\n  position: absolute;\n  top: 407px;\n  left: 23px;\n  transform-origin: 0% 0%;\n  transition: all 0.3s ease-in;\n}\n\n.styles__info___1WdOt {\n  width: 157px;\n  position: absolute;\n  left: 104px;\n  top: 440px;\n  transition: all 0.3s ease-in;\n}\n\n.styles__table___3udIv {\n  top: 500px;\n}\n\n.styles__player___2LRVd {\n  background: none;\n  text-align: center;\n  font-family: FontAwesome;\n  color: #fff;\n  font-size: 26px;\n  line-height: 26px;\n  width: 216px;\n  height: 35px;\n  top: 380px;\n  position: absolute;\n  left: 50%;\n  right: 40px;\n  transform: translate(-50%, 0);\n  z-index: 10;\n  transition: all 0.3s ease-in;\n  border-spacing: 0;\n}\n\n.styles__player___2LRVd td {\n  width: 72px;\n}\n\n.styles__playerBody___38skw {\n  top: 200px;\n}\n\n.styles__back___28F1Z:before {\n  content: \"\\F04A\";\n  cursor: pointer;\n  color: white;\n  transition: all 0.15s linear;\n}\n\n.styles__back___28F1Z:hover:before {\n  color: #bbb;\n  transition: all 0.15s linear;\n}\n\n.styles__play___31_-M:before {\n  content: \"\\F04B\";\n  cursor: pointer;\n  transition: all 0.15s linear;\n}\n\n.styles__play___31_-M:hover:before {\n  color: #bbb;\n  transition: all 0.15s linear;\n}\n\n.styles__fore___vEEM4:before {\n  content: \"\\F04E\";\n  cursor: pointer;\n  transition: all 0.15s linear;\n}\n\n.styles__fore___vEEM4:hover:before {\n  color: #bbb;\n  transition: all 0.15s linear;\n}\n\n.styles__footer___t-V25 {\n  background: none;\n  font-family: FontAwesome;\n  color: #6d6d6d;\n  font-size: 15px;\n  line-height: 15px;\n  height: 45px;\n  width: 360px;\n  position: absolute;\n  bottom: 10px;\n  left: 23px;\n  z-index: 20;\n  transition: all 0.15s linear;\n  transition: bottom 0.3s linear;\n}\n\n.styles__searchInputBox___1J7R_ {\n  width:80%;\n  position: absolute;\n  left: 50%;\n  top: 40px;\n  transform: translate(-50%,0%);\n  background: none;\n  border:none;\n  border-bottom:1px solid #444;\n  outline:none;\n  color:#ddd;\n}\n\n.styles__containPre___36DeU {\n  position: relative;\n  opacity:0;\n  text-align: center;\n  width:300;\n  top: 50px;\n  left: 50%;\n  transform:translate(-50%,0%);\n  margin: 0 auto;\n  bottom: 100px;\n}\n.styles__userMessageContainer___7cwos {\n  color: #42f492;\n  font-weight: 300;\n  font-size: 12px;\n  position: absolute;\n  top: 55px;\n  left: 50%;\n  transform: translate(-50%,0%);\n  width: 100%;\n  text-align: center;\n  z-index: 100;\n  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;\n}\n\n.styles__progresscontainer___2QPd_ {\n  position: absolute;\n  left: 50%;\n  top: 320px;\n  transform: translate(-50%,0%);\n  width:300px;\n  height:3px;\n  margin: 0 auto;\n}\n\n.styles__message___2SlmP {\n  height: 20px;\n  text-align: center;\n  font-family: Helvetica, Arial, sans-serif;\n}\n\n.styles__controls___jvg_W {\n  background: #333;\n  padding: 8px;\n}\n\n.styles__button___1UJG4 {\n  color: white;\n  width: 20px;\n  margin: 3px 0 0 0;\n  font-size: 16px;\n  text-align: center;\n  display: inline-block;\n  cursor: pointer;\n  background: transparent;\n  border: none;\n  outline: none;\n}\n\n.styles__track___2t1FT {\n  position: absolute;\n  width: 300px;\n  left: 0px;\n  margin: 0 auto;\n  height: 3px;\n  display: inline-block;\n  vertical-align: top;\n}\n\n.styles__progress___1uS5g {\n  position: absolute;\n  width: 0%;\n  height: 100%;\n  background: #42f492;\n}\n\n.styles__running___2gmTn{\n  position: absolute;\n  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;\n  font-size:12px;\n  color: #888;\n  font-weight: 300;\n  left:10px;\n  top: 8px;\n}\n\n.styles__endTime___1aOB-{\n  position: absolute;\n  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;\n  font-size: 12px;\n  font-weight: 300;\n  color: #888;\n  left: 270px;\n  top: 8px;\n}\n\n.styles__inputBox___1PNRM{\n  text-align:center;\n  top: 500px;\n}\n\n.styles__newTracks___3bTH5 {\n  text-align:center;\n  margin-top: 50px;\n  margin-bottom: 15px;\n  color:white;\n}\n\n.styles__songArtistContainer___rQdSH {\n  text-align: center;\n  color: white;\n  position: absolute;\n  top: 325px;\n  left: 50%;\n  transform: translate(-50%,0%);\n  width: 300px;\n}\n.styles__song___1eBTm {\n  text-align: center;\n  padding: 8px 0px 2px 0px;\n  color: #fff;\n}\n\n.styles__song___1eBTm h4 {\n  position: relative;\n  left: 50%;\n  transform: translate(-50%,0%);\n  font-size: 15px;\n  width: 50%;\n  font-weight: 300;\n\n}\n\n.styles__artist___3GDXQ {\n  text-align: center;\n}\n\n.styles__artist___3GDXQ h5{\n  text-align: center;\n  position: relative;\n  left: 50%;\n  transform: translate(-50%,0%);\n  font-size: 12px;\n  color: #42f492;\n  padding-top: 4px;\n  width: 50%;\n  font-weight: 300;\n}\n\n.styles__threeResultsContainer___2hpRo {\n  position:relative;\n  text-align:center;\n  bottom: 5px;\n  font-size: 12px;\n  padding:20px;\n  margin: 0 auto;\n  width:100%;\n  height:100%;\n  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;\n  padding: 10px 0px;\n\n}\n.styles__threeResultsContainer___2hpRo div{\n  padding: 10px 0px;\n}\n\n.styles__searchMode___JmmCE {\n  font-size: 9.5px;\n  margin: 0 auto;\n  float:right;\n  position: absolute;\n  top: 3px;\n  left: 22px;\n  color: #ddd;\n  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;\n}\n\n.styles__coverContainer___4UJPK {\n  width:304px;\n  height: 150px;\n}\n\n.styles__tableEntryDiv___8lGO4 {\n  width: 100%;\n  height:100%;\n}\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 	
 	// exports
 	exports.locals = {
@@ -34265,13 +34307,21 @@
 	
 	var _reactRedux = __webpack_require__(/*! react-redux */ 276);
 	
+	var _TrackReducer = __webpack_require__(/*! ./Reducers/TrackReducer */ 316);
+	
+	var _TrackReducer2 = _interopRequireDefault(_TrackReducer);
+	
+	var _TrackUIReducer = __webpack_require__(/*! ./Reducers/TrackUIReducer */ 317);
+	
+	var _TrackUIReducer2 = _interopRequireDefault(_TrackUIReducer);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	// import reducers
-	
 	var initialState = {
-	  result: 1,
-	  lastValues: []
+	  TrackReducer: { currentSong: '', trackList: [] },
+	  TrackUIReducer: { cover: '', topResults: [],
+	    screenSong: '', screenArtist: '',
+	    trackListUI: [] }
 	};
 	
 	var myLogger = function myLogger(store) {
@@ -34283,13 +34333,12 @@
 	  };
 	};
 	
-	var store = (0, _redux.createStore)((0, _redux.combineReducers)({}), {}, (0, _redux.applyMiddleware)());
-	
-	// const store = createStore(reducer);
+	var store = (0, _redux.createStore)((0, _redux.combineReducers)({ TrackReducer: _TrackReducer2.default, TrackUIReducer: _TrackUIReducer2.default }), {}, (0, _redux.applyMiddleware)());
 	
 	store.subscribe(function () {
 	  console.log('Store updated!', store.getState());
 	});
+	
 	exports.default = store;
 
 /***/ }),
@@ -36076,6 +36125,219 @@
 	  module.exports = SpotifyWebApi;
 	}
 
+
+/***/ }),
+/* 316 */
+/*!**********************************************!*\
+  !*** ./1client/src/Reducers/TrackReducer.js ***!
+  \**********************************************/
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _init = __webpack_require__(/*! ../init.js */ 318);
+	
+	var _init2 = _interopRequireDefault(_init);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+	
+	var TrackReducer = function TrackReducer() {
+	  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : _init2.default.initialState2;
+	  var action = arguments[1];
+	
+	  if (action.type === 'CHANGE_CURRENTSONG') {
+	    state = Object.assign({}, state, {
+	      currentSong: action.payload,
+	      lastValues: [].concat(_toConsumableArray(state.lastValues), [action.payload])
+	    });
+	  }
+	  if (action.type === 'CHANGE_TRACKLIST') {
+	    state = Object.assign({}, state, {
+	      trackList: action.payload,
+	      lastValues: [].concat(_toConsumableArray(state.lastValues), [action.payload])
+	    });
+	  }
+	  return state;
+	};
+	
+	exports.default = TrackReducer;
+
+/***/ }),
+/* 317 */
+/*!************************************************!*\
+  !*** ./1client/src/Reducers/TrackUIReducer.js ***!
+  \************************************************/
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _init = __webpack_require__(/*! ../init.js */ 318);
+	
+	var _init2 = _interopRequireDefault(_init);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+	
+	var TrackUIReducer = function TrackUIReducer() {
+	  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : _init2.default.initialState1;
+	  var action = arguments[1];
+	
+	  if (action.type === 'CHANGE_COVER') {
+	    state = Object.assign({}, state, {
+	      cover: action.payload,
+	      lastValues: [].concat(_toConsumableArray(state.lastValues), [action.payload])
+	    });
+	  }
+	  if (action.type === 'CHANGE_TOPRESULTS') {
+	    state = Object.assign({}, state, {
+	      topResults: action.payload,
+	      lastValues: [].concat(_toConsumableArray(state.lastValues), [action.payload])
+	    });
+	  }
+	  if (action.type === 'CHANGE_SCREENSONG') {
+	    state = Object.assign({}, state, {
+	      screenSong: action.payload,
+	      lastValues: [].concat(_toConsumableArray(state.lastValues), [action.payload])
+	    });
+	  }
+	  if (action.type === 'CHANGE_SCREENARTIST') {
+	    state = Object.assign({}, state, {
+	      screenArtist: action.payload,
+	      lastValues: [].concat(_toConsumableArray(state.lastValues), [action.payload])
+	    });
+	  }
+	  if (action.type === 'CHANGE_TRACKLISTUI') {
+	    state = Object.assign({}, state, {
+	      trackListUI: action.payload,
+	      lastValues: [].concat(_toConsumableArray(state.lastValues), [action.payload])
+	    });
+	  }
+	  return state;
+	};
+	
+	exports.default = TrackUIReducer;
+
+/***/ }),
+/* 318 */
+/*!*****************************!*\
+  !*** ./1client/src/init.js ***!
+  \*****************************/
+/***/ (function(module, exports) {
+
+	'use strict';
+	
+	var _initialState;
+	
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+	
+	var nums = [1, 2, 3];
+	var review = { 'name': 'a', 'rating': 'c', 'location': 'd', 'category': 'e', 'Review': ['1', '2', '3'] };
+	var reviews = [review, review, review, review, review, review, review];
+	
+	var initialState1 = (_initialState = {
+	   cover: '',
+	   topResults: [],
+	   screenSong: ''
+	}, _defineProperty(_initialState, 'screenSong', ''), _defineProperty(_initialState, 'lastValues', []), _initialState);
+	
+	var initialState2 = {
+	   currentSong: '',
+	   trackList: [],
+	   lastValues: []
+	};
+	
+	module.exports = { reviews: reviews, initialState1: initialState1, initialState2: initialState2 };
+
+/***/ }),
+/* 319 */
+/*!*********************************************!*\
+  !*** ./1client/src/Actions/TrackActions.js ***!
+  \*********************************************/
+/***/ (function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.setCurrentSong = setCurrentSong;
+	exports.setTrackList = setTrackList;
+	function setCurrentSong(currentSong) {
+	  return {
+	    type: 'CHANGE_CURRENTSONG',
+	    payload: currentSong
+	  };
+	}
+	
+	function setTrackList(trackList) {
+	  return {
+	    type: 'CHANGE_TRACKLIST',
+	    payload: trackList
+	  };
+	}
+
+/***/ }),
+/* 320 */
+/*!***********************************************!*\
+  !*** ./1client/src/Actions/TrackUIActions.js ***!
+  \***********************************************/
+/***/ (function(module, exports) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.setCover = setCover;
+	exports.setTopResults = setTopResults;
+	exports.setScreenSong = setScreenSong;
+	exports.setScreenArtist = setScreenArtist;
+	exports.setTrackListUI = setTrackListUI;
+	function setCover(cover) {
+	  return {
+	    type: 'CHANGE_COVER',
+	    payload: cover
+	  };
+	}
+	
+	function setTopResults(topResults) {
+	  return {
+	    type: 'CHANGE_TOPRESULTS',
+	    payload: topResults
+	  };
+	}
+	
+	function setScreenSong(screenSong) {
+	  return {
+	    type: 'CHANGE_SCREENSONG',
+	    payload: screenSong
+	  };
+	}
+	
+	function setScreenArtist(screenArtist) {
+	  return {
+	    type: 'CHANGE_SCREEENARTIST',
+	    payload: screenArtist
+	  };
+	}
+	
+	function setTrackListUI(trackListUI) {
+	  return {
+	    type: 'CHANGE_TRACKLISTUI',
+	    payload: trackListUI
+	  };
+	}
 
 /***/ })
 /******/ ]);

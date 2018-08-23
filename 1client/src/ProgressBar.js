@@ -2,7 +2,6 @@ import React from 'react';
 import styles from './styles.css';
 let url = 'http://static.kevvv.in/sounds/callmemaybe.mp3';
 
-
 class ProgressBar extends React.Component {
   constructor (props) {
     super(props);

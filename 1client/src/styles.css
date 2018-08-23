@@ -2,7 +2,7 @@
 
 body {
   /*background: #42f492;*/
-  background: #111;
+  background: #2a2338;
   padding: 0;
   margin: 0;
 }
@@ -77,7 +77,7 @@ h6 {
   width: 299px;
   position: relative;
   left: 50%;
-  top: 0;
+  top: 80px;
   transform: translate(-50%, 0);
   box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.4);
   overflow: hidden;
@@ -239,7 +239,7 @@ input[type="checkbox"]:checked:after {
 .num h5 {
   font-size: 11px;
   font-weight: 300;
-  color:#444;
+  color:#888;
 }
 
 .length {
@@ -253,18 +253,19 @@ input[type="checkbox"]:checked:after {
 .length h5 {
   font-size: 11px;
   font-weight: 300;
-  color:#444;
+  color: #888;
 }
 .title {
-  width: 75%;
+  width: 60%;
   padding: 5px 0px 5px 10px;
   position: relative;
+
 }
 
 .title h6{
   font-size: 13px;
   font-weight: 300;
-  color: #eee;
+  display: inline;
 }
 
 .title h6:hover {
@@ -486,6 +487,7 @@ input[type="checkbox"]:checked:after {
 
 .running{
   position: absolute;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-size:12px;
   color: #888;
   font-weight: 300;
@@ -495,7 +497,9 @@ input[type="checkbox"]:checked:after {
 
 .endTime{
   position: absolute;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-size: 12px;
+  font-weight: 300;
   color: #888;
   left: 270px;
   top: 8px;
