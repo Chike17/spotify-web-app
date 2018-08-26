@@ -24,7 +24,7 @@ export function setScreenSong (screenSong) {
 
 export function setScreenArtist (screenArtist) {
    return {
-     type: 'CHANGE_SCREEENARTIST',
+     type: 'CHANGE_SCREENARTIST',
      payload: screenArtist
    };
 }

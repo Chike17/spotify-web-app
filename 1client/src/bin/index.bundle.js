@@ -22542,7 +22542,9 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	var stock = 'https://static1.squarespace.com/static/585e12abe4fcb5ea1248900e/t/5aab1c5b03ce6430365833ac/1521163366180/Spotify+Square.png?format=300w';
+	var song = 'No Songs in Queue';
+	var artist = 'Please Go Into Search Mode';
+	var trackNumber = 0;
 	
 	var spotifyWebApi = new _spotifyWebApiJs2.default();
 	
@@ -22558,7 +22560,6 @@
 	    _this.state = {
 	      loggedIn: params.access_token ? true : false,
 	      tracklist: [],
-	      cover: stock,
 	      accessToken: '',
 	      urls: [],
 	      trackNumber: '0',
@@ -22648,11 +22649,6 @@
 	            return;
 	          }
 	          context.state.validInput = true;
-	          // context.setState({topResults: topResults}, () => {
-	          //   if (length === 6) {
-	          //     context.state.topResults = [];
-	          //   } 
-	          // });
 	          context.props.setTopResults(topResults);
 	          if (length === 6) {
 	            context.props.setTopResults([]);
@@ -22669,16 +22665,17 @@
 	          });
 	          var _length = tracks.length;
 	          var cover = tracks[0].album.images[1].url;
-	          var song = tracks[0].name;
-	          var artist = tracks[0].album.artists[0].name;
+	          song = tracks[0].name;
+	          artist = tracks[0].album.artists[0].name;
 	          var urls = tracks.map(function (item) {
 	            return item.preview_url;
 	          });
-	          context.setState({ cover: cover,
-	            tracklist: tracks,
-	            urls: urls,
-	            songAndArtist: { song: song, artist: artist } }, function () {
-	            context.state.topResults = [];
+	          context.setState({
+	            urls: urls }, function () {
+	            context.props.setCover(cover);
+	            context.props.setTrackListUI(tracks);
+	            context.props.setScreenSong(song);
+	            context.props.setScreenArtist(artist);
 	          });
 	        }
 	      }, function (err) {
@@ -22719,27 +22716,28 @@
 	  }, {
 	    key: 'changeCover',
 	    value: function changeCover(index) {
-	      this.setState({ cover: this.state.tracklist[index].album.images[1].url }, function () {});
+	      this.props.setCover(_store2.default.getState().TrackUIReducer.trackListUI[index].album.images[1].url);
 	    }
 	  }, {
 	    key: 'changeSongAndArtist',
 	    value: function changeSongAndArtist(index) {
-	      var song = this.state.tracklist[index].name;
-	      var artist = this.state.tracklist[index].album.artists[0].name;
-	      this.setState({ songAndArtist: { artist: artist, song: song, trackNumber: index + 1 } });
+	      trackNumber = index;
+	      song = _store2.default.getState().TrackUIReducer.trackListUI[index].name;
+	      artist = _store2.default.getState().TrackUIReducer.trackListUI[trackNumber].album.artists[0].name;
+	      this.props.setScreenSong(song);
+	      this.props.setScreenArtist(artist);
 	    }
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      console.log(_store2.default.getState(), '*************');
 	      return _react2.default.createElement(
 	        'div',
 	        null,
 	        _react2.default.createElement(_Container2.default, { getCurrentTime: this.getCurrentTime,
-	          tracklist: this.state.tracklist,
+	          tracklist: _store2.default.getState().TrackUIReducer.trackListUI,
 	          urls: this.state.urls,
 	          setTrackList: this.setTrackList,
-	          cover: this.state.cover,
+	          cover: _store2.default.getState().TrackUIReducer.cover,
 	          stopSong: this.stopSong,
 	          changeCover: this.changeCover,
 	          getpreResults: this.getpreResults,
@@ -22748,7 +22746,7 @@
 	          topResults: _store2.default.getState().TrackUIReducer.topResults,
 	          partialStatus: this.state.preResults,
 	          userMessage: this.state.userMessage,
-	          songAndArtist: this.state.songAndArtist,
+	          songAndArtist: { song: song, artist: artist, trackNumber: trackNumber },
 	          trackNumber: this.state.trackNumber,
 	          setErrorMessage: this.setErrorMessage,
 	          setInputStatus: this.setValidInput
@@ -22787,13 +22785,13 @@
 	      dispatch((0, _TrackUIActions.setTopResults)(topResults));
 	    },
 	    setScreenSong: function setScreenSong(screenSong) {
-	      dispatch(setCategory(screenSong));
+	      dispatch((0, _TrackUIActions.setScreenSong)(screenSong));
 	    },
 	    setScreenArtist: function setScreenArtist(screenArtist) {
 	      dispatch((0, _TrackUIActions.setScreenArtist)(screenArtist));
 	    },
 	    setTrackListUI: function setTrackListUI(trackListUI) {
-	      dispatch(setCategory(trackListUI));
+	      dispatch((0, _TrackUIActions.setTrackListUI)(trackListUI));
 	    }
 	  };
 	};
@@ -36196,31 +36194,31 @@
 	  if (action.type === 'CHANGE_COVER') {
 	    state = Object.assign({}, state, {
 	      cover: action.payload,
-	      lastValues: [].concat(_toConsumableArray(state.lastValues), [action.payload])
+	      coverLastValues: [].concat(_toConsumableArray(state.coverLastValues), [action.payload])
 	    });
 	  }
 	  if (action.type === 'CHANGE_TOPRESULTS') {
 	    state = Object.assign({}, state, {
 	      topResults: action.payload,
-	      lastValues: [].concat(_toConsumableArray(state.lastValues), [action.payload])
+	      topResultsLastValues: [].concat(_toConsumableArray(state.topResultsLastValues), [action.payload])
 	    });
 	  }
 	  if (action.type === 'CHANGE_SCREENSONG') {
 	    state = Object.assign({}, state, {
 	      screenSong: action.payload,
-	      lastValues: [].concat(_toConsumableArray(state.lastValues), [action.payload])
-	    });
-	  }
-	  if (action.type === 'CHANGE_SCREENARTIST') {
-	    state = Object.assign({}, state, {
-	      screenArtist: action.payload,
-	      lastValues: [].concat(_toConsumableArray(state.lastValues), [action.payload])
+	      screenSongLastValues: [].concat(_toConsumableArray(state.screenSongLastValues), [action.payload])
 	    });
 	  }
 	  if (action.type === 'CHANGE_TRACKLISTUI') {
 	    state = Object.assign({}, state, {
 	      trackListUI: action.payload,
-	      lastValues: [].concat(_toConsumableArray(state.lastValues), [action.payload])
+	      trackListUILastValues: [].concat(_toConsumableArray(state.trackListUILastValues), [action.payload])
+	    });
+	  }
+	  if (action.type === 'CHANGE_SCREENARTIST') {
+	    state = Object.assign({}, state, {
+	      screenArtist: action.payload,
+	      screenArtistLastValues: [].concat(_toConsumableArray(state.screenArtistLastValues), [action.payload])
 	    });
 	  }
 	  return state;
@@ -36237,23 +36235,27 @@
 
 	'use strict';
 	
-	var _initialState;
-	
-	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-	
 	var nums = [1, 2, 3];
 	var review = { 'name': 'a', 'rating': 'c', 'location': 'd', 'category': 'e', 'Review': ['1', '2', '3'] };
 	var reviews = [review, review, review, review, review, review, review];
+	var stock = 'https://static1.squarespace.com/static/585e12abe4fcb5ea1248900e/t/5aab1c5b03ce6430365833ac/1521163366180/Spotify+Square.png?format=300w';
 	
-	var initialState1 = (_initialState = {
-	   cover: '',
+	var initialState1 = {
+	   cover: stock,
 	   topResults: [],
-	   screenSong: ''
-	}, _defineProperty(_initialState, 'screenSong', ''), _defineProperty(_initialState, 'lastValues', []), _initialState);
+	   screenSong: '',
+	   screenArtist: '',
+	   trackListUI: [],
+	   coverLastValues: [],
+	   topResultsLastValues: [],
+	   screenSongLastValues: [],
+	   screenArtistLastValues: [],
+	   trackListUILastValues: []
+	};
 	
 	var initialState2 = {
 	   currentSong: '',
-	   trackList: [],
+	   urls: [],
 	   lastValues: []
 	};
 	
@@ -36327,7 +36329,7 @@
 	
 	function setScreenArtist(screenArtist) {
 	  return {
-	    type: 'CHANGE_SCREEENARTIST',
+	    type: 'CHANGE_SCREENARTIST',
 	    payload: screenArtist
 	  };
 	}

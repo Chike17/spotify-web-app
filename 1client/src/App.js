@@ -7,7 +7,9 @@ import store from './store.js';
 import { setCurrentSong, setTrackList } from './Actions/TrackActions.js';
 import { setCover, setTopResults, setScreenSong, 
          setScreenArtist, setTrackListUI } from './Actions/TrackUIActions.js';
-let stock = 'https://static1.squarespace.com/static/585e12abe4fcb5ea1248900e/t/5aab1c5b03ce6430365833ac/1521163366180/Spotify+Square.png?format=300w';
+let song = 'No Songs in Queue';
+let artist = 'Please Go Into Search Mode';
+let trackNumber = 0;
 
 const spotifyWebApi = new Spotify();
 
@@ -18,7 +20,6 @@ class App extends React.Component {
     this.state = {
       loggedIn: params.access_token ? true : false,
       tracklist: [],
-      cover: stock,
       accessToken: '',
       urls: [],
       trackNumber: '0',
@@ -41,7 +42,7 @@ class App extends React.Component {
     this.getpreResults = this.getpreResults.bind(this);
     this.changeSongAndArtist = this.changeSongAndArtist.bind(this);
     this.setValidInput = this.setValidInput.bind(this);
-    this.setErrorMessage = this.setErrorMessage.bind(this);             
+    this.setErrorMessage = this.setErrorMessage.bind(this);          
   }
   componentDidMount() {
   }
@@ -96,11 +97,6 @@ class App extends React.Component {
               return;
             } 
             context.state.validInput = true;
-            // context.setState({topResults: topResults}, () => {
-            //   if (length === 6) {
-            //     context.state.topResults = [];
-            //   } 
-            // });
             context.props.setTopResults(topResults);
             if (length === 6) {
                context.props.setTopResults([]);
@@ -117,16 +113,17 @@ class App extends React.Component {
             });
             let length = tracks.length;
             let cover = tracks[0].album.images[1].url;
-            let song = tracks[0].name;
-            let artist = tracks[0].album.artists[0].name;
+            song = tracks[0].name;
+            artist = tracks[0].album.artists[0].name;
             let urls = tracks.map((item) => {
               return item.preview_url;
             });
-            context.setState({cover: cover, 
-                              tracklist: tracks, 
-                              urls: urls,
-                              songAndArtist: {song: song, artist: artist}}, () => {
-              context.state.topResults = [];
+            context.setState({ 
+                              urls: urls}, () => {
+              context.props.setCover(cover);
+              context.props.setTrackListUI(tracks);
+              context.props.setScreenSong(song); 
+              context.props.setScreenArtist(artist);
             });
           }
         }, function(err) {
@@ -156,23 +153,23 @@ class App extends React.Component {
     this.spotifyCall(input);
   }
   changeCover(index) {
-    this.setState({cover: this.state.tracklist[index].album.images[1].url}, () => {
-    });
+    this.props.setCover(store.getState().TrackUIReducer.trackListUI[index].album.images[1].url);
   }
   changeSongAndArtist (index) {
-    let song = this.state.tracklist[index].name;
-    let artist = this.state.tracklist[index].album.artists[0].name;
-    this.setState({songAndArtist: {artist: artist, song: song, trackNumber: index + 1}});
+    trackNumber = index;
+    song = store.getState().TrackUIReducer.trackListUI[index].name;
+    artist = store.getState().TrackUIReducer.trackListUI[trackNumber].album.artists[0].name;
+    this.props.setScreenSong(song);
+    this.props.setScreenArtist(artist);
   }
   render() {
-    console.log(store.getState(), '*************')
     return (
       <div> 
         <Container getCurrentTime = {this.getCurrentTime} 
-                   tracklist = {this.state.tracklist} 
+                   tracklist = {store.getState().TrackUIReducer.trackListUI} 
                    urls = {this.state.urls}
                    setTrackList = {this.setTrackList}
-                   cover = {this.state.cover}
+                   cover = {store.getState().TrackUIReducer.cover}
                    stopSong = {this.stopSong}
                    changeCover = {this.changeCover}
                    getpreResults = {this.getpreResults}
@@ -181,7 +178,7 @@ class App extends React.Component {
                    topResults = {store.getState().TrackUIReducer.topResults}
                    partialStatus = {this.state.preResults}
                    userMessage = {this.state.userMessage}
-                   songAndArtist = {this.state.songAndArtist}
+                   songAndArtist = {{song: song, artist: artist, trackNumber: trackNumber}}
                    trackNumber = {this.state.trackNumber}
                    setErrorMessage = {this.setErrorMessage}
                    setInputStatus = {this.setValidInput}
@@ -219,18 +216,19 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(setTopResults(topResults));
     },
     setScreenSong: (screenSong) => {
-      dispatch(setCategory(screenSong));
+      dispatch(setScreenSong(screenSong));
     },
     setScreenArtist: (screenArtist) => {
       dispatch(setScreenArtist(screenArtist));
     },
     setTrackListUI: (trackListUI) => {
-      dispatch(setCategory(trackListUI));
+      dispatch(setTrackListUI(trackListUI));
     }
   };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
+
 
 
 
