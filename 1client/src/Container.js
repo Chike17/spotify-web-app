@@ -45,8 +45,6 @@ class Container extends React.Component {
     });
     this.setState({partials: infoFiltered});
   }
-  componentDidMount() {
-  }
   shouldComponentUpdate(nextProps) {
     let displaySA = this.props.songAndArtist;
     if (displaySA.song.length > 20) {

@@ -7,6 +7,7 @@ import store from './store.js';
 import { setCurrentSong, setTrackList } from './Actions/TrackActions.js';
 import { setCover, setTopResults, setScreenSong, 
          setScreenArtist, setTrackListUI } from './Actions/TrackUIActions.js';
+import _ from 'lodash';
 let song = 'No Songs in Queue';
 let artist = 'Please Go Into Search Mode';
 let trackNumber = 0;
@@ -135,15 +136,13 @@ class App extends React.Component {
     this.setState({userMessage: "INVALID ENTRY!! CAN'T SUBMIT!! TRY AGAIN!!"}, () => {
       this.props.setTopResults([]);
     });
-    return;
   }
   setValidInput(status) {
     this.state.validInput = status;
   }
   getpreResults(input) {
     this.state.preResults = true;
-    this.spotifyCall(input);
-
+    _.debounce(this.spotifyCall(input));
   }
   setTrackList (input) {
     if (!this.state.validInput) {
