@@ -23498,7 +23498,7 @@
 	      artist: 'Please Go Into Search Mode',
 	      by: '',
 	      makeContext: null,
-	      trackNumber: '1',
+	      trackNumber: 0,
 	      endTime: '0:00',
 	      partials: [{ song: '', artist: '' }, { song: '', artist: '' }, { song: '', artist: '' }, { song: '', artist: '' }, { song: '', artist: '' }] };
 	
@@ -23535,15 +23535,17 @@
 	      if (displaySA.song.artist > 20) {
 	        displaySA['artist'] = displaySA.artist.substring(0, 12) + '...';
 	      }
-	      if (!displaySA.trackNumber) {
-	        this.setState({ song: displaySA.song,
-	          artist: displaySA.artist,
-	          trackNumber: '1' });
-	      } else {
-	        this.setState({ song: displaySA.song,
-	          artist: displaySA.artist,
-	          trackNumber: displaySA.trackNumber });
-	      }
+	      // if (!displaySA.trackNumber) {
+	      //   this.setState({song: displaySA.song, 
+	      //     artist: displaySA.artist, 
+	      //     trackNumber: '1'});
+	      // } 
+	
+	      else {
+	          this.setState({ song: displaySA.song,
+	            artist: displaySA.artist,
+	            trackNumber: displaySA.trackNumber });
+	        }
 	      if (this.props.urls.length > 1) {
 	        this.setState({ endTime: '0:30' });
 	      }
@@ -23642,7 +23644,7 @@
 	                'h4',
 	                null,
 	                ' ',
-	                this.state.trackNumber + '. ',
+	                this.state.trackNumber + 1 + '. ',
 	                ' ',
 	                this.state.song,
 	                ' '

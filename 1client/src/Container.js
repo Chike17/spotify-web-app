@@ -21,7 +21,7 @@ class Container extends React.Component {
                   artist: 'Please Go Into Search Mode',
                   by: '',
                   makeContext: null,
-                  trackNumber: '1',
+                  trackNumber: 0,
                   endTime: '0:00',
                   partials: [{song: '', artist: ''},
                              {song: '', artist: ''},
@@ -55,11 +55,13 @@ class Container extends React.Component {
     if (displaySA.song.artist > 20) {
       displaySA['artist'] = displaySA.artist.substring(0, 12) + '...';
     }
-    if (!displaySA.trackNumber) {
-      this.setState({song: displaySA.song, 
-        artist: displaySA.artist, 
-        trackNumber: '1'});
-    } else {
+    // if (!displaySA.trackNumber) {
+    //   this.setState({song: displaySA.song, 
+    //     artist: displaySA.artist, 
+    //     trackNumber: '1'});
+    // } 
+
+    else {
       this.setState({song: displaySA.song, 
         artist: displaySA.artist, 
         trackNumber: displaySA.trackNumber}); 
@@ -112,7 +114,7 @@ class Container extends React.Component {
                 container = {this}
           />
               <div className = {styles.songArtistContainer} >  
-                <div className = {styles.song} ><h4> {this.state.trackNumber + '. '} {this.state.song} </h4> </div>
+                <div className = {styles.song} ><h4> {this.state.trackNumber + 1 + '. '} {this.state.song} </h4> </div>
                 <div className = {styles.artist} ><h5> {this.state.artist} </h5></div>
               </div>
               <div className = {styles.progresscontainer}> 
