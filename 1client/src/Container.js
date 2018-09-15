@@ -54,14 +54,7 @@ class Container extends React.Component {
     }
     if (displaySA.song.artist > 20) {
       displaySA['artist'] = displaySA.artist.substring(0, 12) + '...';
-    }
-    // if (!displaySA.trackNumber) {
-    //   this.setState({song: displaySA.song, 
-    //     artist: displaySA.artist, 
-    //     trackNumber: '1'});
-    // } 
-
-    else {
+    } else {
       this.setState({song: displaySA.song, 
         artist: displaySA.artist, 
         trackNumber: displaySA.trackNumber}); 

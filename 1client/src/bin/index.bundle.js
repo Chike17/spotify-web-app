@@ -23534,18 +23534,11 @@
 	      }
 	      if (displaySA.song.artist > 20) {
 	        displaySA['artist'] = displaySA.artist.substring(0, 12) + '...';
+	      } else {
+	        this.setState({ song: displaySA.song,
+	          artist: displaySA.artist,
+	          trackNumber: displaySA.trackNumber });
 	      }
-	      // if (!displaySA.trackNumber) {
-	      //   this.setState({song: displaySA.song, 
-	      //     artist: displaySA.artist, 
-	      //     trackNumber: '1'});
-	      // } 
-	
-	      else {
-	          this.setState({ song: displaySA.song,
-	            artist: displaySA.artist,
-	            trackNumber: displaySA.trackNumber });
-	        }
 	      if (this.props.urls.length > 1) {
 	        this.setState({ endTime: '0:30' });
 	      }
