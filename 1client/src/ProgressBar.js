@@ -56,17 +56,20 @@ class ProgressBar extends React.Component {
     }
   }
   fetch() {
-    let context = this;
+    const context = this;
     if (!this.state.realSubmit) {
       return;
     }
     var xhr = new XMLHttpRequest();
-    xhr.open('GET', context.state.urls[context.state.trackNumber], true);
-    xhr.responseType = 'arraybuffer';
-    xhr.onload = function () {
-      this.decode(xhr.response);
-    }.bind(this);
-    xhr.send();
+    const url = context.state.urls[context.state.trackNumber];
+    if (url) {
+      xhr.open('GET', url, true);
+      xhr.responseType = 'arraybuffer';
+      xhr.onload = function () {
+        this.decode(xhr.response);
+      }.bind(this);
+      xhr.send();
+    }
   }
   decode(arrayBuffer) {
     this.ac
@@ -133,13 +136,11 @@ class ProgressBar extends React.Component {
   }
 
   onDrag(e) {
-    let width;
-    let position;
     if (!this.dragging) {
       return;
     }
-    width = 300;
-    position = this.startLeft + (e.pageX - this.startX);
+    let width = 300;
+    let position = this.startLeft + (e.pageX - this.startX);
     position = Math.max(Math.min(width, position), 0);
     this.setState({ scrubberStyle: { left: position } });
   }
@@ -149,9 +150,6 @@ class ProgressBar extends React.Component {
     this.startLeft = parseInt(this.state.scrubberStyle.left || 0, 10);
   }
   onMouseUp() {
-    let width;
-    let left;
-    let time;
     if (this.dragging) {
       let width = 300;
       let left = parseInt(this.state.scrubberStyle.left || 0, 10);
@@ -230,7 +228,7 @@ class ProgressBar extends React.Component {
       this.props.changeSongAndArtist(this.state.trackNumber);
       this.props.onStartPause();
     }
-    let context = this;
+    const context = this;
     let progress = this.updatePosition() / context.buffer.duration;
     this.state.progress = progress;
     this.passProgress(progress);

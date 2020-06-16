@@ -30209,12 +30209,15 @@
 	        return;
 	      }
 	      var xhr = new XMLHttpRequest();
-	      xhr.open('GET', context.state.urls[context.state.trackNumber], true);
-	      xhr.responseType = 'arraybuffer';
-	      xhr.onload = function () {
-	        this.decode(xhr.response);
-	      }.bind(this);
-	      xhr.send();
+	      var url = context.state.urls[context.state.trackNumber];
+	      if (url) {
+	        xhr.open('GET', url, true);
+	        xhr.responseType = 'arraybuffer';
+	        xhr.onload = function () {
+	          this.decode(xhr.response);
+	        }.bind(this);
+	        xhr.send();
+	      }
 	    }
 	  }, {
 	    key: 'decode',
@@ -30290,13 +30293,11 @@
 	  }, {
 	    key: 'onDrag',
 	    value: function onDrag(e) {
-	      var width = void 0;
-	      var position = void 0;
 	      if (!this.dragging) {
 	        return;
 	      }
-	      width = 300;
-	      position = this.startLeft + (e.pageX - this.startX);
+	      var width = 300;
+	      var position = this.startLeft + (e.pageX - this.startX);
 	      position = Math.max(Math.min(width, position), 0);
 	      this.setState({ scrubberStyle: { left: position } });
 	    }
@@ -30310,14 +30311,11 @@
 	  }, {
 	    key: 'onMouseUp',
 	    value: function onMouseUp() {
-	      var width = void 0;
-	      var left = void 0;
-	      var time = void 0;
 	      if (this.dragging) {
-	        var _width = 300;
-	        var _left = parseInt(this.state.scrubberStyle.left || 0, 10);
-	        var _time = _left / _width * this.buffer.duration;
-	        this.seek(_time);
+	        var width = 300;
+	        var left = parseInt(this.state.scrubberStyle.left || 0, 10);
+	        var time = left / width * this.buffer.duration;
+	        this.seek(time);
 	        this.dragging = false;
 	      }
 	    }
