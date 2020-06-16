@@ -3,7 +3,7 @@ import styles from './styles.css';
 let url = 'http://static.kevvv.in/sounds/callmemaybe.mp3';
 
 class ProgressBar extends React.Component {
-  constructor (props) {
+  constructor(props) {
     super(props);
     this.url = url;
     this.state = {
@@ -11,21 +11,21 @@ class ProgressBar extends React.Component {
       trackNumber: 0,
       progress: 0,
       urlsTracker: [],
-      realSubmit: false
+      realSubmit: false,
     };
-    let container = this.props.container;
-    container.state.playPrev = this.playPreviousSong.bind(this);
-    container.state.playNext = this.playNextSong.bind(this);
-    container.state.toggle = this.toggle.bind(this);
-    container.state.clickEvent = this.playOnClick.bind(this);
-    container.state.makeContext = this.makeContext.bind(this);
+    const container = this.props.container;
+    container.playPrev = this.playPreviousSong.bind(this);
+    container.playNext = this.playNextSong.bind(this);
+    container.toggle = this.toggle.bind(this);
+    container.clickEvent = this.playOnClick.bind(this);
+    container.makeContext = this.makeContext.bind(this);
   }
   componentDidMount() {
     window.addEventListener('mousemove', this.onDrag.bind(this));
     window.addEventListener('mouseup', this.onMouseUp.bind(this));
   }
   makeContext() {
-    this.ac = new ( window.AudioContext || webkitAudioContext )();
+    this.ac = new (window.AudioContext || webkitAudioContext)();
   }
   componentWillReceiveProps(nextProps) {
     let context = this;
@@ -39,17 +39,23 @@ class ProgressBar extends React.Component {
     }
     if (!this.props.partialStatus) {
       this.makeContext();
-      this.state.realSubmit = true; 
+      this.state.realSubmit = true;
       this.pause();
       this.position = 0;
       this.state.trackNumber = 0;
       this.state.urlsTracker.push(nextProps.urls);
-      this.setState({url: nextProps.urls[context.state.trackNumber], urls: nextProps.urls}, () => {
-        context.fetch();
-      });
+      this.setState(
+        {
+          url: nextProps.urls[context.state.trackNumber],
+          urls: nextProps.urls,
+        },
+        () => {
+          context.fetch();
+        }
+      );
     }
   }
-  fetch () {
+  fetch() {
     let context = this;
     if (!this.state.realSubmit) {
       return;
@@ -57,98 +63,104 @@ class ProgressBar extends React.Component {
     var xhr = new XMLHttpRequest();
     xhr.open('GET', context.state.urls[context.state.trackNumber], true);
     xhr.responseType = 'arraybuffer';
-    xhr.onload = function() {
+    xhr.onload = function () {
       this.decode(xhr.response);
     }.bind(this);
     xhr.send();
   }
-  decode ( arrayBuffer ) {
-    this.ac.decodeAudioData(arrayBuffer, function( audioBuffer ) {
-      this.buffer = audioBuffer;
-      this.draw();
-      this.play();
-    }.bind(this)).catch((err) => {
-      console.log(err, 'decode error!!!');
-      this.props.setErrorMessage();
-    });
+  decode(arrayBuffer) {
+    this.ac
+      .decodeAudioData(
+        arrayBuffer,
+        function (audioBuffer) {
+          this.buffer = audioBuffer;
+          this.draw();
+          this.play();
+        }.bind(this)
+      )
+      .catch((err) => {
+        console.log(err, 'decode error!!!');
+        this.props.setErrorMessage();
+      });
   }
-  connect () {
-    if ( this.playing ) {
+  connect() {
+    if (this.playing) {
       this.pause();
     }
     this.source = this.ac.createBufferSource();
     this.source.buffer = this.buffer;
     this.source.connect(this.ac.destination);
   }
-  play ( position ) {
+  play(position) {
     this.connect();
-    this.position = typeof position === 'number' ? position : this.position || 0;
-    this.startTime = this.ac.currentTime - ( this.position || 0 );
+    this.position =
+      typeof position === 'number' ? position : this.position || 0;
+    this.startTime = this.ac.currentTime - (this.position || 0);
     this.source.start(this.ac.currentTime, this.position);
     this.playing = true;
   }
-  pause () {
-    if ( this.source ) {
+  pause() {
+    if (this.source) {
       this.source.stop(0);
       this.source = null;
       this.position = this.ac.currentTime - this.startTime;
       this.playing = false;
     }
   }
-  seek ( time ) {
-    if ( this.playing ) {
+  seek(time) {
+    if (this.playing) {
       this.play(time);
     } else {
       this.position = time;
     }
-    
   }
-  updatePosition () {
-    this.position = this.playing ? 
-    this.ac.currentTime - this.startTime : this.position;
-    if ( this.position >= this.buffer.duration ) {
+  updatePosition() {
+    this.position = this.playing
+      ? this.ac.currentTime - this.startTime
+      : this.position;
+    if (this.position >= this.buffer.duration) {
       this.position = this.buffer.duration;
       this.pause();
     }
     return this.position;
   }
-  toggle () {
-    if ( !this.playing ) {
+  toggle() {
+    if (!this.playing) {
       this.play();
     } else {
       this.pause();
     }
   }
 
-  onDrag ( e ) {
+  onDrag(e) {
     let width;
     let position;
-    if ( !this.dragging ) {
+    if (!this.dragging) {
       return;
     }
     width = 300;
-    position = this.startLeft + ( e.pageX - this.startX );
+    position = this.startLeft + (e.pageX - this.startX);
     position = Math.max(Math.min(width, position), 0);
-    this.setState({scrubberStyle: {left: position}});
+    this.setState({ scrubberStyle: { left: position } });
   }
-  onMouseDown ( e ) {
+  onMouseDown(e) {
     this.dragging = true;
     this.startX = e.pageX;
     this.startLeft = parseInt(this.state.scrubberStyle.left || 0, 10);
   }
-  onMouseUp () {
+  onMouseUp() {
     let width;
     let left;
     let time;
-    if ( this.dragging ) {
+    if (this.dragging) {
       let width = 300;
       let left = parseInt(this.state.scrubberStyle.left || 0, 10);
-      let time = left / width * this.buffer.duration;
+      let time = (left / width) * this.buffer.duration;
       this.seek(time);
       this.dragging = false;
     }
   }
-  playNextSong () {
+  playNextSong() {
     this.pause();
     this.hitNext = true;
     this.state.trackNumber++;
@@ -191,7 +203,7 @@ class ProgressBar extends React.Component {
     this.fetch();
     return;
   }
-   passProgress(progress) {
+  passProgress(progress) {
     progress = progress * 30;
     progress = Math.round(progress, 1);
     progress = JSON.stringify(progress);
@@ -200,7 +212,7 @@ class ProgressBar extends React.Component {
     }
     this.props.updateProgress(progress);
   }
-  draw () {
+  draw() {
     if (this.buffer.duration === this.position) {
       this.state.trackNumber++;
       this.position = 0;
@@ -219,28 +231,27 @@ class ProgressBar extends React.Component {
       this.props.onStartPause();
     }
     let context = this;
-    let progress = ( this.updatePosition() / context.buffer.duration );
+    let progress = this.updatePosition() / context.buffer.duration;
     this.state.progress = progress;
     this.passProgress(progress);
     let width = 300;
-    context.setState({progressStyle: {width: this.state.progress * width + 'px'} }, () => {
-    });
+    context.setState(
+      { progressStyle: { width: this.state.progress * width + 'px' } },
+      () => {}
+    );
     requestAnimationFrame(context.draw.bind(context));
   }
-  render () {
+  render() {
     return (
-     <div > 
-        <div className= {styles.track} >
-          <div className= {styles.progress} style = {this.state.progressStyle} > </div>
+      <div>
+        <div className={styles.track}>
+          <div className={styles.progress} style={this.state.progressStyle}>
+            {' '}
+          </div>
         </div>
-     </div>
+      </div>
     );
   }
 }
 
-module.exports = ProgressBar;   
-   
-   
-
-
-
+module.exports = ProgressBar;

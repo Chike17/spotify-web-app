@@ -12,6 +12,7 @@ class Container extends React.Component {
       playNext: '',
       toggle: '',
       clickEvent: '',
+      makeContext: '',
       onStartPlay: null,
       onStartPause: null,
       setPause: null,
@@ -24,17 +25,11 @@ class Container extends React.Component {
       makeContext: null,
       trackNumber: 0,
       endTime: '0:00',
-      partials: [
-        { song: '', artist: '' },
-        { song: '', artist: '' },
-        { song: '', artist: '' },
-        { song: '', artist: '' },
-        { song: '', artist: '' },
-      ],
+      partials: [{ song: '', artist: '' }],
     };
   }
   componentWillReceiveProps(nextProps) {
-    let context = this;
+    const context = this;
     let infoFiltered = nextProps.topResults.map((info) => {
       if (info['song'].length > 20) {
         let song = info['song'].substring(0, 17) + '...';
@@ -111,13 +106,14 @@ class Container extends React.Component {
             </div>
             <div className={styles.bodyPlayer}> </div>
           </div>
+
           <Table
             tracklist={this.props.tracklist}
             stopSong={this.props.stopSong}
-            playPrev={this.state.playPrev}
-            playNext={this.state.playNext}
-            clickE={this.state.clickEvent}
-            toggle={this.state.toggle}
+            playPrev={this.playPrev}
+            playNext={this.playNext}
+            clickE={this.clickEvent}
+            toggle={this.toggle}
             container={this}
           />
           <div className={styles.songArtistContainer}>
@@ -143,7 +139,7 @@ class Container extends React.Component {
                 changeSongAndArtist={this.props.changeSongAndArtist}
                 onStartPlay={this.state.onStartPlay}
                 onStartPause={this.state.onStartPause}
-                makeContext={this.state.makeContext}
+                makeContext={this.makeContext}
                 setInputStatus={this.props.setInputStatus}
                 setErrorMessage={this.props.setErrorMessage}
               />

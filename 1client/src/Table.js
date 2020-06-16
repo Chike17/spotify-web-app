@@ -62,33 +62,37 @@ class Table extends React.Component {
       <div>
         <table className={styles.player}>
           <tbody>
-            <td style={playerStyle} key="key1">
-              {' '}
-              <FontAwesome
-                name="backward"
-                onClick={() => {
-                  this.playP();
-                }}
-              />{' '}
-            </td>
-            <td style={playerStyle} key="key2">
-              {' '}
-              <FontAwesome
-                name={this.state.toggle}
-                onClick={() => {
-                  this.toggleButton();
-                }}
-              />{' '}
-            </td>
-            <td style={playerStyle} key="key3">
-              {' '}
-              <FontAwesome
-                name="forward"
-                onClick={() => {
-                  this.playN();
-                }}
-              />{' '}
-            </td>
+            <tr>
+              <td style={playerStyle} key="key1">
+                {' '}
+                <FontAwesome
+                  name="backward"
+                  onClick={() => {
+                    this.playP();
+                  }}
+                />{' '}
+              </td>
+
+              <td style={playerStyle} key="key2">
+                {' '}
+                <FontAwesome
+                  name={this.state.toggle}
+                  onClick={() => {
+                    this.toggleButton();
+                  }}
+                />{' '}
+              </td>
+
+              <td style={playerStyle} key="key3">
+                {' '}
+                <FontAwesome
+                  name="forward"
+                  onClick={() => {
+                    this.playN();
+                  }}
+                />{' '}
+              </td>
+            </tr>
           </tbody>
         </table>
         <div

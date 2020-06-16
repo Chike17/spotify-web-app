@@ -51,9 +51,8 @@ class App extends React.Component {
     this.changeSongAndArtist = this.changeSongAndArtist.bind(this);
     this.setValidInput = this.setValidInput.bind(this);
     this.setErrorMessage = this.setErrorMessage.bind(this);
-    this.spotifyCall = this.spotifyCall.bind(this);
+    this.spotifyCall = _.debounce(this.spotifyCall, 5);
   }
-  componentDidMount() {}
   getHashParams() {
     let hashParams = {};
     let e;
@@ -165,7 +164,7 @@ class App extends React.Component {
   }
   getpreResults(input) {
     this.state.preResults = true;
-    _.debounce(this.spotifyCall(input), 500);
+    this.spotifyCall(input);
   }
   setTrackList(input) {
     if (!this.state.validInput) {

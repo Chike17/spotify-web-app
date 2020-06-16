@@ -22586,14 +22586,11 @@
 	    _this.changeSongAndArtist = _this.changeSongAndArtist.bind(_this);
 	    _this.setValidInput = _this.setValidInput.bind(_this);
 	    _this.setErrorMessage = _this.setErrorMessage.bind(_this);
-	    _this.spotifyCall = _this.spotifyCall.bind(_this);
+	    _this.spotifyCall = _lodash2.default.debounce(_this.spotifyCall, 5);
 	    return _this;
 	  }
 	
 	  _createClass(App, [{
-	    key: 'componentDidMount',
-	    value: function componentDidMount() {}
-	  }, {
 	    key: 'getHashParams',
 	    value: function getHashParams() {
 	      var hashParams = {};
@@ -22708,7 +22705,7 @@
 	    key: 'getpreResults',
 	    value: function getpreResults(input) {
 	      this.state.preResults = true;
-	      _lodash2.default.debounce(this.spotifyCall(input), 500);
+	      this.spotifyCall(input);
 	    }
 	  }, {
 	    key: 'setTrackList',
@@ -22842,6 +22839,8 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -22852,15 +22851,18 @@
 	  _inherits(Container, _React$Component);
 	
 	  function Container(props) {
+	    var _this$state;
+	
 	    _classCallCheck(this, Container);
 	
 	    var _this = _possibleConstructorReturn(this, (Container.__proto__ || Object.getPrototypeOf(Container)).call(this, props));
 	
-	    _this.state = {
+	    _this.state = (_this$state = {
 	      playPrev: '',
 	      playNext: '',
 	      toggle: '',
 	      clickEvent: '',
+	      makeContext: '',
 	      onStartPlay: null,
 	      onStartPause: null,
 	      setPause: null,
@@ -22869,12 +22871,8 @@
 	      appStarted: false,
 	      song: 'No Songs in Queue',
 	      artist: 'Please Go Into Search Mode',
-	      by: '',
-	      makeContext: null,
-	      trackNumber: 0,
-	      endTime: '0:00',
-	      partials: [{ song: '', artist: '' }, { song: '', artist: '' }, { song: '', artist: '' }, { song: '', artist: '' }, { song: '', artist: '' }]
-	    };
+	      by: ''
+	    }, _defineProperty(_this$state, 'makeContext', null), _defineProperty(_this$state, 'trackNumber', 0), _defineProperty(_this$state, 'endTime', '0:00'), _defineProperty(_this$state, 'partials', [{ song: '', artist: '' }]), _this$state);
 	    return _this;
 	  }
 	
@@ -22996,10 +22994,10 @@
 	          _react2.default.createElement(_Table2.default, {
 	            tracklist: this.props.tracklist,
 	            stopSong: this.props.stopSong,
-	            playPrev: this.state.playPrev,
-	            playNext: this.state.playNext,
-	            clickE: this.state.clickEvent,
-	            toggle: this.state.toggle,
+	            playPrev: this.playPrev,
+	            playNext: this.playNext,
+	            clickE: this.clickEvent,
+	            toggle: this.toggle,
 	            container: this
 	          }),
 	          _react2.default.createElement(
@@ -23053,7 +23051,7 @@
 	                changeSongAndArtist: this.props.changeSongAndArtist,
 	                onStartPlay: this.state.onStartPlay,
 	                onStartPause: this.state.onStartPause,
-	                makeContext: this.state.makeContext,
+	                makeContext: this.makeContext,
 	                setInputStatus: this.props.setInputStatus,
 	                setErrorMessage: this.props.setErrorMessage
 	              })
@@ -23842,40 +23840,44 @@
 	            'tbody',
 	            null,
 	            _react2.default.createElement(
-	              'td',
-	              { style: playerStyle, key: 'key1' },
-	              ' ',
-	              _react2.default.createElement(_reactFontawesome2.default, {
-	                name: 'backward',
-	                onClick: function onClick() {
-	                  _this2.playP();
-	                }
-	              }),
-	              ' '
-	            ),
-	            _react2.default.createElement(
-	              'td',
-	              { style: playerStyle, key: 'key2' },
-	              ' ',
-	              _react2.default.createElement(_reactFontawesome2.default, {
-	                name: this.state.toggle,
-	                onClick: function onClick() {
-	                  _this2.toggleButton();
-	                }
-	              }),
-	              ' '
-	            ),
-	            _react2.default.createElement(
-	              'td',
-	              { style: playerStyle, key: 'key3' },
-	              ' ',
-	              _react2.default.createElement(_reactFontawesome2.default, {
-	                name: 'forward',
-	                onClick: function onClick() {
-	                  _this2.playN();
-	                }
-	              }),
-	              ' '
+	              'tr',
+	              null,
+	              _react2.default.createElement(
+	                'td',
+	                { style: playerStyle, key: 'key1' },
+	                ' ',
+	                _react2.default.createElement(_reactFontawesome2.default, {
+	                  name: 'backward',
+	                  onClick: function onClick() {
+	                    _this2.playP();
+	                  }
+	                }),
+	                ' '
+	              ),
+	              _react2.default.createElement(
+	                'td',
+	                { style: playerStyle, key: 'key2' },
+	                ' ',
+	                _react2.default.createElement(_reactFontawesome2.default, {
+	                  name: this.state.toggle,
+	                  onClick: function onClick() {
+	                    _this2.toggleButton();
+	                  }
+	                }),
+	                ' '
+	              ),
+	              _react2.default.createElement(
+	                'td',
+	                { style: playerStyle, key: 'key3' },
+	                ' ',
+	                _react2.default.createElement(_reactFontawesome2.default, {
+	                  name: 'forward',
+	                  onClick: function onClick() {
+	                    _this2.playN();
+	                  }
+	                }),
+	                ' '
+	              )
 	            )
 	          )
 	        ),
@@ -30153,11 +30155,11 @@
 	      realSubmit: false
 	    };
 	    var container = _this.props.container;
-	    container.state.playPrev = _this.playPreviousSong.bind(_this);
-	    container.state.playNext = _this.playNextSong.bind(_this);
-	    container.state.toggle = _this.toggle.bind(_this);
-	    container.state.clickEvent = _this.playOnClick.bind(_this);
-	    container.state.makeContext = _this.makeContext.bind(_this);
+	    container.playPrev = _this.playPreviousSong.bind(_this);
+	    container.playNext = _this.playNextSong.bind(_this);
+	    container.toggle = _this.toggle.bind(_this);
+	    container.clickEvent = _this.playOnClick.bind(_this);
+	    container.makeContext = _this.makeContext.bind(_this);
 	    return _this;
 	  }
 	
@@ -30191,7 +30193,10 @@
 	        this.position = 0;
 	        this.state.trackNumber = 0;
 	        this.state.urlsTracker.push(nextProps.urls);
-	        this.setState({ url: nextProps.urls[context.state.trackNumber], urls: nextProps.urls }, function () {
+	        this.setState({
+	          url: nextProps.urls[context.state.trackNumber],
+	          urls: nextProps.urls
+	        }, function () {
 	          context.fetch();
 	        });
 	      }
