@@ -53,10 +53,10 @@ class App extends React.Component {
     this.spotifyCall = _.debounce(this.spotifyCall, 5);
   }
   getHashParams() {
-    let hashParams = {};
+    const hashParams = {};
+    const r = /([^&;=]+)=?([^&;]*)/g;
+    const q = window.location.hash.substring(1);
     let e;
-    let r = /([^&;=]+)=?([^&;]*)/g;
-    let q = window.location.hash.substring(1);
     while ((e = r.exec(q))) {
       hashParams[e[1]] = decodeURIComponent(e[2]);
     }

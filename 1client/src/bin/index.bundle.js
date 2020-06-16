@@ -22592,9 +22592,9 @@
 	    key: 'getHashParams',
 	    value: function getHashParams() {
 	      var hashParams = {};
-	      var e = void 0;
 	      var r = /([^&;=]+)=?([^&;]*)/g;
 	      var q = window.location.hash.substring(1);
+	      var e = void 0;
 	      while (e = r.exec(q)) {
 	        hashParams[e[1]] = decodeURIComponent(e[2]);
 	      }
