@@ -109,7 +109,7 @@ class App extends React.Component {
             context.setErrorMessage();
             return;
           }
-          context.state.validInput = true;
+          context.setState({ validInput: true });
           context.props.setTopResults(topResults);
           if (length === 6) {
             context.props.setTopResults([]);
@@ -153,20 +153,23 @@ class App extends React.Component {
     );
   }
   setErrorMessage() {
-    this.state.validInput = false;
     this.setState(
-      { userMessage: "INVALID ENTRY!! CAN'T SUBMIT!! TRY AGAIN!!" },
+      {
+        userMessage: "INVALID ENTRY!! CAN'T SUBMIT!! TRY AGAIN!!",
+        validInput: false,
+      },
       () => {
         this.props.setTopResults([]);
       }
     );
   }
   setValidInput(status) {
-    this.state.validInput = status;
+    this.setState({ validInput: status });
   }
   getpreResults(input) {
-    this.state.preResults = true;
-    this.spotifyCall(input);
+    this.setState({ preResults: true }, () => {
+      this.spotifyCall(input);
+    });
   }
   setTrackList(input) {
     if (!this.state.validInput) {

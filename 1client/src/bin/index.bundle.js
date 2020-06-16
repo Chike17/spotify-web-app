@@ -22649,7 +22649,7 @@
 	            context.setErrorMessage();
 	            return;
 	          }
-	          context.state.validInput = true;
+	          context.setState({ validInput: true });
 	          context.props.setTopResults(topResults);
 	          if (length === 6) {
 	            context.props.setTopResults([]);
@@ -22692,21 +22692,26 @@
 	    value: function setErrorMessage() {
 	      var _this3 = this;
 	
-	      this.state.validInput = false;
-	      this.setState({ userMessage: "INVALID ENTRY!! CAN'T SUBMIT!! TRY AGAIN!!" }, function () {
+	      this.setState({
+	        userMessage: "INVALID ENTRY!! CAN'T SUBMIT!! TRY AGAIN!!",
+	        validInput: false
+	      }, function () {
 	        _this3.props.setTopResults([]);
 	      });
 	    }
 	  }, {
 	    key: 'setValidInput',
 	    value: function setValidInput(status) {
-	      this.state.validInput = status;
+	      this.setState({ validInput: status });
 	    }
 	  }, {
 	    key: 'getpreResults',
 	    value: function getpreResults(input) {
-	      this.state.preResults = true;
-	      this.spotifyCall(input);
+	      var _this4 = this;
+	
+	      this.setState({ preResults: true }, function () {
+	        _this4.spotifyCall(input);
+	      });
 	    }
 	  }, {
 	    key: 'setTrackList',
@@ -22725,7 +22730,7 @@
 	  }, {
 	    key: 'changeSongAndArtist',
 	    value: function changeSongAndArtist(index) {
-	      var _this4 = this;
+	      var _this5 = this;
 	
 	      var trackNumber = index;
 	      var song = _store2.default.getState().TrackUIReducer.trackListUI[index].name;
@@ -22735,8 +22740,8 @@
 	        artist: artist,
 	        trackNumber: trackNumber
 	      }, function () {
-	        _this4.props.setScreenSong(song);
-	        _this4.props.setScreenArtist(artist);
+	        _this5.props.setScreenSong(song);
+	        _this5.props.setScreenArtist(artist);
 	      });
 	    }
 	  }, {
