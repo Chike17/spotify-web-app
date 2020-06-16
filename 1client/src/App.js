@@ -94,7 +94,6 @@ class App extends React.Component {
           userMessage: 'TOP RESULTS | PRESS ENTER TO SUBMIT',
         });
         if (context.state.preResults) {
-          context.preResults = false;
           const items = response.tracks.items;
           const length = items.length;
           let topResults = items.splice(0, 5);

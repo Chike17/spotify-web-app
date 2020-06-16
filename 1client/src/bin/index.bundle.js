@@ -22636,7 +22636,6 @@
 	          userMessage: 'TOP RESULTS | PRESS ENTER TO SUBMIT'
 	        });
 	        if (context.state.preResults) {
-	          context.preResults = false;
 	          var items = response.tracks.items;
 	          var length = items.length;
 	          var topResults = items.splice(0, 5);
