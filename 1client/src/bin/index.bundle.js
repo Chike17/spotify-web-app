@@ -30143,6 +30143,8 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -30201,12 +30203,12 @@
 	      }
 	      if (!this.props.partialStatus) {
 	        this.makeContext();
-	        this.state.realSubmit = true;
 	        this.pause();
 	        this.position = 0;
-	        this.state.trackNumber = 0;
-	        this.state.urlsTracker.push(nextProps.urls);
 	        this.setState({
+	          realSubmit: true,
+	          trackNumber: 0,
+	          urlsTracker: [].concat(_toConsumableArray(this.state.urlsTracker), [nextProps.urls]),
 	          url: nextProps.urls[context.state.trackNumber],
 	          urls: nextProps.urls
 	        }, function () {
@@ -30337,7 +30339,9 @@
 	    value: function playNextSong() {
 	      this.pause();
 	      this.hitNext = true;
-	      this.state.trackNumber++;
+	      var newTrackNumber = this.state.trackNumber;
+	      newTrackNumber++;
+	      this.setState({ trackNumber: newTrackNumber });
 	      if (this.state.trackNumber === this.state.urls.length) {
 	        this.pause();
 	        this.state.trackNumber = 0;
@@ -30354,7 +30358,9 @@
 	    value: function playPreviousSong() {
 	      this.pause();
 	      this.hitPrevious = true;
-	      this.state.trackNumber--;
+	      var newTrackNumber = this.state.trackNumber;
+	      newTrackNumber--;
+	      this.setState({ trackNumber: newTrackNumber });
 	      this.position = 0;
 	      if (this.state.trackNumber < 0) {
 	        this.pause();
@@ -30373,7 +30379,7 @@
 	    value: function playOnClick(index) {
 	      index = index - 1;
 	      this.pause();
-	      this.state.trackNumber = index;
+	      this.setState({ trackNumber: index });
 	      this.position = 0;
 	      this.props.changeCover(index);
 	      this.props.changeSongAndArtist(index);
@@ -30395,22 +30401,28 @@
 	  }, {
 	    key: 'draw',
 	    value: function draw() {
+	      var _this3 = this;
+	
 	      if (this.buffer.duration === this.position) {
-	        this.state.trackNumber++;
-	        this.position = 0;
-	        this.fetch();
-	        this.props.changeCover(this.state.trackNumber);
-	        this.props.changeSongAndArtist(this.state.trackNumber);
-	        this.props.onStartPause();
-	        return;
+	        var newTrackNumber = this.state.trackNumber;
+	        newTrackNumber++;
+	        this.setState({ trackNumber: newTrackNumber }, function () {
+	          _this3.position = 0;
+	          _this3.fetch();
+	          _this3.props.changeCover(_this3.state.trackNumber);
+	          _this3.props.changeSongAndArtist(_this3.state.trackNumber);
+	          _this3.props.onStartPause();
+	          return;
+	        });
 	      }
 	      if (this.state.trackNumber === this.state.urls.length) {
-	        this.state.trackNumber = 0;
-	        this.position = 0;
-	        this.fetch();
-	        this.props.changeCover(this.state.trackNumber);
-	        this.props.changeSongAndArtist(this.state.trackNumber);
-	        this.props.onStartPause();
+	        this.setState({ trackNumber: 0 }, function () {
+	          _this3.position = 0;
+	          _this3.fetch();
+	          _this3.props.changeCover(_this3.state.trackNumber);
+	          _this3.props.changeSongAndArtist(_this3.state.trackNumber);
+	          _this3.props.onStartPause();
+	        });
 	      }
 	      var context = this;
 	      var progress = this.updatePosition() / context.buffer.duration;

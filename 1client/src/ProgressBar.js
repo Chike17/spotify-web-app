@@ -39,13 +39,13 @@ class ProgressBar extends React.Component {
     }
     if (!this.props.partialStatus) {
       this.makeContext();
-      this.state.realSubmit = true;
       this.pause();
       this.position = 0;
-      this.state.trackNumber = 0;
-      this.state.urlsTracker.push(nextProps.urls);
       this.setState(
         {
+          realSubmit: true,
+          trackNumber: 0,
+          urlsTracker: [...this.state.urlsTracker, nextProps.urls],
           url: nextProps.urls[context.state.trackNumber],
           urls: nextProps.urls,
         },
@@ -161,7 +161,9 @@ class ProgressBar extends React.Component {
   playNextSong() {
     this.pause();
     this.hitNext = true;
-    this.state.trackNumber++;
+    let newTrackNumber = this.state.trackNumber;
+    newTrackNumber++;
+    this.setState({ trackNumber: newTrackNumber });
     if (this.state.trackNumber === this.state.urls.length) {
       this.pause();
       this.state.trackNumber = 0;
@@ -176,7 +178,9 @@ class ProgressBar extends React.Component {
   playPreviousSong() {
     this.pause();
     this.hitPrevious = true;
-    this.state.trackNumber--;
+    let newTrackNumber = this.state.trackNumber;
+    newTrackNumber--;
+    this.setState({ trackNumber: newTrackNumber });
     this.position = 0;
     if (this.state.trackNumber < 0) {
       this.pause();
@@ -193,7 +197,7 @@ class ProgressBar extends React.Component {
   playOnClick(index) {
     index = index - 1;
     this.pause();
-    this.state.trackNumber = index;
+    this.setState({ trackNumber: index });
     this.position = 0;
     this.props.changeCover(index);
     this.props.changeSongAndArtist(index);
@@ -212,24 +216,28 @@ class ProgressBar extends React.Component {
   }
   draw() {
     if (this.buffer.duration === this.position) {
-      this.state.trackNumber++;
-      this.position = 0;
-      this.fetch();
-      this.props.changeCover(this.state.trackNumber);
-      this.props.changeSongAndArtist(this.state.trackNumber);
-      this.props.onStartPause();
-      return;
+      let newTrackNumber = this.state.trackNumber;
+      newTrackNumber++;
+      this.setState({ trackNumber: newTrackNumber }, () => {
+        this.position = 0;
+        this.fetch();
+        this.props.changeCover(this.state.trackNumber);
+        this.props.changeSongAndArtist(this.state.trackNumber);
+        this.props.onStartPause();
+        return;
+      });
     }
     if (this.state.trackNumber === this.state.urls.length) {
-      this.state.trackNumber = 0;
-      this.position = 0;
-      this.fetch();
-      this.props.changeCover(this.state.trackNumber);
-      this.props.changeSongAndArtist(this.state.trackNumber);
-      this.props.onStartPause();
+      this.setState({ trackNumber: 0 }, () => {
+        this.position = 0;
+        this.fetch();
+        this.props.changeCover(this.state.trackNumber);
+        this.props.changeSongAndArtist(this.state.trackNumber);
+        this.props.onStartPause();
+      });
     }
     const context = this;
-    let progress = this.updatePosition() / context.buffer.duration;
+    const progress = this.updatePosition() / context.buffer.duration;
     this.state.progress = progress;
     this.passProgress(progress);
     let width = 300;
