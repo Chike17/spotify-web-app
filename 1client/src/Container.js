@@ -67,8 +67,8 @@ class Container extends React.Component {
     this.setState({ progress: progress });
   }
   render() {
-    let context = this;
-    let divStyle = {
+    const context = this;
+    const divStyle = {
       background: 'url(' + '"' + this.props.cover + '"' + ')',
       backgroundSize: 'cover',
     };

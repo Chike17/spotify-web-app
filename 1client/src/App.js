@@ -12,9 +12,6 @@ import {
   setTrackListUI,
 } from './Actions/TrackUIActions.js';
 import _ from 'lodash';
-let song = 'No Songs in Queue';
-let artist = 'Please Go Into Search Mode';
-let trackNumber = 0;
 
 const spotifyWebApi = new Spotify();
 
@@ -27,7 +24,9 @@ class App extends React.Component {
       tracklist: [],
       accessToken: '',
       urls: [],
-      trackNumber: '0',
+      song: 'No Songs in Queue',
+      artist: 'Please Go Into Search Mode',
+      trackNumber: 0,
       preResults: false,
       validINput: false,
       numTracks: 0,
@@ -96,8 +95,8 @@ class App extends React.Component {
         });
         if (context.state.preResults) {
           context.preResults = false;
-          let items = response.tracks.items;
-          let length = items.length;
+          const items = response.tracks.items;
+          const length = items.length;
           let topResults = items.splice(0, 5);
           topResults = topResults
             .filter((track) => {
@@ -125,16 +124,19 @@ class App extends React.Component {
           tracks = tracks.filter((track) => {
             return track.preview_url !== null;
           });
-          let cover = tracks[0].album.images[1].url;
-          song = tracks[0].name;
-          artist = tracks[0].album.artists[0].name;
-          trackNumber = 0;
-          let urls = tracks.map((item) => {
+          const cover = tracks[0].album.images[1].url;
+          const song = tracks[0].name;
+          const artist = tracks[0].album.artists[0].name;
+          const trackNumber = 0;
+          const urls = tracks.map((item) => {
             return item.preview_url;
           });
           context.setState(
             {
-              urls: urls,
+              song,
+              artist,
+              trackNumber,
+              urls,
             },
             () => {
               context.props.setCover(cover);
@@ -179,12 +181,21 @@ class App extends React.Component {
     );
   }
   changeSongAndArtist(index) {
-    trackNumber = index;
-    song = store.getState().TrackUIReducer.trackListUI[index].name;
-    artist = store.getState().TrackUIReducer.trackListUI[trackNumber].album
-      .artists[0].name;
-    this.props.setScreenSong(song);
-    this.props.setScreenArtist(artist);
+    const trackNumber = index;
+    const song = store.getState().TrackUIReducer.trackListUI[index].name;
+    const artist = store.getState().TrackUIReducer.trackListUI[trackNumber]
+      .album.artists[0].name;
+    this.setState(
+      {
+        song,
+        artist,
+        trackNumber,
+      },
+      () => {
+        this.props.setScreenSong(song);
+        this.props.setScreenArtist(artist);
+      }
+    );
   }
   render() {
     return (
@@ -204,9 +215,9 @@ class App extends React.Component {
           partialStatus={this.state.preResults}
           userMessage={this.state.userMessage}
           songAndArtist={{
-            song: song,
-            artist: artist,
-            trackNumber: trackNumber,
+            song: this.state.song,
+            artist: this.state.artist,
+            trackNumber: this.state.trackNumber,
           }}
           trackNumber={this.state.trackNumber}
           setErrorMessage={this.setErrorMessage}

@@ -22542,10 +22542,6 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	var song = 'No Songs in Queue';
-	var artist = 'Please Go Into Search Mode';
-	var trackNumber = 0;
-	
 	var spotifyWebApi = new _spotifyWebApiJs2.default();
 	
 	var App = function (_React$Component) {
@@ -22562,7 +22558,9 @@
 	      tracklist: [],
 	      accessToken: '',
 	      urls: [],
-	      trackNumber: '0',
+	      song: 'No Songs in Queue',
+	      artist: 'Please Go Into Search Mode',
+	      trackNumber: 0,
 	      preResults: false,
 	      validINput: false,
 	      numTracks: 0,
@@ -22667,13 +22665,16 @@
 	            return track.preview_url !== null;
 	          });
 	          var cover = tracks[0].album.images[1].url;
-	          song = tracks[0].name;
-	          artist = tracks[0].album.artists[0].name;
-	          trackNumber = 0;
+	          var song = tracks[0].name;
+	          var artist = tracks[0].album.artists[0].name;
+	          var trackNumber = 0;
 	          var urls = tracks.map(function (item) {
 	            return item.preview_url;
 	          });
 	          context.setState({
+	            song: song,
+	            artist: artist,
+	            trackNumber: trackNumber,
 	            urls: urls
 	          }, function () {
 	            context.props.setCover(cover);
@@ -22724,11 +22725,19 @@
 	  }, {
 	    key: 'changeSongAndArtist',
 	    value: function changeSongAndArtist(index) {
-	      trackNumber = index;
-	      song = _store2.default.getState().TrackUIReducer.trackListUI[index].name;
-	      artist = _store2.default.getState().TrackUIReducer.trackListUI[trackNumber].album.artists[0].name;
-	      this.props.setScreenSong(song);
-	      this.props.setScreenArtist(artist);
+	      var _this4 = this;
+	
+	      var trackNumber = index;
+	      var song = _store2.default.getState().TrackUIReducer.trackListUI[index].name;
+	      var artist = _store2.default.getState().TrackUIReducer.trackListUI[trackNumber].album.artists[0].name;
+	      this.setState({
+	        song: song,
+	        artist: artist,
+	        trackNumber: trackNumber
+	      }, function () {
+	        _this4.props.setScreenSong(song);
+	        _this4.props.setScreenArtist(artist);
+	      });
 	    }
 	  }, {
 	    key: 'render',
@@ -22751,9 +22760,9 @@
 	          partialStatus: this.state.preResults,
 	          userMessage: this.state.userMessage,
 	          songAndArtist: {
-	            song: song,
-	            artist: artist,
-	            trackNumber: trackNumber
+	            song: this.state.song,
+	            artist: this.state.artist,
+	            trackNumber: this.state.trackNumber
 	          },
 	          trackNumber: this.state.trackNumber,
 	          setErrorMessage: this.setErrorMessage,
