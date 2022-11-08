@@ -19,11 +19,11 @@
   "homepage": "https://github.com/Chike17/hrsf52-mvp#readme",
   "devDependencies": {
     "babel-core": "^6.22.1",
-    "babel-loader": "^6.2.10",
+    "babel-loader": "^9.1.0",
     "babel-preset-es2015": "^6.22.0",
     "css-loader": "^0.28.4",
     "style-loader": "^0.18.2",
-    "webpack": "^1.14.0"
+    "webpack": "^5.74.0"
   },
   "dependencies": {
     "babel-polyfill": "^6.22.0",
@@ -46,6 +46,6 @@
     "smooth-scrollbar-react": "^1.0.0",
     "spotify-web-api-js": "^0.23.0",
     "style-loader": "^0.18.2",
-    "webpack": "^1.14.0"
+    "webpack": "^5.74.0"
   }
 }
